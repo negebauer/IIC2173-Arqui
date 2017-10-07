@@ -19,7 +19,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ./api
-      - run: cd api
+      working_directory: ~/arqui/api
       - run: ls
 
   email:
@@ -27,7 +27,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ./email
-      - run: cd email
+      working_directory: ~/arqui/email
       - run: ls
 
   queue:
@@ -35,7 +35,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ./queue
-      - run: cd queue
+      working_directory: ~/arqui/queue
       - run: ls
 
   web:
@@ -43,7 +43,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ./web
-      - run: cd web
+      working_directory: ~/arqui/web
       - run: ls
 
   docker:
