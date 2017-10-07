@@ -19,6 +19,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ./api
+      - run: cd api
       - run: ls
 
   email:
@@ -26,6 +27,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ./email
+      - run: cd email
       - run: ls
 
   queue:
@@ -33,6 +35,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ./queue
+      - run: cd queue
       - run: ls
 
   web:
@@ -40,6 +43,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ./web
+      - run: cd web
       - run: ls
 
   docker:
