@@ -6,4 +6,4 @@ const router = new Router()
 
 router.use("/", index.routes())
 
-module.export = router
+module.exports = router

@@ -3,6 +3,6 @@ const pkg = require("../../package.json")
 
 const router = new Router()
 
-router.get("/", ctx => (ctx.body = { v: pkg.version }))
+router.get("/", ctx => (ctx.body = { alive: true, v: pkg.version, time: new Date() }))
 
-module.export = router
+module.exports = router
