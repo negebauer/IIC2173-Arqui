@@ -1,7 +1,7 @@
 defaults: &defaults
   working_directory: ~/arqui
   docker:
-    - image: negebauer/iic2173-arqui-build
+    - image: negebauer/iic2173-arqui-build:0.0.1
 
 version: 2
 jobs:
