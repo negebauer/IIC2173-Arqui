@@ -7,36 +7,47 @@ version: 2
 jobs:
   clone:
     <<: *defaults
-    - checkout
-    - persist_to_workspace:
-        root: ./
-        paths:
-          - ./
+    steps:
+      - checkout
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - ./
+
   api:
     <<: *defaults
-    - attach_workspace:
-        at: ./api
-    - run: ls
+    steps:
+      - attach_workspace:
+          at: ./api
+      - run: ls
+
   email:
     <<: *defaults
-    - attach_workspace:
-        at: ./email
-    - run: ls
+    steps:
+      - attach_workspace:
+          at: ./email
+      - run: ls
+
   queue:
     <<: *defaults
-    - attach_workspace:
-        at: ./queue
-    - run: ls
+    steps:
+      - attach_workspace:
+          at: ./queue
+      - run: ls
+
   web:
     <<: *defaults
-    - attach_workspace:
-        at: ./web
-    - run: ls
+    steps:
+      - attach_workspace:
+          at: ./web
+      - run: ls
+
   docker:
     <<: *defaults
-    - attach_workspace:
-        at: ./
-    - run: ls
+    steps:
+      - attach_workspace:
+          at: ./
+      - run: ls
 
 workflows:
   version: 2
