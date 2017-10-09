@@ -5,9 +5,19 @@ const ValidatorError = mongoose.Error.ValidatorError
 const bcrypt = require("bcrypt")
 const SALT_WORK_FACTOR = 10
 
-var validateMailSyntax = function(email) {
-  var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ // eslint-disable-line no-useless-escape
+const isMail = function(email) {
+  let re = /([\.-]?\w)+@([\.-]?\w)+\.(\w([\.-]\w)?)+$/ // eslint-disable-line no-useless-escape
   return re.test(email)
+}
+
+const isName = function(name) {
+  let re = /^[A-ZÀÁÈÉÍÓÚÇÑ][a-zàáèéíóúçñ'-]+$/
+  return re.test(name)
+}
+
+const isAddress = function(address) {
+  let re = /^[A-ZÀÁÈÉÍÓÚÇÑa-zàáèéíóúçñ'-,. 0-9]+$/
+  return re.test(address)
 }
 
 const model = "user"
@@ -15,24 +25,29 @@ const UserSchema = new Schema({
   firstName: {
     type: String,
     required: [true, "First name is missing."],
+    validate: [isName, "Please fill a valid first name."],
   },
   lastName: {
     type: String,
     required: [true, "Last name is missing."],
+    validate: [isName, "Please fill a valid last name."],
   },
   mail: {
     type: String,
     required: [true, "Email is missing."],
-    validate: [validateMailSyntax, "Please fill a valid email address."],
+    validate: [isMail, "Please fill a valid email address."],
     index: { unique: true },
   },
   address: {
     type: String,
     required: [true, "Address is missing."],
+    validate: [isAddress, "Please fill a valid address."],
   },
   password: {
     type: String,
     required: [true, "Password is missing."],
+    minlength: [4, "Password is too short. At least 4 characters are needed."],
+    maxlength: [12, "Password is too long. At most 12 characters are allowed."],
   },
   token: {
     type: String,
