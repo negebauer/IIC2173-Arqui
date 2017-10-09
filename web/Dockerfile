@@ -1,6 +1,6 @@
 FROM mhart/alpine-node:latest
 
-WORKDIR /api
+WORKDIR /web
 
 COPY package.json .
 RUN yarn

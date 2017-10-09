@@ -91,6 +91,29 @@ jobs:
             docker tag $REPO:$TAG_CI-$CIRCLE_BUILD_NUM $REPO:$TAG
             docker push $REPO:$TAG
 
+  docker-web:
+    docker:
+      - image: docker
+        environment:
+          REPO: negebauer/iic2173-arqui-web
+          TAG_CI: circleci
+    working_directory: ~/arqui/web
+    steps:
+      - checkout:
+          path: ~/arqui
+      - setup_remote_docker:
+          version: 17.05.0-ce
+      - run: docker build -t $REPO:$TAG_CI-$CIRCLE_BUILD_NUM .
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: docker push $REPO:$TAG_CI-$CIRCLE_BUILD_NUM
+      - run:
+          name: Deploy latest or dev if master or dev
+          command: |
+            TAG=dev
+            if [[ $CIRCLE_BRANCH == 'master' ]]; then TAG=latest; fi
+            docker tag $REPO:$TAG_CI-$CIRCLE_BUILD_NUM $REPO:$TAG
+            docker push $REPO:$TAG
+
   docker:
     docker:
       - image: circleci/node:8.5
@@ -122,12 +145,20 @@ workflows:
                 only:
                   - master
                   - dev
+        - docker-web:
+            requires:
+              - web
+            filters:
+              branches:
+                only:
+                  - master
+                  - dev
         - docker:
             requires:
               - docker-api
               - email
               - queue
-              - web
+              - docker-web
             filters:
               branches:
                 only:
