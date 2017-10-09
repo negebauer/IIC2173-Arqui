@@ -1,0 +1,10 @@
+<!-- nav bar -->
+<div class="topnav" id="myTopnav">
+  <a class="title">Arquiyalt</a>
+  <a (click)="showLogin()" class="right">Login</a>
+</div>
+
+<login *ngIf="showModalLogin" (close)="closeLogin()"></login>
+
+<products-page></products-page>
+
