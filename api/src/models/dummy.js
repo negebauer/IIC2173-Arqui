@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 
-const model = "test"
+const model = "dummy"
 const schema = new Schema({
   date: Date,
 })

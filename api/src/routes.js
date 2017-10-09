@@ -1,9 +1,9 @@
 const Router = require("koa-router")
 
-const index = require("./routes/index")
+const dummy = require("./routes/dummy")
 
 const router = new Router()
 
-router.use("/", index.routes())
+router.use("/dummy", dummy.routes())
 
 module.exports = router

@@ -5,7 +5,7 @@ const router = require("./routes")
 const mongo = require("./db")
 
 const app = new Koa()
-app.context.db = mongo()
+app.context.db = mongo.test()
 app.use(logger("dev"))
 app.use(bodyParser())
 

@@ -7,7 +7,10 @@
     "dev": "nodemon index.js",
     "start": "node index.js",
     "lint": "eslint ./src index.js",
-    "lint:fix": "eslint --fix ./src index.js"
+    "lint:fix": "eslint --fix ./src index.js",
+    "test": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:ci": "jest --coverage --testResultsProcessor=jest-junit"
   },
   "dependencies": {
     "koa": "^2.3.0",
@@ -21,7 +24,21 @@
     "eslint": "^4.8.0",
     "eslint-config-prettier": "^2.6.0",
     "eslint-plugin-prettier": "^2.3.1",
+    "jest": "^21.2.1",
+    "jest-junit": "^3.1.0",
     "nodemon": "^1.12.1",
     "prettier": "^1.7.4"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!<rootDir>/node_modules/"
+    ]
+  },
+  "jest-junit": {
+    "output": "./coverage/junit.xml",
+    "usePathForSuiteName": "true",
+    "classNameTemplate": "",
+    "titleTemplate": "{title}"
   }
 }

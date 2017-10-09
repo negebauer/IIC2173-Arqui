@@ -22,8 +22,17 @@ IIC2173 Arquitectura de Sistemas de Software - Proyecto
 
 #### Links
 
+- commits
+  - https://conventionalcommits.org
+  - https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit
 - docker
   - https://circleci.com/docs/2.0/custom-images
+  - https://docs.docker.com/get-started
+  - https://docs.docker.com/engine/installation/linux/linux-postinstall
+  - https://docs.docker.com/compose/gettingstarted
 - mongodb
-  - https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/
-  - https://docs.mongodb.com/manual/replication/
+  - https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu
+  - https://docs.mongodb.com/manual/replication
+- circleci
+  - https://circleci.com/docs/2.0/building-docker-images/
+  - https://circleci.com/docs/2.0/high-availability

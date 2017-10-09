@@ -1,75 +1,74 @@
-defaults: &defaults
-  working_directory: ~/arqui
-  docker:
-    - image: negebauer/iic2173-arqui-build:0.0.1
-
 version: 2
 jobs:
-  clone:
-    <<: *defaults
-    steps:
-      - checkout
-      - persist_to_workspace:
-          root: ./
-          paths:
-            - ./
-
   api:
-    <<: *defaults
+    docker:
+      - image: circleci/node:8.5
+      - image: circleci/mongo:3.5.6
+    working_directory: ~/arqui/api
     steps:
-      - attach_workspace:
-          at: ./api
-      working_directory: ~/arqui/api
-      - run: ls
+      - checkout:
+          path: ~/arqui
+      - restore_cache:
+          keys:
+          - api-v1-{{ checksum "package.json" }}
+          - api-v1-
+      - run: yarn
+      - save_cache:
+          paths:
+            - node_modules
+          key: api-v1-{{ checksum "package.json" }}
+      - run: yarn lint
+      - run: yarn test:ci
 
   email:
-    <<: *defaults
+    docker:
+      - image: circleci/node:8.5
+    working_directory: ~/arqui/email
     steps:
-      - attach_workspace:
-          at: ./email
-      working_directory: ~/arqui/email
-      - run: ls
+      - checkout:
+          path: ~/arqui
+      - run: pwd; ls
 
   queue:
-    <<: *defaults
+    docker:
+      - image: circleci/node:8.5
+    working_directory: ~/arqui/queue
     steps:
-      - attach_workspace:
-          at: ./queue
-      working_directory: ~/arqui/queue
-      - run: ls
+      - checkout:
+          path: ~/arqui
+      - run: pwd; ls
 
   web:
-    <<: *defaults
+    docker:
+      - image: circleci/node:8.5
+    working_directory: ~/arqui/web
     steps:
-      - attach_workspace:
-          at: ./web
-      working_directory: ~/arqui/web
-      - run: ls
+      - checkout:
+          path: ~/arqui
+      - run: pwd; ls
 
   docker:
-    <<: *defaults
+    docker:
+      - image: circleci/node:8.5
     steps:
-      - attach_workspace:
-          at: ./
-      - run: ls
+      - checkout
+      - run: pwd ; ls
+      - run: ls docker
+
+  deploy:
+    docker:
+      - image: circleci/node:8.5
+    steps:
+      - run: echo "NOT IMPLEMENTED"
 
 workflows:
   version: 2
   workflow:
       jobs:
-        - clone
-        - api:
-            requires:
-              - clone
-        - email:
-            requires:
-              - clone
-        - queue:
-            requires:
-              - clone
-        - web:
-            requires:
-              - clone
+        - api
+        - email
+        - queue
+        - web
         - docker:
             requires:
               - api
