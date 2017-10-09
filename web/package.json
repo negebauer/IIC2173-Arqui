@@ -7,7 +7,8 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
-    "lint": "ng lint",
+    "lint": "ng lint src/",
+    "lint:fix": "ng lint --fix src/",
     "e2e": "ng e2e"
   },
   "private": true,

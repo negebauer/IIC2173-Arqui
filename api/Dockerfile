@@ -9,6 +9,7 @@ RUN cp -a /tmp/node_modules .
 
 COPY . .
 
+ENV PORT 80
 EXPOSE 80
 
 CMD ["yarn", "start"]

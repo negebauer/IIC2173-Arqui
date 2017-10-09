@@ -1,41 +1,45 @@
-# Docker Build
+# Arquiyalt Docker
 
-## Comandos
+## Table Of Contents
 
-#### Stack deploy
+- [Stack deploy](#stack-deploy)
+- [Other commands](#other-commands)
+  - [Services](#services)
+- [Scripts](#scripts)
+
+## Stack deploy
+
+To deploy the app stack on a single docker node using swarm
 
 ```bash
-# Iniciar swarm en nodo
 docker swarm init
 
-# Hacer deploy de un compose
-docker stack deploy -c docker-compose-test.yml arqui
+docker stack deploy -c docker-compose.test.yml arqui # test
+docker stack deploy -c docker-compose.prod.yml arqui # prod
+```
 
-# Desmontar
+To unmount the stack and the swarm
+
+```bash
 docker stack rm arqui
-
-# Salir del swarm
 docker swarm leave --force
 ```
 
-#### Swarm
+## Other commands
+
+#### Services
 
 ```bash
-# Iniciar swarm en nodo
-docker-machine ssh HOST "docker swarm init --advertise-addr HOST_IP"
-docker-machine ssh arqui2 "docker swarm init --advertise-addr arqss2.ing.puc.cl"
+docker container ls
 ```
 
-#### Generales
+#### Containers
 
 ```bash
-# Ver servicios
-docker service ls
-# Ver contenedores
 docker container ls
 ```
 
 ## Scripts
 
-- [installDocker.sh](installDocker.sh): Instala docker, docker-compose y docker-machine en las máquinas
-- [removeNginx.sh](removeNginx.sh): Elimina nginx de las máquinas
+- [zInstallDocker.sh](zInstallDocker.sh): Instala docker, docker-compose y docker-machine en las máquinas
+- [zRemoveNginx.sh](zRemoveNginx.sh): Elimina nginx de las máquinas

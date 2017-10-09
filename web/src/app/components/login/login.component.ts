@@ -22,12 +22,12 @@ import { HttpServiceProvider } from '../../services/HttpServiceProvicer';
 })
 export class LoginComponent {
 
-  template = "login";
+  template = 'login';
   name: string;
   last_name: string;
   address: string;
   mail: string;
-  password: string = "";
+  password = '';
   canLogin = false;
 
   @Output() close: EventEmitter<any> = new EventEmitter();
@@ -36,19 +36,19 @@ export class LoginComponent {
 
   //regex!
   public validateMail() {
-    return true
+    return true;
   }
 
   public validateUserInfo() {
-    return this.name != "" && this.last_name != "" && this.address != "";
+    return this.name != '' && this.last_name != '' && this.address != '';
   }
 
   onChange() {
-    if (this.template=="login"){
-      this.password != "" && this.validateMail() ?
+    if (this.template == 'login'){
+      this.password != '' && this.validateMail() ?
           this.canLogin = true : this.canLogin = false;
     } else {
-      this.password != "" && this.validateMail() && this.validateUserInfo() ?
+      this.password != '' && this.validateMail() && this.validateUserInfo() ?
         this.canLogin = true : this.canLogin = false;
     }
   }
@@ -58,30 +58,30 @@ export class LoginComponent {
   }
 
   public submitLogin() {
-    console.log("we're submitting")
+    console.log('we\'re submitting');
     this._api.logIn(this.mail, this.password)
       .subscribe((response) => {
         console.log(response);
       }, (err) => {
         console.log(err);
-      })
+      });
   }
 
   public submitSignUp() {
-    console.log("we're submitting signUp")
+    console.log('we\'re submitting signUp');
     this._api.signUp(this.name, this.last_name, this.mail, this.address, this.password)
       .subscribe((response) => {
         console.log(response);
       }, (err) => {
         console.log(err);
-      })
+      });
   }
 
   public switchTemplate() {
-    if (this.template == "login") {
-      this.template = "signup";
+    if (this.template == 'login') {
+      this.template = 'signup';
     } else {
-      this.template = "login";
+      this.template = 'login';
     }
   }
 

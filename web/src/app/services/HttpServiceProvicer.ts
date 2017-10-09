@@ -10,35 +10,35 @@ export class HttpServiceProvider {
   //maqueta mientras no hay api
   public products = [
     {
-        "id": 1,
-        "name": "A green door",
-        "price": 12.50,
-        "tags": ["home", "green"]
+        'id': 1,
+        'name': 'A green door',
+        'price': 12.50,
+        'tags': ['home', 'green']
     },
     {
-        "id": 2,
-        "name": "A blue door",
-        "price": 1.50,
-        "tags": ["home", "blue"]
+        'id': 2,
+        'name': 'A blue door',
+        'price': 1.50,
+        'tags': ['home', 'blue']
     },
     {
-        "id": 3,
-        "name": "A yellow door",
-        "price": 15.50,
-        "tags": ["home", "yellow"]
-    }   
-  ]
+        'id': 3,
+        'name': 'A yellow door',
+        'price': 15.50,
+        'tags': ['home', 'yellow']
+    }
+  ];
 
   public constructor(private http: Http) {
 
   }
 
   //Handle Users
-  public logIn(mail: string , password:string) {
-    let headers = new Headers();
+  public logIn(mail: string , password: string) {
+    const headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    let options = new RequestOptions({ headers, method: 'post' });
-    let body = {
+    const options = new RequestOptions({ headers, method: 'post' });
+    const body = {
       mail: mail,
       password: password
     };
@@ -48,19 +48,19 @@ export class HttpServiceProvider {
   }
 
   public signUp(firstName, lastName, mail, address, password) {
-    let headers = new Headers();
+    const headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    let options = new RequestOptions({ headers, method: 'post' });
-    let body = {
+    const options = new RequestOptions({ headers, method: 'post' });
+    const body = {
       firstName: firstName,
       lastName: lastName,
       mail: mail,
       address: address,
       password: password
-    }
+    };
     return this.http
       .post(`${this.apiUrl}/signup`, body, options)
-      .map((res) => res.json())
+      .map((res) => res.json());
   }
 
   //Handle Products
@@ -68,7 +68,7 @@ export class HttpServiceProvider {
     // return this.http
     //   .get(`${this.apiUrl}products`)
     //   .map((response) => response.json());
-    return this.products
+    return this.products;
   }
 
   public getProduct(id: number) {
@@ -79,6 +79,6 @@ export class HttpServiceProvider {
 
   //Handle Orders
   public placeOrder() {
-    return
+    return;
   }
 }

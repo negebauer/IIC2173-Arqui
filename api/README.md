@@ -1,18 +1,35 @@
-# Arquiyalt-API
+# Arquiyalt Api
 
 ## Table Of Contents
 
-- [Usage](#usage)
-
+- [Development](#development)
+- [Environment variables](#environment-variables)
+- [Api usage](#api-usage)
   - [Accounts](#accounts)
     - [Sign up](#sign-up)
     - [Login](#login)
-
   - [Products](#products)
     - [List products](#list-products)
     - [Show product](#show-product)
 
-## Usage
+## Development
+
+Clone the repo and cd to `api` directory
+
+```bash
+yarn
+yarn dev
+```
+
+## Environment variables
+
+|variable|default|use|
+|:-:|:-:|:-:|
+|PORT|3000|port in which api will listen for requests|
+|MONGO|mongodb://127.0.0.1:27017/IIC2173-Arqui|mongodb uri|
+|MONGO_TEST|mongodb://127.0.0.1:27017/IIC2173-Arqui-test|mongodb uri for running tests|
+
+## Api usage
 
 ### Accounts
 

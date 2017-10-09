@@ -1,25 +1,24 @@
-# Arquiyalt
+# Arquiyalt Web
 
-## Como correr el proyecto:
+## Table Of Contents
 
-[MacOS]
+- [Development](#development)
+- [Environment variables](#environment-variables)
 
-1. Instalar Node usando brew.
-`brew install node`
+## Development
 
-2. Clonar repo.
-`git clone https://github.com/negebauer/IIC2173-Arqui.git`
+Clone the repo and cd to `web` directory
 
-3. Navegar a la carpeta web
-`cd web`
+```bash
+npm i -g @angular/cli@latest
+yarn
+yarn start
+```
 
-4. Instalar dependencias.
-`npm install`
+Now open http://localhost:4200 in your browser
 
-5. Instalar cli de angular.
-`npm install -g @angular/cli@latest`
+## Environment variables
 
-
-6. Correr app.
-`ng serve`
-Ahora puedes revisar la app en http://localhost:4200/
+|variable|default|use|
+|:-:|:-:|:-:|
+|PORT|4200|port in which api will listen for requests|

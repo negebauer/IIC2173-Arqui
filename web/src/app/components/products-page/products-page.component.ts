@@ -10,7 +10,7 @@ import { HttpServiceProvider } from '../../services/HttpServiceProvicer';
 export class ProductsPageComponent implements OnInit {
   public products;
 
-  constructor(public _http:HttpServiceProvider) {
+  constructor(public _http: HttpServiceProvider) {
   	this.products = _http.getProducts();
   	console.log(this.products);
   }
