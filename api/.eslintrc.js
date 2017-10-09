@@ -21,6 +21,6 @@ module.exports = {
       trailingComma: "es5",
       semi: false,
     }],
-    semi: [1, 'never']
+    "no-var": "error",
   },
 };

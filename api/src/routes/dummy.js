@@ -1,12 +1,22 @@
 const Router = require("koa-router")
+const os = require("os")
 const Dummy = require("../models/dummy")
 const pkg = require("../../package.json")
 
 const router = new Router()
 
 router.get("/", async ctx => {
+  ctx.body = {
+    hostname: os.hostname(),
+    alive: true,
+    v: pkg.version,
+    time: new Date(),
+  }
+})
+
+router.get("/dummies", async ctx => {
   const dummies = await Dummy.find().lean()
-  ctx.body = { alive: true, v: pkg.version, time: new Date(), dummies }
+  ctx.body = { dummies }
 })
 
 router.post("/", async ctx => {

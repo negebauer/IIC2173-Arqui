@@ -1,0 +1,37 @@
+version: "3"
+services:
+  api:
+    image: negebauer/iic2173-arqui-api:dev
+    deploy:
+      replicas: 4
+    environment:
+      - MONGO=mongodb://api_mongo/IIC2173-Arqui-test
+      - PORT=80
+    ports:
+      - "3000:80"
+    networks:
+      - api_network
+  api_mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - /home/docker/data:/data
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - api_network
+  visualizer:
+    image: dockersamples/visualizer:stable
+    ports:
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - api_network
+networks:
+  api_network:

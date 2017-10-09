@@ -19,6 +19,14 @@ jobs:
           key: api-v1-{{ checksum "package.json" }}
       - run: yarn lint
       - run: yarn test:ci
+      - store_test_results:
+          path: ./coverage
+      - store_artifacts:
+          path: ./coverage/junit.xml
+          destination: junit/junit.xml
+      - store_artifacts:
+          path: ./coverage/lcov-report
+          destination: coverage
 
   email:
     docker:
@@ -47,6 +55,29 @@ jobs:
           path: ~/arqui
       - run: pwd; ls
 
+  docker-api:
+    docker:
+      - image: docker
+        environment:
+          REPO: negebauer/iic2173-arqui-api
+          TAG_CI: circleci
+    working_directory: ~/arqui/api
+    steps:
+      - checkout:
+          path: ~/arqui
+      - setup_remote_docker:
+          version: 17.05.0-ce
+      - run: docker build -t $REPO:$TAG_CI-$CIRCLE_BUILD_NUM .
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: docker push $REPO:$TAG_CI-$CIRCLE_BUILD_NUM
+      - run:
+          name: Deploy latest or dev if master or dev
+          command: |
+            TAG=dev
+            if [[ $CIRCLE_BRANCH == 'master' ]]; then TAG=latest; fi
+            docker tag $REPO:$TAG_CI-$CIRCLE_BUILD_NUM $REPO:$TAG
+            docker push $REPO:$TAG
+
   docker:
     docker:
       - image: circleci/node:8.5
@@ -69,12 +100,25 @@ workflows:
         - email
         - queue
         - web
-        - docker:
+        - docker-api:
             requires:
               - api
+            filters:
+              branches:
+                only:
+                  - master
+                  - dev
+        - docker:
+            requires:
+              - docker-api
               - email
               - queue
               - web
+            filters:
+              branches:
+                only:
+                  - master
+                  - dev
         - deploy:
             requires:
               - docker
