@@ -5,7 +5,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "prestart": "PROD=false eval \"echo \\\"$(cat src/environments/environment.template.sh)\\\"\" > src/environments/environment.ts",
+    "build": "ng build --prod --build-optimizer",
+    "prebuild": "PROD=true eval \"echo \\\"$(cat src/environments/environment.template.sh)\\\"\" > src/environments/environment.prod.ts",
     "test": "ng test",
     "lint": "ng lint src/",
     "lint:fix": "ng lint --fix src/",
@@ -23,11 +25,15 @@
     "@angular/platform-browser-dynamic": "^4.2.4",
     "@angular/router": "^4.2.4",
     "core-js": "^2.4.1",
+    "http": "^0.0.0",
+    "http-proxy": "^1.16.2",
+    "path": "^0.12.7",
     "rxjs": "^5.4.2",
+    "serve-favicon": "^2.4.5",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {
-    "@angular/cli": "1.3.1",
+    "@angular/cli": "^1.4.5",
     "@angular/compiler-cli": "^4.2.4",
     "@angular/language-service": "^4.2.4",
     "@types/jasmine": "~2.5.53",

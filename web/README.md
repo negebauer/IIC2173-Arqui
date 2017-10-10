@@ -10,7 +10,6 @@
 Clone the repo and cd to `web` directory
 
 ```bash
-npm i -g @angular/cli@latest
 yarn
 yarn start
 ```

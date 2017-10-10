@@ -2,10 +2,28 @@
 
 ## Table Of Contents
 
+- [Docker files](#docker-files)
+- [Local deploy](#local-deploy)
 - [Stack deploy](#stack-deploy)
 - [Other commands](#other-commands)
   - [Services](#services)
 - [Scripts](#scripts)
+
+## Docker files
+
+|file|use|
+|:--:|:-:|
+|[docker-compose.yml](docker-compose.yml)|Run the full app in a single machine|
+|[docker-compose.test.yml](docker-compose.test.yml)|Run the app in a swarm. Used for tests (virtual machines)|
+|[docker-compose.prod.yml](docker-compose.prod.yml)|Run the app in a swarm. Used for production (arqss machines)|
+
+## Local deploy
+
+Use `docker-compose` to deploy the full app in a single machine
+
+```bash
+docker-compose up -d
+```
 
 ## Stack deploy
 

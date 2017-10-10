@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class HttpServiceProvider {
 
-  public apiUrl = process.env.API || 'localhost:3000';
+  public apiUrl = environment.api || 'localhost:3000';
 
   // Maqueta mientras no hay api
   public products = [
@@ -30,7 +31,8 @@ export class HttpServiceProvider {
   ];
 
   public constructor(private http: Http) {
-
+    console.log('ASDJHADJHASJDHJS');
+    console.log(this.apiUrl);
   }
 
   //  Handle Users

@@ -10,4 +10,4 @@ COPY . .
 ENV PORT 80
 EXPOSE 80
 
-CMD ["yarn", "start"]
+CMD yarn build && node server.js
