@@ -22,3 +22,4 @@ Now open http://localhost:4200 in your browser
 |variable|default|use|
 |:-:|:-:|:-:|
 |PORT|4200|port in which api will listen for requests|
+|API|localhost:3000|api url|

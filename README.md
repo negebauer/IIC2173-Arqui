@@ -1,28 +1,33 @@
-# IIC2173-Arqui
+# Arquiyalt
 
 [![circleciB]][circleciL]
 [![commitsB]][commitsL]
 
-IIC2173 Arquitectura de Sistemas de Software - Proyecto
+## Table Of Contents
 
-## Estructura
+- [Structure](#structure)
+- [Deploy](#deploy)
+- [Links](#links)
 
-- [api](api): Api intermedia entre nuestro sistema y sistema central
-- [docker](docker): Configuración imagen docker
-- [email](email): Cliente email
-- [queue](queue): Cola órdenes
-- [web](web): Cliente web
+## Structure
 
-<!-- Badges -->
-[circleciL]:https://circleci.com/gh/negebauer/IIC2173-Arqui
-[circleciB]:https://circleci.com/gh/negebauer/IIC2173-Arqui.svg?style=svg&circle-token=3634a4c1bb42fd24fb638af8b3d05a1f114789f6
+|folder|content|
+|:----:|:-----:|
+|[api](api)|Our own [koa](http://koajs.com) api. Comunicates with the central api|
+|[docker](docker)|Docker deploy configuration|
+|[email](email)|Email client|
+|[queue](queue)|Order queue client|
+|[web](web)|[Angular 2](https://angular.io) web client|
 
-[commitsL]:https://conventionalcommits.org
-[commitsB]:https://img.shields.io/badge/commits-conventional-brightgreen.svg
+## Deploy
+
+Current deploy stack consists of a single machine that executes a `docker-compose` version of the full app
+
+http://arqss2.ing.puc.cl
 
 ***
 
-#### Links interesantes
+#### Links
 
 - commits
   - https://conventionalcommits.org
@@ -42,3 +47,11 @@ IIC2173 Arquitectura de Sistemas de Software - Proyecto
 - ubuntu ports
   - https://superuser.com/questions/769541/is-it-possible-to-ping-an-addressport
   - https://www.digitalocean.com/community/questions/how-do-i-open-ports-on-an-ubuntu-server
+
+
+<!-- Badges -->
+[circleciL]:https://circleci.com/gh/negebauer/IIC2173-Arqui
+[circleciB]:https://circleci.com/gh/negebauer/IIC2173-Arqui.svg?style=svg&circle-token=3634a4c1bb42fd24fb638af8b3d05a1f114789f6
+
+[commitsL]:https://conventionalcommits.org
+[commitsB]:https://img.shields.io/badge/commits-conventional-brightgreen.svg

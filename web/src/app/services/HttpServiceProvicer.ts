@@ -5,27 +5,27 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class HttpServiceProvider {
 
-  public apiUrl = '';
+  public apiUrl = process.env.API || 'localhost:3000';
 
-  //maqueta mientras no hay api
+  // Maqueta mientras no hay api
   public products = [
     {
-        'id': 1,
-        'name': 'A green door',
-        'price': 12.50,
-        'tags': ['home', 'green']
+      'id': 1,
+      'name': 'A green door',
+      'price': 12.50,
+      'tags': ['home', 'green']
     },
     {
-        'id': 2,
-        'name': 'A blue door',
-        'price': 1.50,
-        'tags': ['home', 'blue']
+      'id': 2,
+      'name': 'A blue door',
+      'price': 1.50,
+      'tags': ['home', 'blue']
     },
     {
-        'id': 3,
-        'name': 'A yellow door',
-        'price': 15.50,
-        'tags': ['home', 'yellow']
+      'id': 3,
+      'name': 'A yellow door',
+      'price': 15.50,
+      'tags': ['home', 'yellow']
     }
   ];
 
@@ -33,8 +33,8 @@ export class HttpServiceProvider {
 
   }
 
-  //Handle Users
-  public logIn(mail: string , password: string) {
+  //  Handle Users
+  public logIn(mail: string, password: string) {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     const options = new RequestOptions({ headers, method: 'post' });
@@ -63,7 +63,7 @@ export class HttpServiceProvider {
       .map((res) => res.json());
   }
 
-  //Handle Products
+  // Handle Products
   public getProducts() {
     // return this.http
     //   .get(`${this.apiUrl}products`)
@@ -77,7 +77,7 @@ export class HttpServiceProvider {
     //   .map((response) => response.json());
   }
 
-  //Handle Orders
+  // Handle Orders
   public placeOrder() {
     return;
   }
