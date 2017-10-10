@@ -13,16 +13,18 @@
 
 |file|use|
 |:--:|:-:|
-|[docker-compose.yml](docker-compose.yml)|Run the full app in a single machine|
-|[docker-compose.test.yml](docker-compose.test.yml)|Run the app in a swarm. Used for tests (virtual machines)|
-|[docker-compose.prod.yml](docker-compose.prod.yml)|Run the app in a swarm. Used for production (arqss machines)|
+|[docker-compose.local.test.yml](docker-compose.local.test.yml)|Run the full app in a single machine. For dev (run in your machine) and tests|
+|[docker-compose.local.prod.yml](docker-compose.local.prod.yml)|Run the full app in a single machine. For production (arqss machine)|
+|[docker-compose.swarm.test.yml](docker-compose.swarm.test.yml)|Run the app in a swarm. Used for tests (virtual machines)|
+|[docker-compose.swarm.prod.yml](docker-compose.swarm.prod.yml)|Run the app in a swarm. Used for production (arqss machines)|
 
 ## Local deploy
 
 Use `docker-compose` to deploy the full app in a single machine
 
 ```bash
-docker-compose up -d
+docker-compose up -d -f docker-compose.local.test.yml # test
+docker-compose up -d -f docker-compose.local.prod.yml # prod
 ```
 
 ## Stack deploy
