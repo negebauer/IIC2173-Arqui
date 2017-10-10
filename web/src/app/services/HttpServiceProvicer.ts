@@ -6,7 +6,7 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class HttpServiceProvider {
 
-  public apiUrl = environment.api || 'localhost:3000';
+  public apiUrl = environment.api || 'http://localhost:3000';
 
   // Maqueta mientras no hay api
   public products = [
@@ -46,7 +46,7 @@ export class HttpServiceProvider {
     };
     return this.http
       .post(`${this.apiUrl}/login`, body, options)
-      .map((res) => res.json());
+      .map((res) => res.json())
   }
 
   public signUp(firstName, lastName, mail, address, password) {

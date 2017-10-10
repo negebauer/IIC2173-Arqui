@@ -8,6 +8,7 @@ import { ProductsPageComponent } from './components/products-page/products-page.
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { CartComponent } from './components/cart/cart.component';
 import { HttpServiceProvider } from './services/HttpServiceProvicer';
+import { SessionService } from './services/session.service';
 import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
@@ -23,7 +24,7 @@ import { LoginComponent } from './components/login/login.component';
     HttpModule,
     FormsModule
   ],
-  providers: [HttpServiceProvider],
+  providers: [HttpServiceProvider, SessionService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

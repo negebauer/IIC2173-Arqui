@@ -2,6 +2,9 @@
 </div>
 
 <div class="modal" [ngSwitch]="template">
+	<div class="close-modal" (click)="closeLogin($event)">
+		X
+	</div>
 	<div class="login" *ngSwitchCase="'login'">
 		<div style="padding: 1em;">
 	    <h1>Iniciar Sesión</h1>
@@ -17,6 +20,9 @@
 	     </div>
 	     <button (click)="submitLogin()" [class.disabled]="!canLogin" type="button" class="form-login btn btn-login">Entrar!</button>
 	    </form>
+	    </div>
+	    <div *ngIf="error !== '' " class="error-msg">
+	    	{{error}}
 	    </div>
 		<div (click)="switchTemplate()" class="login-footer">
 			No tienes cuenta? crea una aquí
@@ -49,6 +55,9 @@
 	     </div>
 	     <button (click)="submitSignUp()" [class.disabled]="!canLogin" type="button" class="form-login btn btn-login">Entrar!</button>
 	    </form>
+	    </div>
+	    <div *ngIf="error !== '' " class="error-msg">
+	    	{{error}}
 	    </div>
 		<div (click)="switchTemplate()" class="login-footer">
 			Ya tienes cuenta? inicia sesión aquí

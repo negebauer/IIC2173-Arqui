@@ -17,6 +17,14 @@
 	padding-bottom: 3em;
 }
 
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    [class*="modal"] {
+        width: 100%;
+        left: 0;
+    }
+}
+
 .form-login {
 	display: inline-flex;
 	width: 100%;
@@ -34,12 +42,12 @@
 	margin-left: 25%;
 	text-align: center;
 	display: inherit;
+	cursor: pointer;
 }
 
 .btn-login.disabled
 {
   pointer-events: none;
-
   /* for "disabled" effect */
   opacity: 0.5;
   background: #CCC;
@@ -55,6 +63,23 @@
 	width: 100%;
 	margin: 0 auto;
 	text-align: center;
+	cursor: pointer;
+}
+
+.error-msg {
+	background-color: #c8403d;
+	text-align: center;
+	color: white;
+	height: 2em;
+	line-height: 2em;
+}
+
+.close-modal {
+	position: absolute;
+	right: 1em;
+	top: 1em;
+	color: #c8403d;
+	cursor: pointer;
 }
 
 .form-login input {
