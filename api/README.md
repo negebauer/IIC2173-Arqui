@@ -76,7 +76,7 @@ yarn dev
     { "message": "error-message" }
     ```
 
----
+***
 
 #### Login
 
@@ -112,7 +112,7 @@ yarn dev
     { "message": "Invalid credentials." }
     ```
 
----
+***
 
 ### Products
 
@@ -151,7 +151,9 @@ yarn dev
     }
     ```
 
----
+***
+
+### Categories
 
 #### One category
 
@@ -178,9 +180,7 @@ yarn dev
     }
     ```
 
----
-
-### Categories
+***
 
 #### All categories
 
@@ -220,7 +220,7 @@ yarn dev
     }
     ```
 
----
+***
 
 #### One category with nested products
 
@@ -264,7 +264,7 @@ yarn dev
     }
     ```
 
----
+***
 
 
 #### All categories with nested products
@@ -342,4 +342,4 @@ yarn dev
     }
     ```
 
----
+***
