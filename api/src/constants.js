@@ -1,0 +1,6 @@
+module.exports = {
+  ARQUITRAN_URI: "http://arqss17.ing.puc.cl:3000",
+  MAX_REQUEST_ATTEMPTS: 2,
+  MAX_REQUEST_TIMEOUT: 250,
+  SETTING_CACHE_TIMEOUT: 30 * 1000,
+}

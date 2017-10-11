@@ -13,8 +13,8 @@
     "test:ci": "jest --coverage --testResultsProcessor=jest-junit"
   },
   "dependencies": {
+    "axios": "^0.16.2",
     "bcrypt": "^1.0.3",
-    "jsonwebtoken": "^8.0.1",
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",
     "koa-cors": "^0.0.16",

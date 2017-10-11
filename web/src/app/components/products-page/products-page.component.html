@@ -1,4 +1,13 @@
-<p>
-  products-page works!
-  {{products}}
-</p>
+<div class="products">
+	<div *ngFor="let product of products" class="product">
+		<div class="name">
+			{{product.name}}
+		</div>
+		<div class="description">
+			{{product.description}}
+		</div>
+		<div class="price">
+			{{product.price}}
+		</div>
+	</div>
+</div>
