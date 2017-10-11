@@ -7,7 +7,7 @@ const User = require("../models/user")
 const router = new Router()
 
 function generateMessage(err) {
-  let msgs = []
+  const msgs = []
   Object.keys(err.errors).forEach(key => {
     msgs.push(err.errors[key].message)
   })

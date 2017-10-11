@@ -6,17 +6,17 @@ const bcrypt = require("bcrypt")
 const SALT_WORK_FACTOR = 10
 
 const isMail = function(email) {
-  let re = /([\.-]?\w)+@([\.-]?\w)+\.(\w([\.-]\w)?)+$/ // eslint-disable-line no-useless-escape
+  const re = /([\.-]?\w)+@([\.-]?\w)+\.(\w([\.-]\w)?)+$/ // eslint-disable-line no-useless-escape
   return re.test(email)
 }
 
 const isName = function(name) {
-  let re = /^[A-ZÀÁÈÉÍÓÚÇÑ][a-zàáèéíóúçñ'-]+$/
+  const re = /^[A-ZÀÁÈÉÍÓÚÇÑ][a-zàáèéíóúçñ'-]+$/
   return re.test(name)
 }
 
 const isAddress = function(address) {
-  let re = /^[A-ZÀÁÈÉÍÓÚÇÑa-zàáèéíóúçñ'-,. 0-9]+$/
+  const re = /^[A-ZÀÁÈÉÍÓÚÇÑa-zàáèéíóúçñ'-,. 0-9]+$/
   return re.test(address)
 }
 
