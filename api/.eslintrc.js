@@ -22,5 +22,6 @@ module.exports = {
       semi: false,
     }],
     "no-var": "error",
+    "prefer-const": "error",
   },
 };
