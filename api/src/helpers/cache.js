@@ -1,5 +1,5 @@
-const Category = require("../models/category")
-const { SETTING_CACHE_TIMEOUT } = require("../constants")
+const Category = require('../models/category')
+const { SETTING_CACHE_TIMEOUT } = require('../constants')
 
 const setCache = async categories => {
   const timeWall = await Category.findOne()
@@ -24,7 +24,7 @@ const setCache = async categories => {
 }
 
 const getProducts = async () => {
-  const categories = await Category.find({}, { "products._id": false })
+  const categories = await Category.find({}, { 'products._id': false })
   if (!categories) {
     return null
   }
@@ -70,7 +70,7 @@ const getNestedCategories = async (id = null) => {
         _id: false,
         __v: false,
         createdAt: false,
-        "products._id": false,
+        'products._id': false,
       }
     )
   } else {
@@ -80,7 +80,7 @@ const getNestedCategories = async (id = null) => {
         _id: false,
         __v: false,
         createdAt: false,
-        "products._id": false,
+        'products._id': false,
       }
     )
   }

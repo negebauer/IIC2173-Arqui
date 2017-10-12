@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const Product = new Schema({
@@ -16,7 +16,7 @@ const Product = new Schema({
   },
 })
 
-const model = "category"
+const model = 'category'
 const CategorySchema = new Schema(
   {
     id: {

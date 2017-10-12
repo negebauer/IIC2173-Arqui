@@ -1,19 +1,19 @@
-const Router = require("koa-router")
-const _ = require("lodash")
-const uuid = require("uuid/v4")
+const Router = require('koa-router')
+const _ = require('lodash')
+const uuid = require('uuid/v4')
 
-const User = require("../models/user")
-const { validationError, loginError } = require("../helpers/errors")
+const User = require('../models/user')
+const { validationError, loginError } = require('../helpers/errors')
 
 const router = new Router()
 
-router.post("signUp", "signup", async ctx => {
+router.post('signUp', 'signup', async ctx => {
   const attrs = _.pick(ctx.request.body, [
-    "firstName",
-    "lastName",
-    "mail",
-    "address",
-    "password",
+    'firstName',
+    'lastName',
+    'mail',
+    'address',
+    'password',
   ])
   const user = new User(attrs)
   try {
@@ -28,7 +28,7 @@ router.post("signUp", "signup", async ctx => {
   ctx.body = { token: user.token }
 })
 
-router.post("signIn", "login", async ctx => {
+router.post('signIn', 'login', async ctx => {
   const user = await User.findOne({ mail: ctx.request.body.mail })
   if (!user) {
     return loginError(ctx)

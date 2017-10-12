@@ -1,18 +1,18 @@
-const Router = require("koa-router")
+const Router = require('koa-router')
 
-const getArquitran = require("../helpers/getArquitran")
-const parseCategories = require("../helpers/parseCategories")
+const getArquitran = require('../helpers/getArquitran')
+const parseCategories = require('../helpers/parseCategories')
 const {
   setCache,
   getCategories,
   getNestedCategories,
-} = require("../helpers/cache")
+} = require('../helpers/cache')
 
 const router = new Router()
 
-router.get("nestedCategories", "/products", async ctx => {
-  const rawCategories = await getArquitran("/categories")
-  const products = await getArquitran("/products")
+router.get('nestedCategories', '/products', async ctx => {
+  const rawCategories = await getArquitran('/categories')
+  const products = await getArquitran('/products')
   if (!rawCategories || !products) {
     const cacheCategories = await getNestedCategories()
     if (!cacheCategories || !cacheCategories.length) {
@@ -21,19 +21,19 @@ router.get("nestedCategories", "/products", async ctx => {
       return
     }
     ctx.status = 200
-    ctx.body = { source: "cache", categories: cacheCategories }
+    ctx.body = { source: 'cache', categories: cacheCategories }
     return
   }
   const categories = parseCategories(rawCategories, products)
   setCache(categories)
   ctx.status = 200
 
-  ctx.body = { source: "api", categories }
+  ctx.body = { source: 'api', categories }
 })
 
-router.get("nestedCategory", "/:id/products", async ctx => {
-  const rawCategories = await getArquitran("/categories")
-  const products = await getArquitran("/products")
+router.get('nestedCategory', '/:id/products', async ctx => {
+  const rawCategories = await getArquitran('/categories')
+  const products = await getArquitran('/products')
   if (!rawCategories || !products) {
     const cacheCategory = await getNestedCategories(ctx.params.id)
     if (!cacheCategory || !cacheCategory.length) {
@@ -42,18 +42,18 @@ router.get("nestedCategory", "/:id/products", async ctx => {
       return
     }
     ctx.status = 200
-    ctx.body = { source: "cache", category: cacheCategory[0] }
+    ctx.body = { source: 'cache', category: cacheCategory[0] }
     return
   }
   const categories = parseCategories(rawCategories, products)
   setCache(categories)
   const category = categories.find(cat => cat.id == ctx.params.id)
   ctx.status = 200
-  ctx.body = { source: "api", category }
+  ctx.body = { source: 'api', category }
 })
 
-router.get("categories", "/", async ctx => {
-  const categories = await getArquitran("/categories")
+router.get('categories', '/', async ctx => {
+  const categories = await getArquitran('/categories')
   if (!categories) {
     const cacheCategories = await getCategories()
     if (!cacheCategories || !cacheCategories.length) {
@@ -62,16 +62,16 @@ router.get("categories", "/", async ctx => {
       return
     }
     ctx.status = 200
-    ctx.body = { source: "cache", categories: cacheCategories }
+    ctx.body = { source: 'cache', categories: cacheCategories }
     return
   }
   setCache(categories)
   ctx.status = 200
-  ctx.body = { source: "api", categories }
+  ctx.body = { source: 'api', categories }
 })
 
-router.get("category", "/:id", async ctx => {
-  const categories = await getArquitran("/categories")
+router.get('category', '/:id', async ctx => {
+  const categories = await getArquitran('/categories')
   if (!categories) {
     const cacheCategory = await getCategories(ctx.params.id)
     if (!cacheCategory || !cacheCategory.length) {
@@ -80,13 +80,13 @@ router.get("category", "/:id", async ctx => {
       return
     }
     ctx.status = 200
-    ctx.body = { source: "cache", categories: cacheCategory[0] }
+    ctx.body = { source: 'cache', categories: cacheCategory[0] }
     return
   }
   setCache(categories)
   const category = categories.find(cat => cat.id == ctx.params.id)
   ctx.status = 200
-  ctx.body = { source: "api", category }
+  ctx.body = { source: 'api', category }
 })
 
 module.exports = router

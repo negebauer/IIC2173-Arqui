@@ -1,9 +1,9 @@
-const request = require("axios")
+const request = require('axios')
 const {
   ARQUITRAN_URI,
   MAX_REQUEST_ATTEMPTS,
   MAX_REQUEST_TIMEOUT,
-} = require("../constants")
+} = require('../constants')
 
 const getArquitran = async endPoint => {
   let attemptsLeft = MAX_REQUEST_ATTEMPTS

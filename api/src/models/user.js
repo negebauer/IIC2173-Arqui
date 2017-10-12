@@ -1,8 +1,8 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const ValidationError = mongoose.Error.ValidationError
 const ValidatorError = mongoose.Error.ValidatorError
-const bcrypt = require("bcrypt")
+const bcrypt = require('bcrypt')
 const SALT_WORK_FACTOR = 10
 
 const isMail = function(email) {
@@ -20,34 +20,34 @@ const isAddress = function(address) {
   return re.test(address)
 }
 
-const model = "user"
+const model = 'user'
 const UserSchema = new Schema({
   firstName: {
     type: String,
-    required: [true, "First name is missing."],
-    validate: [isName, "Please fill a valid first name."],
+    required: [true, 'First name is missing.'],
+    validate: [isName, 'Please fill a valid first name.'],
   },
   lastName: {
     type: String,
-    required: [true, "Last name is missing."],
-    validate: [isName, "Please fill a valid last name."],
+    required: [true, 'Last name is missing.'],
+    validate: [isName, 'Please fill a valid last name.'],
   },
   mail: {
     type: String,
-    required: [true, "Email is missing."],
-    validate: [isMail, "Please fill a valid email address."],
+    required: [true, 'Email is missing.'],
+    validate: [isMail, 'Please fill a valid email address.'],
     index: { unique: true },
   },
   address: {
     type: String,
-    required: [true, "Address is missing."],
-    validate: [isAddress, "Please fill a valid address."],
+    required: [true, 'Address is missing.'],
+    validate: [isAddress, 'Please fill a valid address.'],
   },
   password: {
     type: String,
-    required: [true, "Password is missing."],
-    minlength: [4, "Password is too short. At least 4 characters are needed."],
-    maxlength: [12, "Password is too long. At most 12 characters are allowed."],
+    required: [true, 'Password is missing.'],
+    minlength: [4, 'Password is too short. At least 4 characters are needed.'],
+    maxlength: [12, 'Password is too long. At most 12 characters are allowed.'],
   },
   token: {
     type: String,
@@ -55,13 +55,13 @@ const UserSchema = new Schema({
 })
 
 async function validateMailUnicity(user) {
-  const otherUser = await mongoose.models["user"].findOne({ mail: user.mail })
+  const otherUser = await mongoose.models['user'].findOne({ mail: user.mail })
   if (otherUser && otherUser._id != user._id) {
     const error = new ValidationError(this)
     error.errors.mail = new ValidatorError({
-      type: "unique",
-      path: "mail",
-      message: "Email already in use.",
+      type: 'unique',
+      path: 'mail',
+      message: 'Email already in use.',
       value: user.mail,
     })
     throw error
@@ -72,12 +72,12 @@ async function validateMailUnicity(user) {
 // so use save() to update user passwords
 
 async function buildPasswordHash(user) {
-  if (user.isModified("password")) {
+  if (user.isModified('password')) {
     user.password = await bcrypt.hash(user.password, SALT_WORK_FACTOR)
   }
 }
 
-UserSchema.pre("save", async function(next) {
+UserSchema.pre('save', async function(next) {
   try {
     await validateMailUnicity(this)
   } catch (error) {

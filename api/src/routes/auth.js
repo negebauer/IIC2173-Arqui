@@ -1,9 +1,9 @@
-const User = require("../models/user")
+const User = require('../models/user')
 
 function unauthorized(ctx) {
   ctx.status = 401
   const error = new Error()
-  error.message = "Not authorized."
+  error.message = 'Not authorized.'
   return (ctx.body = error)
 }
 
