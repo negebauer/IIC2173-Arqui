@@ -1,4 +1,4 @@
 export const environment = {
-  production: \"${PROD}\",
+  production: ${PROD},
   api: \"${API}\",
 };

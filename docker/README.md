@@ -13,10 +13,8 @@
 
 |file|use|
 |:--:|:-:|
-|[docker-compose.local.test.yml](docker-compose.local.test.yml)|Run the full app in a single machine. For dev (run in your machine) and tests|
-|[docker-compose.local.prod.yml](docker-compose.local.prod.yml)|Run the full app in a single machine. For production (arqss machine)|
-|[docker-compose.swarm.test.yml](docker-compose.swarm.test.yml)|Run the app in a swarm. Used for tests (virtual machines)|
-|[docker-compose.swarm.prod.yml](docker-compose.swarm.prod.yml)|Run the app in a swarm. Used for production (arqss machines)|
+|[docker-compose.yml](docker-compose.yml)|Run the full app in a single machine. For dev (run in your machine) and tests|
+|[docker-compose-stack.yml](docker-compose-stack.yml)|Run the app in arqss swarm|
 
 ## Local deploy
 
@@ -61,5 +59,8 @@ docker container ls
 
 ## Scripts
 
-- [zInstallDocker.sh](zInstallDocker.sh): Instala docker, docker-compose y docker-machine en las máquinas
-- [zRemoveNginx.sh](zRemoveNginx.sh): Elimina nginx de las máquinas
+|script|use|
+|:---:||:-:|
+|[zDockerMachine.sh](zDockerMachine.sh)|(**DON'T RUN**) Configure docker-machine with all arqss machines|
+|[zInstallDocker.sh](zInstallDocker.sh)|Install docker, docker-compose and docker-machine on all arqss machines|
+|[zRemoveNginx.sh](zRemoveNginx.sh)|Remove nginx from all arqss machines|

@@ -8,6 +8,8 @@ services:
       - "3000:80"
     networks:
       - arqui-network
+      - api-network
+
   api-mongo:
     image: mongo
     ports:
@@ -15,14 +17,17 @@ services:
     volumes:
       - "~/data/mongodb/db:/data/db"
     networks:
-      - arqui-network
+      - api-network
+
   web:
     image: negebauer/iic2173-arqui-web:dev
     environment:
-      - API=tcp://api
+      - API=http://localhost:3000
     ports:
       - "8080:80"
     networks:
       - arqui-network
+
 networks:
   arqui-network:
+  api-network:

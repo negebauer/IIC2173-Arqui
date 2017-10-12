@@ -1,6 +1,7 @@
 # Arquiyalt
 
 [![circleciB]][circleciL]
+[![gitflowB]][gitflowL]
 [![commitsB]][commitsL]
 
 ## Table Of Contents
@@ -48,10 +49,20 @@ http://arqss2.ing.puc.cl
   - https://superuser.com/questions/769541/is-it-possible-to-ping-an-addressport
   - https://www.digitalocean.com/community/questions/how-do-i-open-ports-on-an-ubuntu-server
 - angular docker: https://github.com/dciccale/angular-docker-boilerplate
+- distroless images: https://github.com/GoogleCloudPlatform/distroless
+- proxy:
+  - http://proxy.dockerflow.com/swarm-mode-stack/
+  - https://github.com/popomore/koa-proxy
+  - https://github.com/nodejitsu/node-http-proxy
+  - https://github.com/docker/dockercloud-haproxy
+  - https://github.com/jwilder/nginx-proxy
 
 <!-- Badges -->
 [circleciL]:https://circleci.com/gh/negebauer/IIC2173-Arqui
 [circleciB]:https://circleci.com/gh/negebauer/IIC2173-Arqui.svg?style=svg&circle-token=3634a4c1bb42fd24fb638af8b3d05a1f114789f6
+
+[gitflowL]:https://datasift.github.io/gitflow/IntroducingGitFlow.html
+[gitflowB]:https://img.shields.io/badge/git-flow-brightgreen.svg
 
 [commitsL]:https://conventionalcommits.org
 [commitsB]:https://img.shields.io/badge/commits-conventional-brightgreen.svg

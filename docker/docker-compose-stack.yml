@@ -1,0 +1,102 @@
+version: "3"
+services:
+
+  proxy:
+    image: vfarcic/docker-flow-proxy
+    deploy:
+      replicas: 2
+    environment:
+      - LISTENER_ADDRESS=swarm-listener
+      - MODE=swarm
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - proxy
+
+  swarm-listener:
+    image: vfarcic/docker-flow-swarm-listener
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    environment:
+      - DF_NOTIFY_CREATE_SERVICE_URL=http://proxy:8080/v1/docker-flow-proxy/reconfigure
+      - DF_NOTIFY_REMOVE_SERVICE_URL=http://proxy:8080/v1/docker-flow-proxy/remove
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - proxy
+
+  api:
+    image: negebauer/iic2173-arqui-api:dev
+    deploy:
+      replicas: 1
+      labels:
+        - com.df.notify=true
+        - com.df.distribute=true
+        - com.df.servicePath=/api
+        - com.df.port=3000
+      placement:
+        constraints: [node.role == manager]
+    environment:
+      - MONGO=mongodb://api-mongo/IIC2173-Arqui-test
+    ports:
+      - "3000:80"
+    networks:
+      - proxy
+      - default
+
+  api-mongo:
+    image: mongo
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+    ports:
+      - "27017:27017"
+    volumes:
+      - "~/data/mongodb/db:/data/db"
+    networks:
+      - default
+
+  web:
+    image: negebauer/iic2173-arqui-web:dev
+    deploy:
+      replicas: 1
+      labels:
+        - com.df.notify=true
+        - com.df.distribute=true
+        - com.df.servicePath=/
+        - com.df.port=4200
+      placement:
+        constraints: [node.role == manager]
+    environment:
+      - API=http://localhost:3000
+    ports:
+      - "4200:80"
+    networks:
+      - proxy
+  
+  visualizer:
+    image: dockersamples/visualizer:stable
+    deploy:
+      replicas: 1
+      labels:
+        - com.df.notify=true
+        - com.df.distribute=true
+        - com.df.servicePath=/visualizer
+        - com.df.port=8080
+      placement:
+        constraints: [node.role == manager]
+    ports:
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
+  # default:
+  #   external: false

@@ -1,4 +1,4 @@
-FROM mhart/alpine-node:latest
+FROM mhart/alpine-node:latest as builder
 
 WORKDIR /web
 
@@ -7,7 +7,20 @@ RUN yarn
 
 COPY . .
 
+# Check dockerEnv if declaring more env
+# variables that will be defined on runtime
+ENV API DOCKER_ENV_API
+
+RUN yarn build
+
+FROM mhart/alpine-node:latest
+
+COPY --from=builder /web/dist dist
+COPY --from=builder /web/serveInjected.sh .
+
+RUN npm i -g serve
+
 ENV PORT 80
 EXPOSE 80
 
-CMD yarn build && node server.js
+CMD ["sh", "serveInjected.sh"]
