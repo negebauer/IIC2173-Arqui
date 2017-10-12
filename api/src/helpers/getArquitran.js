@@ -9,7 +9,6 @@ const getArquitran = async endPoint => {
   let attemptsLeft = MAX_REQUEST_ATTEMPTS
   while (attemptsLeft) {
     try {
-      // throw Error("Cache debugging.")
       const response = await request.get(ARQUITRAN_URI + endPoint, {
         timeout: MAX_REQUEST_TIMEOUT,
       })

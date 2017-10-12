@@ -3,25 +3,9 @@ const _ = require("lodash")
 const uuid = require("uuid/v4")
 
 const User = require("../models/user")
+const { validationError, loginError } = require("../helpers/errors")
 
 const router = new Router()
-
-function generateMessage(err) {
-  const msgs = []
-  Object.keys(err.errors).forEach(key => {
-    msgs.push(err.errors[key].message)
-  })
-  const error = new Error()
-  error.message = msgs.reverse().join("\n")
-  return error
-}
-
-function loginError(ctx) {
-  ctx.status = 403
-  const error = new Error()
-  error.message = "Invalid credentials."
-  return (ctx.body = error)
-}
 
 router.post("signUp", "signup", async ctx => {
   const attrs = _.pick(ctx.request.body, [
@@ -37,10 +21,11 @@ router.post("signUp", "signup", async ctx => {
     await user.save()
   } catch (err) {
     ctx.status = 406
-    return (ctx.body = generateMessage(err))
+    ctx.body = validationError(err)
+    return
   }
   ctx.status = 201
-  return (ctx.body = { token: user.token })
+  ctx.body = { token: user.token }
 })
 
 router.post("signIn", "login", async ctx => {
@@ -53,11 +38,12 @@ router.post("signIn", "login", async ctx => {
     return loginError(ctx)
   }
   if (user.token) {
-    return (ctx.body = { token: user.token })
+    ctx.body = { token: user.token }
+    return
   }
   user.token = uuid()
   await user.save()
-  return (ctx.body = { token: user.token })
+  ctx.body = { token: user.token }
 })
 
 module.exports = router

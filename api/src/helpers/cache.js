@@ -23,29 +23,6 @@ const setCache = async categories => {
   }
 }
 
-const getCategories = async (id = null) => {
-  let categories
-  if (!id) {
-    categories = await Category.find({}, { _id: false, products: false })
-  } else {
-    categories = await Category.find({ id }, { _id: false, products: false })
-  }
-  return categories
-}
-
-const getNestedCategories = async (id = null) => {
-  let categories
-  if (!id) {
-    categories = await Category.find({}, { _id: false, "products._id": false })
-  } else {
-    categories = await Category.find(
-      { id },
-      { _id: false, "products._id": false }
-    )
-  }
-  return categories
-}
-
 const getProducts = async () => {
   const categories = await Category.find({}, { "products._id": false })
   if (!categories) {
@@ -56,6 +33,58 @@ const getProducts = async () => {
     []
   )
   return products
+}
+
+const getCategories = async (id = null) => {
+  let categories
+  if (!id) {
+    categories = await Category.find(
+      {},
+      {
+        _id: false,
+        __v: false,
+        createdAt: false,
+        products: false,
+      }
+    )
+  } else {
+    categories = await Category.find(
+      { id },
+      {
+        _id: false,
+        __v: false,
+        createdAt: false,
+        products: false,
+      }
+    )
+  }
+  return categories
+}
+
+const getNestedCategories = async (id = null) => {
+  let categories
+  if (!id) {
+    categories = await Category.find(
+      {},
+      {
+        _id: false,
+        __v: false,
+        createdAt: false,
+        "products._id": false,
+      }
+    )
+  } else {
+    categories = await Category.find(
+      { id },
+      {
+        _id: false,
+        __v: false,
+        createdAt: false,
+        "products._id": false,
+      }
+    )
+  }
+  return categories
 }
 
 module.exports = { setCache, getProducts, getCategories, getNestedCategories }

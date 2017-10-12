@@ -11,11 +11,13 @@
   - [Products](#products)
     - [List products](#list-products)
     - [Show product](#show-product)
-  - [Categories](#Categories)
+  - [Categories](#categories)
     - [One category](#one-category)
     - [One category with nested products](#one-category-with-nested-products)
     - [All categories](#all-categories)
     - [All categories with nested products](#all-categories-with-nested-products)
+  - [Users](#users)
+    - [Id through email](#id-through-email)
 
 
 ## Development
@@ -151,6 +153,15 @@ yarn dev
     }
     ```
 
+- Error Response:
+
+  - Code: 503
+  - Content:
+
+    ```javascript
+    { "message": "Couldn't resolve request to Arquitran API." }
+    ```
+
 ***
 
 ### Categories
@@ -178,6 +189,15 @@ yarn dev
               "group": "Aminas"
           }
     }
+    ```
+
+- Error Response:
+
+  - Code: 503
+  - Content:
+
+    ```javascript
+    { "message": "Couldn't resolve request to Arquitran API." }
     ```
 
 ***
@@ -220,6 +240,15 @@ yarn dev
     }
     ```
 
+- Error Response:
+
+  - Code: 503
+  - Content:
+
+    ```javascript
+    { "message": "Couldn't resolve request to Arquitran API." }
+    ```
+
 ***
 
 #### One category with nested products
@@ -235,37 +264,40 @@ yarn dev
   - Example Content:
 
     ```javascript
-      {
+    {
         "source": "cache",
-        "category":
-        {
-            "id": 111,
-            "context": "BELLEZA",
-            "area": "PRESENTACIÓN",
-            "group": "Desodrante de hombre",
+        "category": {
+            "id": 11,
+            "updatedAt": "2017-10-12T00:25:28.373Z",
+            "context": "MEDICAMENTOS",
+            "area": "ANALGESICO",
+            "group": "AINES",
             "products": [
                 {
-                    "id": 1042,
-                    "category": 111,
-                    "name": "OldSpice"
+                    "name": "Ibuprofeno",
+                    "category": 11,
+                    "id": 30
                 },
                 {
-                    "id": 1045,
-                    "category": 111,
-                    "name": "AXE"
-                },
-                {
-                    "id": 1072,
-                    "category": 111,
-                    "name": "Desodrante Nieve"
+                    "name": "Naproxen",
+                    "category": 11,
+                    "id": 40
                 }
             ]
         }
     }
     ```
 
-***
+- Error Response:
 
+  - Code: 503
+  - Content:
+
+    ```javascript
+    { "message": "Couldn't resolve request to Arquitran API." }
+    ```
+
+***
 
 #### All categories with nested products
 
@@ -342,4 +374,44 @@ yarn dev
     }
     ```
 
+- Error Response:
+
+  - Code: 503
+  - Content:
+
+    ```javascript
+    { "message": "Couldn't resolve request to Arquitran API." }
+    ```
+
 ***
+
+### Users
+
+#### Id through email
+
+- Route: `GET` `/users/:email`
+
+- Headers:
+  - Content-Type: `application/json`
+
+- Example route: `GET /users/fnmendez@uc.cl`
+
+- Success Response:
+
+  - Status: 200
+  - Example Content:
+
+    ```javascript
+    {
+        "userId": "59deb0dfcb264bbed27a4e3d"
+    }
+    ```
+
+- Error Response:
+
+  - Code: 406
+  - Content:
+
+    ```javascript
+    { "userId": "" }
+    ```
