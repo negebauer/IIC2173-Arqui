@@ -9,8 +9,8 @@
     - [Sign up](#sign-up)
     - [Login](#login)
   - [Products](#products)
-    - [List products](#list-products)
-    - [Show product](#show-product)
+    - [One product](#one-product)
+    - [All products](#all-products)
   - [Categories](#categories)
     - [One category](#one-category)
     - [One category with nested products](#one-category-with-nested-products)
@@ -117,6 +117,41 @@ yarn dev
 ***
 
 ### Products
+
+#### One product
+
+- Route: `GET` `/products/:id`
+
+- Headers:
+  - Content-Type: `application/json`
+
+- Success Response:
+
+  - Status: 200
+  - Example Content:
+
+    ```javascript
+    {
+        "source": "cache",
+        "updatedAt": "2017-10-12T17:12:45.359Z",
+        "product": {
+            "id": 10,
+            "category": 10,
+            "name": "Paracetamol"
+        }
+    }
+    ```
+
+- Error Response:
+
+  - Code: 503
+  - Content:
+
+    ```javascript
+    { "message": "Couldn't resolve request to Arquitran API." }
+    ```
+
+***
 
 #### All Products
 
@@ -266,9 +301,9 @@ yarn dev
     ```javascript
     {
         "source": "cache",
+        "updatedAt": "2017-10-12T00:25:28.373Z",
         "category": {
             "id": 11,
-            "updatedAt": "2017-10-12T00:25:28.373Z",
             "context": "MEDICAMENTOS",
             "area": "ANALGESICO",
             "group": "AINES",
@@ -390,11 +425,10 @@ yarn dev
 #### Id through email
 
 - Route: `GET` `/users/:email`
+  - Example route: `GET /users/example@uc.cl`
 
 - Headers:
   - Content-Type: `application/json`
-
-- Example route: `GET /users/fnmendez@uc.cl`
 
 - Success Response:
 
@@ -409,9 +443,9 @@ yarn dev
 
 - Error Response:
 
-  - Code: 406
+  - Code: 404
   - Content:
 
     ```javascript
-    { "userId": "" }
+    { "message": "Couldn't find a user." }
     ```
