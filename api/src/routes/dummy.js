@@ -19,7 +19,7 @@ router.get('/dummies', async ctx => {
   ctx.body = { dummies }
 })
 
-router.post('/', async ctx => {
+router.post('/dummies', async ctx => {
   const test = new Dummy({ date: new Date() })
   await test.save()
   ctx.status = 201
