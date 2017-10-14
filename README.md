@@ -6,14 +6,15 @@
 
 ## Table Of Contents
 
-- [Structure](#structure)
+- [Project structure](#project-structure)
 - [Deploy](#deploy)
-- [Links](#links)
+- [References](#references)
 
-## Structure
+## Project structure
 
 |folder|content|
 |:----:|:-----:|
+|[.circleci](.circleci)|Continuous integration using [Circle CI](https://circleci.com/gh/negebauer/IIC2173-Arqui)|
 |[api](api)|Our own [koa](http://koajs.com) api. Comunicates with the central api|
 |[docker](docker)|Docker deploy configuration|
 |[email](email)|Email client|
@@ -22,13 +23,28 @@
 
 ## Deploy
 
-Current deploy stack consists of a single machine that executes a `docker-compose` version of the full app
+The app is deployed in a docker swarm on the arqss machines
 
-http://arqss2.ing.puc.cl
+All the following links _should_ work
+
+- http://arqss2.ing.puc.cl
+- http://arqss7.ing.puc.cl
+- http://arqss11.ing.puc.cl
+- http://arqss12.ing.puc.cl
+- http://arqss13.ing.puc.cl
+
+**Important routes**
+
+|route|content|
+|:-:|:-:|
+|http://arqss2.ing.puc.cl |The [web](web) app|
+|http://arqss2.ing.puc.cl/api/ |Our [api](api)|
+|http://arqss2.ing.puc.cl/v/ |A swarm visualizer|
+|http://arqss2.ing.puc.cl/admin?stats |HAProxy stats (user: u, pass: p)|
 
 ***
 
-#### Links
+#### References
 
 - commits
   - https://conventionalcommits.org
@@ -41,6 +57,9 @@ http://arqss2.ing.puc.cl
 - mongodb
   - https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu
   - https://docs.mongodb.com/manual/replication
+- mongo + docker swarm
+   - https://github.com/vasetech/mongo-rs-ctrl
+   - https://medium.com/lucjuggery/mongodb-replica-set-on-swarm-mode-45d66bc9245
 - circleci
   - https://circleci.com/docs/2.0/custom-images
   - https://circleci.com/docs/2.0/building-docker-images/
@@ -58,6 +77,7 @@ http://arqss2.ing.puc.cl
   - https://github.com/jwilder/nginx-proxy
 
 <!-- Badges -->
+
 [circleciL]:https://circleci.com/gh/negebauer/IIC2173-Arqui
 [circleciB]:https://circleci.com/gh/negebauer/IIC2173-Arqui.svg?style=svg&circle-token=3634a4c1bb42fd24fb638af8b3d05a1f114789f6
 

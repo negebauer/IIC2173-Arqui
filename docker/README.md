@@ -3,8 +3,9 @@
 ## Table Of Contents
 
 - [Docker files](#docker-files)
-- [Local deploy](#local-deploy)
-- [Stack deploy](#stack-deploy)
+- [Dev deploy](#dev-deploy)
+- [Swarm deploy](#swarm-deploy)
+  - [Update service](#update-service)
 - [Other commands](#other-commands)
   - [Services](#services)
 - [Scripts](#scripts)
@@ -16,32 +17,47 @@
 |[docker-compose.yml](docker-compose.yml)|Run the full app in a single machine. For dev (run in your machine) and tests|
 |[docker-compose-stack.yml](docker-compose-stack.yml)|Run the app in arqss swarm|
 
-## Local deploy
+## Dev deploy
 
-Use `docker-compose` to deploy the full app in a single machine
+Use `docker-compose` to deploy the full app in a single machine for testing
 
 ```bash
-docker-compose up -d -f docker-compose.local.test.yml # test
-docker-compose up -d -f docker-compose.local.prod.yml # prod
+docker-compose up -d docker-compose.yml
 ```
 
-## Stack deploy
+## Swarm deploy
 
-To deploy the app stack on a single docker node using swarm
+Use `docker stack deploy` to deploy the app in a [docker swarm](https://docs.docker.com/engine/swarm/) manager node
 
 ```bash
+# Initialize swarm in a node
 docker swarm init
+# Use provided command to join
+# other nodes into swarm
 
-docker stack deploy -c docker-compose.test.yml arqui # test
-docker stack deploy -c docker-compose.prod.yml arqui # prod
+# Create network for the stack
+docker network create --driver overlay proxy
+# Deploy the stack
+docker stack deploy -c docker-compose-stack.yml arqui
 ```
 
 To unmount the stack and the swarm
 
 ```bash
 docker stack rm arqui
+docker network rm proxy
 docker swarm leave --force
 ```
+
+#### Update service
+
+If a new version of a service image is available we can update it
+
+```bash
+docker service update --image <image> <service>
+```
+
+This will update one service task at a time, reducing downtime
 
 ## Other commands
 
@@ -51,16 +67,11 @@ docker swarm leave --force
 docker container ls
 ```
 
-#### Containers
-
-```bash
-docker container ls
-```
-
 ## Scripts
 
 |script|use|
-|:---:||:-:|
-|[zDockerMachine.sh](zDockerMachine.sh)|(**DON'T RUN**) Configure docker-machine with all arqss machines|
-|[zInstallDocker.sh](zInstallDocker.sh)|Install docker, docker-compose and docker-machine on all arqss machines|
-|[zRemoveNginx.sh](zRemoveNginx.sh)|Remove nginx from all arqss machines|
+|:--:|:--:|
+|[zcreateDbFolder.sh](zcreateDbFolder.sh)|(**DON'T RUN**) Configure docker-machine with all arqss machines|
+|[zdockerMachine.sh](zdockerMachine.sh)|(**DON'T RUN**) Configure docker-machine with all arqss machines|
+|[zinstallDocker.sh](zinstallDocker.sh)|Install docker, docker-compose and docker-machine on all arqss machines|
+|[zremoveNginx.sh](zremoveNginx.sh)|Remove nginx from all arqss machines|

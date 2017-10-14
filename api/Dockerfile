@@ -1,9 +1,9 @@
-FROM mhart/alpine-node:latest
+FROM node:8
 
 WORKDIR /api
 
 COPY package.json .
-RUN yarn
+RUN yarn --production=true --frozen-lockfile --non-interactive
 
 COPY . .
 

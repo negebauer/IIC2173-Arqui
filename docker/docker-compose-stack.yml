@@ -1,95 +1,102 @@
 version: "3"
 services:
 
-  proxy:
-    image: vfarcic/docker-flow-proxy
-    deploy:
-      replicas: 2
-    environment:
-      - LISTENER_ADDRESS=swarm-listener
-      - MODE=swarm
-    ports:
-      - 80:80
-      - 443:443
-    networks:
-      - proxy
-
   swarm-listener:
     image: vfarcic/docker-flow-swarm-listener
-    deploy:
-      placement:
-        constraints: [node.role == manager]
     environment:
       - DF_NOTIFY_CREATE_SERVICE_URL=http://proxy:8080/v1/docker-flow-proxy/reconfigure
       - DF_NOTIFY_REMOVE_SERVICE_URL=http://proxy:8080/v1/docker-flow-proxy/remove
+    deploy:
+      replicas: 2
+      placement:
+        constraints: [node.role == manager]
+    depends_on:
+      - proxy
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - proxy
+
+  proxy:
+    image: vfarcic/docker-flow-proxy
+    environment:
+      - LISTENER_ADDRESS=swarm-listener
+      - STATS_USER=u
+      - STATS_PASS=p
+      - MODE=swarm
+    deploy:
+      replicas: 5
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    networks:
+      - proxy
+
+  mongo:
+    image: mongo
+    deploy:
+      replicas: 1
+      labels:
+        - com.df.notify=true
+        - com.df.distribute=true
+        - com.df.port=27017
+      placement:
+        constraints: [node.role == manager]
+    volumes:
+      - "/home/administrator/data/mongodb/db:/data/db"
     networks:
       - proxy
 
   api:
     image: negebauer/iic2173-arqui-api:dev
+    environment:
+      - MONGO=mongodb://mongo/IIC2173-Arqui
     deploy:
-      replicas: 1
+      replicas: 9
       labels:
         - com.df.notify=true
         - com.df.distribute=true
         - com.df.servicePath=/api
-        - com.df.port=3000
+        - com.df.port=80
+        - com.df.reqPathSearch=/api
+        - com.df.reqPathReplace=
       placement:
-        constraints: [node.role == manager]
-    environment:
-      - MONGO=mongodb://api-mongo/IIC2173-Arqui-test
-    ports:
-      - "3000:80"
+        constraints: [node.role != manager]
+    depends_on:
+      - mongo
     networks:
       - proxy
-      - default
-
-  api-mongo:
-    image: mongo
-    deploy:
-      replicas: 1
-      placement:
-        constraints: [node.role == manager]
-    ports:
-      - "27017:27017"
-    volumes:
-      - "~/data/mongodb/db:/data/db"
-    networks:
-      - default
 
   web:
     image: negebauer/iic2173-arqui-web:dev
+    environment:
+      - API=http://arqss2.ing.puc.cl/api
     deploy:
-      replicas: 1
+      replicas: 3
       labels:
         - com.df.notify=true
         - com.df.distribute=true
         - com.df.servicePath=/
-        - com.df.port=4200
+        - com.df.port=80
       placement:
-        constraints: [node.role == manager]
-    environment:
-      - API=http://localhost:3000
-    ports:
-      - "4200:80"
+        constraints: [node.role != manager]
     networks:
       - proxy
-  
+
   visualizer:
     image: dockersamples/visualizer:stable
     deploy:
-      replicas: 1
+      replicas: 2
       labels:
         - com.df.notify=true
         - com.df.distribute=true
-        - com.df.servicePath=/visualizer
+        - com.df.servicePath=/v
         - com.df.port=8080
+        - com.df.reqPathSearch=/v
+        - com.df.reqPathReplace=
       placement:
         constraints: [node.role == manager]
-    ports:
-      - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     networks:
@@ -98,5 +105,4 @@ services:
 networks:
   proxy:
     external: true
-  # default:
-  #   external: false
+    # driver: overlay
