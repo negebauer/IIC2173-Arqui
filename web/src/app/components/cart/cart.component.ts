@@ -15,7 +15,7 @@ export class CartComponent implements OnInit {
   	session.getCart()
       .subscribe((cart) => {
   		  this.cart = cart;
-  	})
+  	});
   }
 
   ngOnInit() {
@@ -31,7 +31,7 @@ export class CartComponent implements OnInit {
 
   makePurchase() {
     //this.api.purchase()
-    alert("Nuestro proveedor aun no permite realizar compras")
+    alert('Nuestro proveedor aun no permite realizar compras');
   }
- 
+
 }

@@ -66,7 +66,16 @@ jobs:
     steps:
       - checkout:
           path: ~/arqui
-      - run: pwd; ls
+      - restore_cache:
+          keys:
+          - web-v1-{{ checksum "package.json" }}
+          - web-v1-
+      - run: yarn
+      - save_cache:
+          paths:
+            - node_modules
+          key: web-v1-{{ checksum "package.json" }}
+      # - run: yarn lint
 
   docker-api:
     docker:

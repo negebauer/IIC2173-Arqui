@@ -25,12 +25,12 @@ import { Validations } from './validations';
 })
 export class LoginComponent {
 
-  template = "login";
+  template = 'login';
   name: string;
   last_name: string;
   address: string;
   mail: string;
-  password: string = "";
+  password = '';
   canLogin = false;
   error = '';
 
@@ -43,32 +43,32 @@ export class LoginComponent {
 
   public validateUserInfo() {
     if (!this.va.isName(this.name)) {
-      this.error = "ingresa un nombre válido";
+      this.error = 'ingresa un nombre válido';
     } else if (!this.va.isName(this.last_name)) {
-      this.error = "ingresa un apellido válido";
+      this.error = 'ingresa un apellido válido';
     } else if (!this.va.isAddress(this.address)){
-      this.error = "ingresa una dirección válida";
+      this.error = 'ingresa una dirección válida';
     } else {
-      this.error = "";
+      this.error = '';
       return true;
     }
     return false;
   }
 
   public validateMailAndPassword() {
-    if(!this.va.isMail(this.mail)) {
-      this.error = "ingresa un mail válido";
-    } else if(!this.va.validPassword(this.password)) {
-      this.error = "ingresa una contraseña de 4-12 caracteres";
+    if (!this.va.isMail(this.mail)) {
+      this.error = 'ingresa un mail válido';
+    } else if (!this.va.validPassword(this.password)) {
+      this.error = 'ingresa una contraseña de 4-12 caracteres';
     } else {
-      this.error = "";
+      this.error = '';
       return true;
     }
     return false;
   }
 
   onChange() {
-    if (this.template=="login"){
+    if (this.template == 'login'){
       this.validateMailAndPassword() ?
           this.canLogin = true : this.canLogin = false;
     } else {
@@ -88,26 +88,26 @@ export class LoginComponent {
           console.log(response);
           this.close.emit(false);
       }, (err) => {
-          this.error = "mail o contraseña erroneas"
-      })
+          this.error = 'mail o contraseña erroneas';
+      });
 
   }
 
   public submitSignUp() {
-    console.log("we're submitting signUp")
+    console.log('we\'re submitting signUp');
     this.api.signUp(this.name, this.last_name, this.mail, this.address, this.password)
       .subscribe((response) => {
         this.close.emit(false);
       }, (err) => {
-        this.error = "hubo un error creando su cuenta, intente más tarde"
-      })
+        this.error = 'hubo un error creando su cuenta, intente más tarde';
+      });
   }
 
   public switchTemplate() {
-    if (this.template == "login") {
-      this.template = "signup";
+    if (this.template == 'login') {
+      this.template = 'signup';
     } else {
-      this.template = "login";
+      this.template = 'login';
     }
     this.onChange();
   }

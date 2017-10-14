@@ -21,22 +21,22 @@ export class AppComponent {
       .subscribe((resp) => {
         this.isLogged = resp;
         if (resp) {
-          this.user = JSON.parse(localStorage.getItem("user"));
+          this.user = JSON.parse(localStorage.getItem('user'));
         } else {
           this.user = null;
         }
-      })
+      });
 
     //subscribe to changes of cart status
     session.isCartVisible()
       .subscribe((visibleCart) => {
         this.visibleCart = visibleCart;
-    })
+    });
 
     session.getCart()
       .subscribe((cart) => {
         this.cart = cart;
-      })
+      });
     //check if session stored in LocalStorage
     session.checkStoredSession();
 

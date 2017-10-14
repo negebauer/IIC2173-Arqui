@@ -27,14 +27,14 @@ export class SessionService {
     }
 
     public addToCart(element: object) {
-        var index = this.cart.indexOf(element, 0);
+        const index = this.cart.indexOf(element, 0);
         if (index == -1) {
             this.cart.push(element);
         }
     }
 
     public removeFromCart(element: object) {
-        var index = this.cart.indexOf(element, 0);
+        const index = this.cart.indexOf(element, 0);
         if (index > -1) {
            this.cart.splice(index, 1);
         }
@@ -43,10 +43,10 @@ export class SessionService {
     //User Session (login status)
     public checkStoredSession() {
         // set token if saved in local storage
-        let user = JSON.parse(localStorage.getItem("user"));
+        const user = JSON.parse(localStorage.getItem('user'));
         if (user && user.token) {
             this.logger.next(true);
-        }     
+        }
     }
 
     public isLoggedIn(): Observable<boolean> {

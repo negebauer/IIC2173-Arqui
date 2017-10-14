@@ -22,7 +22,7 @@ export class HttpServiceProvider {
     };
     return this.http
       .post(`${this.apiUrl}/login`, body, options)
-      .map((res) => res.json())
+      .map((res) => res.json());
   }
 
   public signUp(firstName, lastName, mail, address, password) {
