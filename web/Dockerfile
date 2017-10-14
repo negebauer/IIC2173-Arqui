@@ -3,7 +3,7 @@ FROM mhart/alpine-node:latest as builder
 WORKDIR /web
 
 COPY package.json .
-RUN yarn --production=true --frozen-lockfile --non-interactive
+RUN yarn
 
 COPY . .
 
