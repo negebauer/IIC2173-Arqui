@@ -8,8 +8,13 @@
 
 <login *ngIf="showModalLogin" (close)="closeLogin()"></login>
 
-{{isLogged}}
-{{user}}
-
 <products-page></products-page>
+
+<div class="cartToggle" (click)="showCart()">
+	<div class="cart-amount">
+		{{cart.length}}
+	</div>
+</div>
+
+<cart *ngIf="visibleCart"></cart>
 

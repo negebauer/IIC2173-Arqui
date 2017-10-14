@@ -4,15 +4,44 @@ import { Observable, Subject } from 'rxjs';
 @Injectable()
 export class SessionService {
     public token: string;
-
     private logger = new Subject<boolean>();
+    private cart = [];
+    private visibleCart = new Subject<boolean>();
 
-    constructor() {
-        console.log("inicializando auth")
+    constructor() {}
+
+    //Cart status (visible or hide)
+    public isCartVisible() {
+        return this.visibleCart.asObservable();
+    }
+    public hideCart() {
+        this.visibleCart.next(false);
+    }
+    public showCart() {
+        this.visibleCart.next(true);
     }
 
+    //Cart itself (list of objects)
+    public getCart() {
+        return Observable.of(this.cart);
+    }
+
+    public addToCart(element: object) {
+        var index = this.cart.indexOf(element, 0);
+        if (index == -1) {
+            this.cart.push(element);
+        }
+    }
+
+    public removeFromCart(element: object) {
+        var index = this.cart.indexOf(element, 0);
+        if (index > -1) {
+           this.cart.splice(index, 1);
+        }
+    }
+
+    //User Session (login status)
     public checkStoredSession() {
-        console.log("checking session")
         // set token if saved in local storage
         let user = JSON.parse(localStorage.getItem("user"));
         if (user && user.token) {

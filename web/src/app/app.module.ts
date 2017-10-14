@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { ProductsPageComponent } from './components/products-page/products-page.component';
-import { ProductCardComponent } from './components/product-card/product-card.component';
 import { CartComponent } from './components/cart/cart.component';
 import { HttpServiceProvider } from './services/HttpServiceProvicer';
 import { SessionService } from './services/session.service';
@@ -15,7 +14,6 @@ import { LoginComponent } from './components/login/login.component';
   declarations: [
     AppComponent,
     ProductsPageComponent,
-    ProductCardComponent,
     CartComponent,
     LoginComponent
   ],

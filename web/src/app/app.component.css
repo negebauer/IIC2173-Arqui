@@ -2,6 +2,11 @@
 
 body {
   margin: 0px;
+  font-family: helvetica;
+}
+
+div {
+    font-family: helvetica;
 }
 
 .topnav {
@@ -34,4 +39,30 @@ body {
 .topnav a.active {
     background-color: #4CAF50;
     color: white;
+}
+
+.cartToggle {
+    height: 5em;
+    width: 5em;
+    background-color: #2ebd62;
+    border-radius: 50%;
+    position: absolute;
+    right: 3vw;
+    bottom: 3vw;
+    background-image: url("/assets/cart.png");
+    background-size: 3.5em 3.5em;
+    background-repeat: no-repeat;
+    background-position: 0.6em 01em;
+}
+
+.cartToggle .cart-amount {
+    position: absolute;
+    right: 0;
+    background-color: white;
+    border: solid 1px #2ebd62;
+    border-radius: 50%;
+    width: 1em;
+    text-align: center;
+    padding: 0.1em;
+    font-size: 12pt;
 }

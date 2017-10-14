@@ -6,15 +6,17 @@ import { SessionService } from './services/session.service';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers: []
 })
 export class AppComponent {
   title = 'app';
   showModalLogin = false;
-  isLogged=false;
+  isLogged = false;
   user = null;
+  visibleCart = false;
+  cart;
 
   constructor(private session: SessionService) {
+    //subscribe to session changes (log-in, logout)
     session.isLoggedIn()
       .subscribe((resp) => {
         this.isLogged = resp;
@@ -24,6 +26,18 @@ export class AppComponent {
           this.user = null;
         }
       })
+
+    //subscribe to changes of cart status
+    session.isCartVisible()
+      .subscribe((visibleCart) => {
+        this.visibleCart = visibleCart;
+    })
+
+    session.getCart()
+      .subscribe((cart) => {
+        this.cart = cart;
+      })
+    //check if session stored in LocalStorage
     session.checkStoredSession();
 
   }
@@ -36,5 +50,9 @@ export class AppComponent {
   }
   logout() {
     this.session.logout();
+  }
+
+  showCart() {
+    this.session.showCart();
   }
 }

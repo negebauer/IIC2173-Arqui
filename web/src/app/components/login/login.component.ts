@@ -15,10 +15,10 @@ import { Validations } from './validations';
     trigger('login', [
       transition('void => *', [
         style({ transform: 'scale3d(.3, .3, .3)' }),
-        animate(2000)
+        animate(200)
       ]),
       transition('* => void', [
-        animate(2000, style({ transform: 'scale3d(.0, .0, .0)' }))
+        animate(200, style({ transform: 'scale3d(.0, .0, .0)' }))
       ])
     ])
   ]
