@@ -1,29 +1,12 @@
-<!-- <div class="products-container">
-	<div *ngFor="let category of categories">
-		<div *ngIf=" category.products.length > 0 " class="category-container">
-			<div class="category-banner">{{category.context}} - {{category.area}} - {{category.group}}</div>
-			<div class="products">
-				<div *ngFor="let product of category['products']" class="product">
-					{{product.name}}
-				</div>
-			</div>
-		</div>
-	</div>
-</div> -->
-
 <div *ngIf="isCache" class="cache-disclaimer">
-	<div class="img-container">
-		
-	</div>
-	<p>
-		Advertencia: Los datos mostrados a continuación fueron obtenidos el {{ date }}, podrían estar desactualizados
-	</p>
+	<div class="img-container"></div>
+	<p>Advertencia: Los datos mostrados a continuación fueron obtenidos el {{ date }}, podrían estar desactualizados</p>
 </div>
 
 
 <div class="products-container">
 	<div class="products">
-		<div *ngFor="let product of products['products']" class="product" (click)="addToCart(product)">
+		<div *ngFor="let product of products" class="product" (click)="addToCart(product)">
 			{{product.name}}
 		</div>
 	</div>
