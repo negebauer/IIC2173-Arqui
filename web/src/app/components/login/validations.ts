@@ -14,6 +14,6 @@ export class Validations {
     return re.test(address);
   }
   public validPassword(password: string) {
-  	return password.length > 3 && password.length < 13;
+  	return password.length >= 3 && password.length < 12;
   }
 }
