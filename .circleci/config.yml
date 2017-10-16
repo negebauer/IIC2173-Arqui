@@ -53,11 +53,30 @@ jobs:
   queue:
     docker:
       - image: circleci/node:8.5
+      - image: redis:3.2
     working_directory: ~/arqui/queue
     steps:
       - checkout:
           path: ~/arqui
-      - run: pwd; ls
+      - restore_cache:
+          keys:
+          - queue-v1-{{ checksum "package.json" }}
+          - queue-v1-
+      - run: yarn
+      - save_cache:
+          paths:
+            - node_modules
+          key: queue-v1-{{ checksum "package.json" }}
+      - run: yarn lint
+      - run: yarn test:ci
+      - store_test_results:
+          path: ./coverage
+      - store_artifacts:
+          path: ./coverage/junit.xml
+          destination: junit/junit.xml
+      - store_artifacts:
+          path: ./coverage/lcov-report
+          destination: coverage
 
   web:
     docker:
@@ -84,6 +103,29 @@ jobs:
           REPO: negebauer/iic2173-arqui-api
           TAG_CI: circleci
     working_directory: ~/arqui/api
+    steps:
+      - checkout:
+          path: ~/arqui
+      - setup_remote_docker:
+          version: 17.05.0-ce
+      - run: docker build -t $REPO:$TAG_CI-$CIRCLE_BUILD_NUM .
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: docker push $REPO:$TAG_CI-$CIRCLE_BUILD_NUM
+      - run:
+          name: Deploy latest or dev if master or dev
+          command: |
+            TAG=dev
+            if [[ $CIRCLE_BRANCH == 'master' ]]; then TAG=latest; fi
+            docker tag $REPO:$TAG_CI-$CIRCLE_BUILD_NUM $REPO:$TAG
+            docker push $REPO:$TAG
+
+  docker-queue:
+    docker:
+      - image: docker
+        environment:
+          REPO: negebauer/iic2173-arqui-queue
+          TAG_CI: circleci
+    working_directory: ~/arqui/queue
     steps:
       - checkout:
           path: ~/arqui
@@ -149,6 +191,14 @@ workflows:
         - docker-api:
             requires:
               - api
+            filters:
+              branches:
+                only:
+                  - master
+                  - dev
+        - docker-queue:
+            requires:
+                - queue
             filters:
               branches:
                 only:
