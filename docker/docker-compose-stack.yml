@@ -7,7 +7,7 @@ services:
       - DF_NOTIFY_CREATE_SERVICE_URL=http://proxy:8080/v1/docker-flow-proxy/reconfigure
       - DF_NOTIFY_REMOVE_SERVICE_URL=http://proxy:8080/v1/docker-flow-proxy/remove
     deploy:
-      replicas: 2
+      replicas: 1
       placement:
         constraints: [node.role == manager]
     depends_on:
@@ -25,7 +25,7 @@ services:
       - STATS_PASS=p
       - MODE=swarm
     deploy:
-      replicas: 5
+      mode: global
     ports:
       - "80:80"
       - "443:443"
@@ -35,16 +35,44 @@ services:
 
   mongo:
     image: mongo
+    entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles"]
     deploy:
-      replicas: 1
+      mode: global
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 1m30s
       labels:
         - com.df.notify=true
         - com.df.distribute=true
         - com.df.port=27017
-      placement:
-        constraints: [node.role == manager]
+    ports:
+      - "27017:27017"
     volumes:
       - "/home/administrator/data/mongodb/db:/data/db"
+    networks:
+      - proxy
+
+  mongo-ctrl:
+    image: martel/mongo-replica-ctrl:latest
+    entrypoint: python /src/replica_ctrl.py
+    environment:
+      - OVERLAY_NETWORK_NAME=proxy
+      - MONGO_SERVICE_NAME=arqui_mongo
+      - REPLICASET_NAME=rs
+      - MONGO_PORT=27017
+      # - DEBUG=1 #uncomment to debug the script
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - mongo
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
     networks:
       - proxy
 
@@ -66,10 +94,10 @@ services:
   api:
     image: negebauer/iic2173-arqui-api:dev
     environment:
-      - MONGO=mongodb://mongo/IIC2173-Arqui
+      - MONGO=mongodb://mongo/IIC2173-Arqui?replicaSet=rs
       - API_QUEUE_SECRET=secretapiqueue
     deploy:
-      replicas: 5
+      replicas: 14
       labels:
         - com.df.notify=true
         - com.df.distribute=true
@@ -77,8 +105,10 @@ services:
         - com.df.port=80
         - com.df.reqPathSearch=/api
         - com.df.reqPathReplace=
-      placement:
-        constraints: [node.role != manager]
+      restart_policy:
+        condition: on-failure
+      # placement:
+        # constraints: [node.role != manager]
     depends_on:
       - mongo
     networks:
@@ -89,14 +119,14 @@ services:
     environment:
       - API=http://arqss2.ing.puc.cl/api
     deploy:
-      replicas: 3
+      replicas: 5
       labels:
         - com.df.notify=true
         - com.df.distribute=true
         - com.df.servicePath=/
         - com.df.port=80
-      placement:
-        constraints: [node.role != manager]
+      # placement:
+        # constraints: [node.role != manager]
     networks:
       - proxy
 

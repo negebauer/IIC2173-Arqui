@@ -19,6 +19,7 @@
 |[docker](docker)|Docker deploy configuration|
 |[email](email)|Email client|
 |[queue](queue)|Order queue client|
+|[queue-visualizer](queue-visualizer)|Order queue visualizer|
 |[web](web)|[Angular 2](https://angular.io) web client|
 
 ## Deploy

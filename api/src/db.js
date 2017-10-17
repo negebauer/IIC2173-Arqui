@@ -15,7 +15,10 @@ const start = uri => {
   const mongoUri = uri || process.env.MONGO || `${URI}`
   mongoose.connect(mongoUri, { useMongoClient: true })
   const db = mongoose.connection
-  db.on('error', console.error.bind(console, 'MongoDB connection error:')) // eslint-disable-line no-console
+  db.on('error', err => {
+    console.error('MongoDB connection error:', err) // eslint-disable-line no-console
+    process.exit(1)
+  })
   return db
 }
 
