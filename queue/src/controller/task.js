@@ -8,12 +8,12 @@ const API_QUEUE_SECRET = process.env.API_QUEUE_SECRET || 'apiqueuesecret'
 exports.purchase = async ctx => {
   if (ctx.request.header['secret'] === API_QUEUE_SECRET) {
     // const { userId, productsIds, orderId } = ctx.request.body
-    const { userId, productsIds } = ctx.request.body
+    const { userId, productId, sentAt } = ctx.request.body
     let error = null
     const task = taskQueue.create(
       'purchase',
       {},
-      { userId, productsIds },
+      { userId, productId, sentAt },
       err => {
         if (err) {
           console.error(err)
