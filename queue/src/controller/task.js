@@ -7,61 +7,70 @@ const API_QUEUE_SECRET = process.env.API_QUEUE_SECRET || 'apiqueuesecret'
 
 exports.purchase = async ctx => {
   if (ctx.request.header['secret'] === API_QUEUE_SECRET) {
-    // const { userId, productsIds, orderId } = ctx.request.body
-    const { userId, productId, sentAt } = ctx.request.body
-    let error = null
-    const task = taskQueue.create(
-      'purchase',
-      {},
-      { userId, productId, sentAt },
-      err => {
-        if (err) {
-          console.error(err)
-          error = err
+    // const { userId, productsIds, orderId } = ctx.request.
+    const { orders } = ctx.request.body
+
+    orders.forEach(function(order) {
+      let error = null
+      console.log('esta es la orden\n')
+      console.log(order)
+      const task = taskQueue.create(
+        'purchase',
+        {},
+        {
+          userId: order.userId,
+          productId: order.productId,
+          sentAt: order.sentAt,
+        },
+        err => {
+          if (err) {
+            console.error(err)
+            error = err
+          }
         }
+      )
+
+      task.on('complete', result => {
+        //Acá se debería mandar el request para avisar que se completo la compra.
+        console.log('  job #' + task.id + ' completed')
+        console.log(result)
+        // TODO: THIS KILLS APP WHEN TESTING POSTING A TASK
+        // const base = process.env.API_URL
+        // const url = base + 'orders/resolved'
+        // result.products_array.forEach(p => {
+        //   console.log(p)
+        //   request.post(
+        //     {
+        //       url,
+        //       form: { user_id, product: p },
+        //       headers: {
+        //         'Content-Type': 'application/json',
+        //         Secret: process.env.API_QUEUE_SECRET,
+        //       },
+        //     },
+        //     (err, response, body) => {
+        //       console.log('err', err)
+        //       console.log('response', response)
+        //       console.log(response.statusCode)
+        //       console.log(body)
+        //     }
+        //   )
+        // })
+      })
+
+      task.on('failed attempt', function(errorMessage, doneAttempts) {
+        console.log(errorMessage)
+        console.log(`Request failed: ${doneAttempts}`)
+      })
+
+      if (task) {
+        ctx.body = { created: true, job_id: task.id }
+        ctx.status = 200
+      } else {
+        ctx.body = { created: false, error }
+        ctx.status = 500
       }
-    )
-
-    task.on('complete', result => {
-      //Acá se debería mandar el request para avisar que se completo la compra.
-      console.log('  job #' + task.id + ' completed')
-      console.log(result)
-      // TODO: THIS KILLS APP WHEN TESTING POSTING A TASK
-      // const base = process.env.API_URL
-      // const url = base + 'orders/resolved'
-      // result.products_array.forEach(p => {
-      //   console.log(p)
-      //   request.post(
-      //     {
-      //       url,
-      //       form: { user_id, product: p },
-      //       headers: {
-      //         'Content-Type': 'application/json',
-      //         Secret: process.env.API_QUEUE_SECRET,
-      //       },
-      //     },
-      //     (err, response, body) => {
-      //       console.log('err', err)
-      //       console.log('response', response)
-      //       console.log(response.statusCode)
-      //       console.log(body)
-      //     }
-      //   )
-      // })
-    })
-
-    task.on('failed attempt', function(errorMessage, doneAttempts) {
-      console.log(errorMessage)
-      console.log(`Request failed: ${doneAttempts}`)
-    })
-
-    if (task) {
-      ctx.body = { created: true, job_id: task.id }
-      ctx.status = 200
-    } else {
-      ctx.body = { created: false, error }
-      ctx.status = 500
-    }
+    }, this)
   } else {
     ctx.body = { created: false, error: 'unauthorized' }
     ctx.status = 401
