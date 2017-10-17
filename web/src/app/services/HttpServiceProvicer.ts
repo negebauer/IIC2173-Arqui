@@ -42,9 +42,15 @@ export class HttpServiceProvider {
   }
 
   // Handle Products
-  public getProducts() {
+  public getProducts(token) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    if (token) {
+      headers.append('Authorization', 'token ' + token);
+    }
+    const options = new RequestOptions({ headers, method: 'get' });
     return this.http
-      .get(`${this.apiUrl}/products`)
+      .get(`${this.apiUrl}/products`, options)
       .map((response) => response.json());
   }
 
