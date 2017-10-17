@@ -1,33 +1,64 @@
 version: "3"
 services:
+
   api:
     image: negebauer/iic2173-arqui-api:dev
+    # build: ../api
     environment:
-      - MONGO=mongodb://api-mongo/IIC2173-Arqui-test
+      - MONGO=mongodb://mongo/IIC2173-Arqui-test
     ports:
       - "3000:80"
     networks:
-      - arqui-network
-      - api-network
+      - proxy
 
-  api-mongo:
+  mongo:
     image: mongo
     ports:
       - "27017:27017"
     volumes:
       - "~/data/mongodb/db:/data/db"
     networks:
-      - api-network
+      - proxy
 
   web:
     image: negebauer/iic2173-arqui-web:dev
+    # build: ../web
     environment:
       - API=http://localhost:3000
     ports:
       - "8080:80"
     networks:
-      - arqui-network
+      - proxy
+
+  queue:
+    image: negebauer/iic2173-arqui-queue:dev
+    # build: ../queue
+    environment:
+      - API_URL=http://localhost:3000
+      - REDIS_HOST=redis
+    ports:
+      - "3002:80"
+    networks:
+      - proxy
+
+  queue-visualizer:
+    image: negebauer/iic2173-arqui-queue-visualizer:dev
+    # build: ../queue-visualizer
+    environment:
+      - REDIS_HOST=redis
+    ports:
+      - "3003:80"
+    networks:
+      - proxy
+
+  redis:
+    image: redis:4-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - "~/data/redis/db:/data"
+    networks:
+      - proxy
 
 networks:
-  arqui-network:
-  api-network:
+  proxy:

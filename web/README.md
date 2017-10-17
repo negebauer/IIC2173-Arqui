@@ -5,6 +5,7 @@
 - [Development](#development)
 - [Environment variables](#environment-variables)
 - [Todo](#Todo)
+- [Contributors](#contributors)
 
 ## Development
 
@@ -31,3 +32,11 @@ Now open http://localhost:4200 in your browser
 - Add purchase method to HttpServiceProvider (when endpoint is ready)
 - Complete purchase method on cart.component (right now it shows an alert [not implemented])
 - Make website responsive for mobile phones
+
+***
+
+## Contributors:
+
+- [@iqmarquez](https://github.com/iqmarquez)
+- [@negebauer](https://github.com/negebauer)
+- [@ctalvarez](https://github.com/ctalvarez)

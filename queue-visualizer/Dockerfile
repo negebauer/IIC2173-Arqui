@@ -1,6 +1,6 @@
 FROM node:8-alpine
 
-WORKDIR /queue
+WORKDIR /queue-visualizer
 
 COPY package.json .
 RUN yarn --production=true --frozen-lockfile --non-interactive

@@ -7,12 +7,8 @@ const logger = require('koa-logger')
 // const koaRes = require('koa-res')
 // const handleError = require('koa-handle-error')
 const task = require('./controller/task')
-const kue = require('kue')
 const json = require('koa-json')
 const app = new koa()
-
-kue.app.listen(process.env.KUE_PORT || '3003')
-kue.app.set('title', 'Kue')
 
 // error handling
 app.use(async (ctx, next) => {

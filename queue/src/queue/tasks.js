@@ -62,12 +62,12 @@ function createTask(type, options, data, done) {
 // });
 
 queue.process('purchase', 10, function(job, done) {
-  const { products_array } = job.data
-  // const { user_id, products_array } = job.data
+  const { productsIds } = job.data
+  // const { user_id, productsIds } = job.data
   //Acá se manda el request a la api de productos. Url debería provenir de variable de entorno
   //Endpoint aun no disponible
   // const url = 'http://arqss17.ing.puc.cl:3000/order';
-  // request.post({url,form:{user_id, products_array}},function(err,response,body){
+  // request.post({url,form:{user_id, productsIds}},function(err,response,body){
   //   if(err){
   //     console.error(err)
   //     done(err)
@@ -92,7 +92,7 @@ queue.process('purchase', 10, function(job, done) {
       if (response.statusCode < 200 || response.statusCode > 299) {
         done(new Error('invalid response'))
       } else {
-        done(null, { products_array, response, body })
+        done(null, { productsIds, response, body })
       }
     }
   })

@@ -48,12 +48,28 @@ services:
     networks:
       - proxy
 
+  redis:
+    image: redis:4-alpine
+    deploy:
+      replicas: 1
+      labels:
+        - com.df.notify=true
+        - com.df.distribute=true
+        - com.df.port=6379
+      placement:
+        constraints: [node.role == manager]
+    volumes:
+      - "/home/administrator/data/redis/db:/data"
+    networks:
+      - proxy
+
   api:
     image: negebauer/iic2173-arqui-api:dev
     environment:
       - MONGO=mongodb://mongo/IIC2173-Arqui
+      - API_QUEUE_SECRET=secretapiqueue
     deploy:
-      replicas: 9
+      replicas: 5
       labels:
         - com.df.notify=true
         - com.df.distribute=true
@@ -87,7 +103,7 @@ services:
   visualizer:
     image: dockersamples/visualizer:stable
     deploy:
-      replicas: 2
+      replicas: 1
       labels:
         - com.df.notify=true
         - com.df.distribute=true
@@ -99,6 +115,52 @@ services:
         constraints: [node.role == manager]
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - proxy
+
+  queue:
+    image: negebauer/iic2173-arqui-queue:dev
+    environment:
+      - API_URL=http://api
+      - API_QUEUE_SECRET=secretapiqueue
+      - REDIS_PORT=6379
+      - REDIS_HOST=redis
+      - REDIS_PASS=
+    deploy:
+      replicas: 1
+      labels:
+        - com.df.notify=true
+        - com.df.distribute=true
+        - com.df.servicePath=/queue
+        - com.df.port=80
+        - com.df.reqPathSearch=/queue
+        - com.df.reqPathReplace=
+      placement:
+        constraints: [node.role != manager]
+    depends_on:
+      - redis
+    networks:
+      - proxy
+
+  queue-visualizer:
+    image: negebauer/iic2173-arqui-queue-visualizer:dev
+    environment:
+      - REDIS_PORT=6379
+      - REDIS_HOST=redis
+      - REDIS_PASS=
+    deploy:
+      replicas: 1
+      labels:
+        - com.df.notify=true
+        - com.df.distribute=true
+        - com.df.servicePath=/qv
+        - com.df.port=80
+        - com.df.reqPathSearch=/qv
+        - com.df.reqPathReplace=
+      placement:
+        constraints: [node.role == manager]
+    depends_on:
+      - redis
     networks:
       - proxy
 

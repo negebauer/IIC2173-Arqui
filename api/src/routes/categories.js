@@ -45,7 +45,7 @@ router.get('nestedCategory', '/:id/products', async ctx => {
   }
   const categories = parseCategories(rawCategories, products)
   setCategoriesCache(categories)
-  const category = categories.find(cat => cat.id == ctx.params.id)
+  const category = categories.find(cat => cat.id === ctx.params.id)
   ctx.body = { source: 'api', category }
 })
 
@@ -78,7 +78,7 @@ router.get('category', '/:id', async ctx => {
     return
   }
   setCategoriesCache(categories)
-  const category = categories.find(cat => cat.id == ctx.params.id)
+  const category = categories.find(cat => cat.id === ctx.params.id)
   ctx.body = { source: 'api', category }
 })
 

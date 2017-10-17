@@ -53,7 +53,7 @@ jobs:
   queue:
     docker:
       - image: circleci/node:8.5
-      - image: redis:3.2
+      - image: redis:4-alpine
     working_directory: ~/arqui/queue
     steps:
       - checkout:
@@ -77,6 +77,24 @@ jobs:
       - store_artifacts:
           path: ./coverage/lcov-report
           destination: coverage
+
+  queue-visualizer:
+    docker:
+      - image: circleci/node:8.5
+    working_directory: ~/arqui/queue-visualizer
+    steps:
+      - checkout:
+          path: ~/arqui
+      - restore_cache:
+          keys:
+          - queue-visualizer-v1-{{ checksum "package.json" }}
+          - queue-visualizer-v1-
+      - run: yarn
+      - save_cache:
+          paths:
+            - node_modules
+          key: queue-visualizer-v1-{{ checksum "package.json" }}
+      - run: yarn lint
 
   web:
     docker:
@@ -142,6 +160,29 @@ jobs:
             docker tag $REPO:$TAG_CI-$CIRCLE_BUILD_NUM $REPO:$TAG
             docker push $REPO:$TAG
 
+  docker-queue-visualizer:
+    docker:
+      - image: docker
+        environment:
+          REPO: negebauer/iic2173-arqui-queue-visualizer
+          TAG_CI: circleci
+    working_directory: ~/arqui/queue-visualizer
+    steps:
+      - checkout:
+          path: ~/arqui
+      - setup_remote_docker:
+          version: 17.05.0-ce
+      - run: docker build -t $REPO:$TAG_CI-$CIRCLE_BUILD_NUM .
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: docker push $REPO:$TAG_CI-$CIRCLE_BUILD_NUM
+      - run:
+          name: Deploy latest or dev if master or dev
+          command: |
+            TAG=dev
+            if [[ $CIRCLE_BRANCH == 'master' ]]; then TAG=latest; fi
+            docker tag $REPO:$TAG_CI-$CIRCLE_BUILD_NUM $REPO:$TAG
+            docker push $REPO:$TAG
+
   docker-web:
     docker:
       - image: docker
@@ -187,6 +228,7 @@ workflows:
         - api
         - email
         - queue
+        - queue-visualizer
         - web
         - docker-api:
             requires:
@@ -199,6 +241,14 @@ workflows:
         - docker-queue:
             requires:
                 - queue
+            filters:
+              branches:
+                only:
+                  - master
+                  - dev
+        - docker-queue-visualizer:
+            requires:
+                - queue-visualizer
             filters:
               branches:
                 only:

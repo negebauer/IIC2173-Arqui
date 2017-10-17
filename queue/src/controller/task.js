@@ -3,14 +3,17 @@
 // const request = require('request')
 const taskQueue = require('../queue/tasks')
 
+const API_QUEUE_SECRET = process.env.API_QUEUE_SECRET || 'apiqueuesecret'
+
 exports.purchase = async ctx => {
-  if (ctx.request.header['secret'] == process.env.API_QUEUE_SECRET) {
-    const { user_id, products_array } = ctx.request.body
+  if (ctx.request.header['secret'] === API_QUEUE_SECRET) {
+    // const { userId, productsIds, orderId } = ctx.request.body
+    const { userId, productsIds } = ctx.request.body
     let error = null
     const task = taskQueue.create(
       'purchase',
       {},
-      { user_id, products_array },
+      { userId, productsIds },
       err => {
         if (err) {
           console.error(err)

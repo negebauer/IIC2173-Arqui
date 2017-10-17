@@ -24,6 +24,5 @@ module.exports = {
     }],
     "no-var": "error",
     "prefer-const": "error",
-    "eqeqeq": "error",
   },
 };

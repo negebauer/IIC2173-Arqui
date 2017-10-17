@@ -39,7 +39,9 @@ All the following links _should_ work
 |:-:|:-:|
 |http://arqss2.ing.puc.cl |The [web](web) app|
 |http://arqss2.ing.puc.cl/api/ |Our [api](api)|
+|http://arqss2.ing.puc.cl/queue/ |Our [queue](queue)|
 |http://arqss2.ing.puc.cl/v/ |A swarm visualizer|
+|http://arqss2.ing.puc.cl/vq/ |Our [queue-visualizer](queue-visualizer) for the queue|
 |http://arqss2.ing.puc.cl/admin?stats |HAProxy stats (user: u, pass: p)|
 
 ***

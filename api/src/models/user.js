@@ -56,7 +56,7 @@ const UserSchema = new Schema({
 
 async function validateMailUnicity(user) {
   const otherUser = await mongoose.models['user'].findOne({ mail: user.mail })
-  if (otherUser && otherUser._id != user._id) {
+  if (otherUser && otherUser._id !== user._id) {
     const error = new ValidationError(this)
     error.errors.mail = new ValidatorError({
       type: 'unique',

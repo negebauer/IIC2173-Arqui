@@ -9,6 +9,7 @@
 - [Other commands](#other-commands)
   - [Services](#services)
 - [Scripts](#scripts)
+- [Contributors](#contributors)
 
 ## Docker files
 
@@ -75,3 +76,10 @@ docker container ls
 |[zdockerMachine.sh](zdockerMachine.sh)|(**DON'T RUN**) Configure docker-machine with all arqss machines|
 |[zinstallDocker.sh](zinstallDocker.sh)|Install docker, docker-compose and docker-machine on all arqss machines|
 |[zremoveNginx.sh](zremoveNginx.sh)|Remove nginx from all arqss machines|
+
+***
+
+## Contributors:
+
+- [@negebauer](https://github.com/negebauer)
+- [@andersskog](https://github.com/andersskog)

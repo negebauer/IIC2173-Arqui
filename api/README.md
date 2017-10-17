@@ -18,7 +18,7 @@
     - [All categories with nested products](#all-categories-with-nested-products)
   - [Users](#users)
     - [Id through email](#id-through-email)
-
+- [Contributors](#contributors)
 
 ## Development
 
@@ -449,3 +449,10 @@ yarn dev
     ```javascript
     { "message": "Couldn't find a user." }
     ```
+
+***
+
+## Contributors:
+
+- [@fnmendez](https://github.com/fnmendez)
+- [@negebauer](https://github.com/negebauer)

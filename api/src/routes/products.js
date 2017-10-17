@@ -34,7 +34,7 @@ router.get('product', '/:id', async ctx => {
     return
   }
   setProductsCache(products)
-  const product = products.find(prod => prod.id == ctx.params.id)
+  const product = products.find(prod => prod.id === ctx.params.id)
   ctx.body = { source: 'api', product }
 })
 
