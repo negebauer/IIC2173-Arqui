@@ -66,7 +66,7 @@ router.get('product', '/:id', async ctx => {
     }
     setProductsCache(products)
     const product = products.find(
-      prod => prod.id === Number(ctx.params.id) || -1
+      prod => prod.id === (Number(ctx.params.id) || -1)
     )
     if (!product) {
       ctx.status = 404
@@ -111,7 +111,7 @@ router.get('product', '/:id', async ctx => {
         return
       }
       cat.products.forEach(prod => {
-        if (prod.id === Number(ctx.params.id) || -1) {
+        if (prod.id === (Number(ctx.params.id) || -1)) {
           filteredProduct = prod
         }
       })
