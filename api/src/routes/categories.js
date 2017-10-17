@@ -70,7 +70,14 @@ router.get('nestedCategory', '/:id/products', async ctx => {
     }
     const categories = parseCategories(rawCategories, products)
     setCategoriesCache(categories)
-    const category = categories.find(cat => cat.id === ctx.params.id)
+    const category = categories.find(
+      cat => cat.id === Number(ctx.params.id) || -1
+    )
+    if (!category) {
+      ctx.status = 404
+      ctx.body = { message: "Didn't found the category." }
+      return
+    }
     ctx.body = { source: 'api', category }
   } else {
     const rawCategories = await getArquitran('/categories')
@@ -94,7 +101,14 @@ router.get('nestedCategory', '/:id/products', async ctx => {
     }
     const categories = parseCategories(rawCategories, products)
     setCategoriesCache(categories)
-    const category = categories.find(cat => cat.id === ctx.params.id)
+    const category = categories.find(
+      cat => cat.id === Number(ctx.params.id) || -1
+    )
+    if (!category) {
+      ctx.status = 404
+      ctx.body = { message: "Didn't found the category." }
+      return
+    }
     if (category.context === 'MEDICAMENTOS') {
       ctx.status = 403
       ctx.body = { message: 'The information of this category is private.' }
@@ -156,7 +170,14 @@ router.get('category', '/:id', async ctx => {
       return
     }
     setCategoriesCache(categories)
-    const category = categories.find(cat => cat.id === ctx.params.id)
+    const category = categories.find(
+      cat => cat.id === Number(ctx.params.id) || -1
+    )
+    if (!category) {
+      ctx.status = 404
+      ctx.body = { message: "Didn't found the category." }
+      return
+    }
     ctx.body = { source: 'api', category }
   } else {
     const categories = await getArquitran('/categories')
@@ -176,12 +197,20 @@ router.get('category', '/:id', async ctx => {
       return
     }
     setCategoriesCache(categories)
-    const category = categories.find(cat => cat.id === ctx.params.id)
+    const category = categories.find(
+      cat => cat.id === Number(ctx.params.id) || -1
+    )
+    if (!category) {
+      ctx.status = 404
+      ctx.body = { message: "Didn't found the category." }
+      return
+    }
     if (category.context === 'MEDICAMENTOS') {
       ctx.status = 403
       ctx.body = { message: 'The information of this category is private.' }
       return
     }
+    ctx.body = { source: 'api', category }
   }
 })
 

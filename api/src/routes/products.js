@@ -65,7 +65,14 @@ router.get('product', '/:id', async ctx => {
       return
     }
     setProductsCache(products)
-    const product = products.find(prod => prod.id === ctx.params.id)
+    const product = products.find(
+      prod => prod.id === Number(ctx.params.id) || -1
+    )
+    if (!product) {
+      ctx.status = 404
+      ctx.body = { message: "Didn't found the product." }
+      return
+    }
     ctx.body = { source: 'api', product }
   } else {
     const rawCategories = await getArquitran('/categories')
@@ -104,7 +111,7 @@ router.get('product', '/:id', async ctx => {
         return
       }
       cat.products.forEach(prod => {
-        if (prod.id === ctx.params.id) {
+        if (prod.id === Number(ctx.params.id) || -1) {
           filteredProduct = prod
         }
       })

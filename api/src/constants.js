@@ -5,6 +5,6 @@ module.exports = {
   QUEUE_URI: process.env.QUEUE_URI || 'http://localhost:3002',
   ARQUITRAN_URI: process.env.ARQUITRAN_URI || 'http://arqss17.ing.puc.cl:3000',
   MAX_REQUEST_ATTEMPTS: process.env.MAX_REQUEST_ATTEMPTS || 2,
-  MAX_REQUEST_TIMEOUT: process.env.MAX_REQUEST_TIMEOUT || 200,
+  MAX_REQUEST_TIMEOUT: process.env.MAX_REQUEST_TIMEOUT || 250,
   SETTING_CACHE_TIMEOUT: process.env.SETTING_CACHE_TIMEOUT || 30 * 1000,
 }
