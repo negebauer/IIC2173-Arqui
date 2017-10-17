@@ -14,6 +14,10 @@ const Product = new Schema({
     type: Number,
     required: true,
   },
+  price: {
+    type: Number,
+    required: true,
+  },
 })
 
 const model = 'category'

@@ -53,7 +53,10 @@ const getProducts = async (id = null) => {
       { _id: false, updatedAt: false, createdAt: false, __v: false }
     )
     const query = await Product.findOne()
-    const updatedAt = query.updatedAt
+    let updatedAt
+    if (query) {
+      updatedAt = query.updatedAt
+    }
     return { cacheProducts: products, updatedAt }
   } else {
     const product = await Product.findOne(
@@ -112,7 +115,10 @@ const getNestedCategories = async (id = null) => {
       }
     )
     const query = await Category.findOne()
-    const updatedAt = query.updatedAt
+    let updatedAt
+    if (query) {
+      updatedAt = query.updatedAt
+    }
     return { cacheCategories: categories, updatedAt }
   } else {
     const category = await Category.findOne(

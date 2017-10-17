@@ -16,9 +16,10 @@
     - [One category with nested products](#one-category-with-nested-products)
     - [All categories](#all-categories)
     - [All categories with nested products](#all-categories-with-nested-products)
-  - [Users](#users)
-    - [Id through email](#id-through-email)
-- [Contributors](#contributors)
+  - [Orders](#orders)
+    - [Make an order](#make-an-order)
+    - [Validate an order](#validate-an-order)
+  - [Contributors](#contributors)
 
 ## Development
 
@@ -36,6 +37,14 @@ yarn dev
 |PORT|3000|port in which api will listen for requests|
 |MONGO|mongodb://127.0.0.1:27017/IIC2173-Arqui|mongodb uri|
 |MONGO_TEST|mongodb://127.0.0.1:27017/IIC2173-Arqui-test|mongodb uri for running tests|
+|API_MAILER_SECRET|apimailersecret|certify that the mailer bot is the source of the request for security reasons|
+|API_QUEUE_SECRET|apiqueuesecret|certify that the order queue is the source of the request for security reasons|
+|MAILER_URI|http://localhost:3001|specifies Mailer's connection's host and port|
+|QUEUE_URI|http://localhost:3002|specifies Queue's connection's host and port|
+|ARQUITRAN_URI|http://arqss17.ing.puc.cl:3000|specifies Arquitran API's connection's host and port|
+|MAX_REQUEST_ATTEMPTS|2|defines how many times the API tries to receive an OK status from Arquitran API|
+|MAX_REQUEST_TIMEOUT|200|defines how long the API waits to receive an OK status from Arquitran API since each request was made|
+|SETTING_CACHE_TIMEOUT|30000|defines how long the API waits to set cache (products or categories) since its last update|
 
 ## Api usage
 
@@ -124,6 +133,11 @@ yarn dev
 
 - Headers:
   - Content-Type: `application/json`
+  - Authorization: `type <value>` _(only required for some products)_
+
+    &rarr; Examples
+      - Authorization: `mail fnmendez@uc.cl`
+      - Authorization: `token 19ab28cd37ef46`
 
 - Success Response:
 
@@ -144,6 +158,17 @@ yarn dev
 
 - Error Response:
 
+  &rarr; If the user isn't authenticated
+
+  - Code: 403
+  - Content:
+
+    ```javascript
+    { message: 'The information of this product is private.' }
+    ```
+
+  &rarr; Other error
+
   - Code: 503
   - Content:
 
@@ -159,6 +184,11 @@ yarn dev
 
 - Headers:
   - Content-Type: `application/json`
+  - Authorization: `type <value>` _(optional)_
+
+    &rarr; Examples
+    - Authorization: `mail fnmendez@uc.cl`
+    - Authorization: `token 19ab28cd37ef46`
 
 - Success Response:
 
@@ -207,6 +237,11 @@ yarn dev
 
 - Headers:
   - Content-Type: `application/json`
+  - Authorization: `type <value>` _(only needed for some categories)_
+
+    &rarr; Examples
+    - Authorization: `mail fnmendez@uc.cl`
+    - Authorization: `token 19ab28cd37ef46`
 
 - Success Response:
 
@@ -228,6 +263,17 @@ yarn dev
 
 - Error Response:
 
+  &rarr; If the user isn't authenticated
+
+  - Code: 403
+  - Content:
+
+    ```javascript
+    { message: 'The information of this category is private.' }
+    ```
+
+  &rarr; Other error
+
   - Code: 503
   - Content:
 
@@ -243,6 +289,11 @@ yarn dev
 
 - Headers:
   - Content-Type: `application/json`
+  - Authorization: `type <value>` _(optional)_
+
+    &rarr; Examples
+    - Authorization: `mail fnmendez@uc.cl`
+    - Authorization: `token 19ab28cd37ef46`
 
 - Success Response:
 
@@ -292,6 +343,11 @@ yarn dev
 
 - Headers:
   - Content-Type: `application/json`
+  - Authorization: `type <value>` _(only required for some categories)_
+
+    &rarr; Examples
+    - Authorization: `mail fnmendez@uc.cl`
+    - Authorization: `token 19ab28cd37ef46`
 
 - Success Response:
 
@@ -325,12 +381,24 @@ yarn dev
 
 - Error Response:
 
+  &rarr; If the user isn't authenticated
+
+  - Code: 403
+  - Content:
+
+    ```javascript
+    { message: 'The information of this category is private.' }
+    ```
+
+  &rarr; Other error
+
   - Code: 503
   - Content:
 
     ```javascript
     { "message": "Couldn't resolve request to Arquitran API." }
     ```
+
 
 ***
 
@@ -340,6 +408,11 @@ yarn dev
 
 - Headers:
   - Content-Type: `application/json`
+  - Authorization: `type <value>` _(optional)_
+
+    &rarr; Examples
+    - Authorization: `mail fnmendez@uc.cl`
+    - Authorization: `token 19ab28cd37ef46`
 
 - Success Response:
 
@@ -420,34 +493,86 @@ yarn dev
 
 ***
 
-### Users
+### Orders
 
-#### Id through email
+#### Make an order
 
-- Route: `GET` `/users/:email`
-  - Example route: `GET /users/example@uc.cl`
+- Route: `POST` `/orders`
 
 - Headers:
   - Content-Type: `application/json`
+  - Authorization: `type <value>`
+  - Secret: `<secret>` _(only through email)_
+    - Example through web
+      - Authorization: `token 19ab28cd37ef46`
+    - Example through email
+      - Authorization: `mail fnmendez@uc.cl`
+      - Secret: `apimailersecret`
+
+- Example Body:
+
+  ```javascript
+  {
+    "productsIds": "[10, 105, 1042, 1045]"
+  }
+  ```
 
 - Success Response:
 
   - Status: 200
-  - Example Content:
+  - Content:
 
     ```javascript
-    {
-        "userId": "59deb0dfcb264bbed27a4e3d"
-    }
+    { "message": "The order has been received." }
     ```
 
 - Error Response:
 
-  - Code: 404
+  - Code: 503
   - Content:
 
     ```javascript
-    { "message": "Couldn't find a user." }
+    { "message": "Couldn't resolve the request." }
+    ```
+
+***
+
+#### Validate an order
+
+- Route: `POST` `/orders/resolved`
+
+- Headers:
+  - Content-Type: `application/json`
+  - Secret: `<secret>`
+    - Example
+      - Secret: `apiqueuesecret`
+
+- Example Body:
+
+  ```javascript
+  {
+    "userId": "12abc345edf",
+    "productId": "1042",
+    "sentAt": "2017-10-16T22:13:31.343Z"
+  }
+  ```
+
+- Success Response:
+
+  - Status: 200
+  - Content:
+
+    ```javascript
+    { "message": "The validation has been processed." }
+    ```
+
+- Error Response:
+
+  - Code: 503
+  - Content:
+
+    ```javascript
+    { "message": "Couldn't process the validation." }
     ```
 
 ***
