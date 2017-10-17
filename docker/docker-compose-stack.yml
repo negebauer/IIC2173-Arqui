@@ -11,7 +11,7 @@ services:
       placement:
         constraints: [node.role == manager]
       restart_policy:
-        condition: unless-stopped
+        condition: on-failure
       update_config:
         parallelism: 1
         delay: 10s
@@ -34,7 +34,7 @@ services:
     deploy:
       mode: global
       restart_policy:
-        condition: unless-stopped
+        condition: on-failure
       update_config:
         parallelism: 2
         delay: 10s
@@ -84,7 +84,7 @@ services:
       placement:
         constraints: [node.role == manager]
       restart_policy:
-        condition: unless-stopped
+        condition: on-failure
       update_config:
         parallelism: 1
         delay: 10s
@@ -106,7 +106,7 @@ services:
         - com.df.distribute=true
         - com.df.port=6379
       restart_policy:
-        condition: unless-stopped
+        condition: on-failure
       update_config:
         parallelism: 1
         delay: 1m
@@ -120,7 +120,7 @@ services:
       - proxy
 
   api:
-    image: negebauer/iic2173-arqui-api:dev
+    image: negebauer/iic2173-arqui-api
     environment:
       - MONGO=mongodb://mongo/IIC2173-Arqui?replicaSet=rs
       - API_QUEUE_SECRET=secretapiqueue
@@ -134,7 +134,7 @@ services:
         - com.df.reqPathSearch=/api
         - com.df.reqPathReplace=
       restart_policy:
-        condition: unless-stopped
+        condition: on-failure
       update_config:
         parallelism: 3
         delay: 10s
@@ -146,7 +146,7 @@ services:
       - proxy
 
   web:
-    image: negebauer/iic2173-arqui-web:dev
+    image: negebauer/iic2173-arqui-web
     environment:
       - API=http://arqss2.ing.puc.cl/api
     deploy:
@@ -157,7 +157,7 @@ services:
         - com.df.servicePath=/
         - com.df.port=80
       restart_policy:
-        condition: unless-stopped
+        condition: on-failure
       update_config:
         parallelism: 2
         delay: 10s
@@ -178,7 +178,7 @@ services:
         - com.df.reqPathSearch=/v
         - com.df.reqPathReplace=
       restart_policy:
-        condition: unless-stopped
+        condition: on-failure
       update_config:
         parallelism: 1
         delay: 10s
@@ -192,7 +192,7 @@ services:
       - proxy
 
   queue:
-    image: negebauer/iic2173-arqui-queue:dev
+    image: negebauer/iic2173-arqui-queue
     environment:
       - API_URL=http://api
       - API_QUEUE_SECRET=secretapiqueue
@@ -209,7 +209,7 @@ services:
         - com.df.reqPathSearch=/queue
         - com.df.reqPathReplace=
       restart_policy:
-        condition: unless-stopped
+        condition: on-failure
       update_config:
         parallelism: 1
         delay: 10s
@@ -221,7 +221,7 @@ services:
       - proxy
 
   queue-visualizer:
-    image: negebauer/iic2173-arqui-queue-visualizer:dev
+    image: negebauer/iic2173-arqui-queue-visualizer
     environment:
       - REDIS_PORT=6379
       - REDIS_HOST=redis
@@ -236,7 +236,7 @@ services:
         - com.df.reqPathSearch=/qv
         - com.df.reqPathReplace=
       restart_policy:
-        condition: unless-stopped
+        condition: on-failure
       update_config:
         parallelism: 1
         delay: 10s

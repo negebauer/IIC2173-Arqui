@@ -1,6 +1,5 @@
 {
-  "name": "queue",
-  "version": "0.0.1",
+  "name": "arquiyalt-queue",
   "private": true,
   "main": "index.js",
   "description": "A Queue API written in Koa.js.",

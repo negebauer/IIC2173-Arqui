@@ -1,6 +1,5 @@
 {
-  "name": "arquiyalt",
-  "version": "0.0.0",
+  "name": "arquiyalt-web",
   "license": "MIT",
   "scripts": {
     "ng": "ng",

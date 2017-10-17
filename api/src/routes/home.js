@@ -2,7 +2,7 @@ const Router = require('koa-router')
 const _ = require('lodash')
 const uuid = require('uuid/v4')
 const os = require('os')
-const pkg = require('../../package.json')
+const pkg = require('../../../package.json')
 
 const User = require('../models/user')
 const { validationError, loginError } = require('../helpers/errors')

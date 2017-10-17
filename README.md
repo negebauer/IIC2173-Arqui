@@ -52,6 +52,7 @@ All the following links _should_ work
 - commits
   - https://conventionalcommits.org
   - https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit
+  - https://github.com/conventional-changelog/standard-version
 - docker
   - https://docs.docker.com/get-started
   - https://docs.docker.com/engine/installation/linux
@@ -88,4 +89,4 @@ All the following links _should_ work
 [gitflowB]:https://img.shields.io/badge/git-flow-brightgreen.svg
 
 [commitsL]:https://conventionalcommits.org
-[commitsB]:https://img.shields.io/badge/commits-conventional-brightgreen.svg
+[commitsB]:https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg

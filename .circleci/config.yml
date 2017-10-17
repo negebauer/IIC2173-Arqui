@@ -10,7 +10,6 @@ jobs:
           command: |
             invalid=1
             if [[ $CIRCLE_BRANCH == 'master' ]]; then invalid=0; fi
-            if [[ $CIRCLE_BRANCH == 'dev' ]]; then invalid=0; fi
             if [[ $CIRCLE_BRANCH == 'f/'* ]]; then invalid=0; fi
             if [[ $invalid == 1 ]]; then exit 1; fi
 
@@ -117,7 +116,7 @@ jobs:
 
   docker-api:
     docker:
-      - image: docker
+      - image: circleci/node:8.5
         environment:
           REPO: negebauer/iic2173-arqui-api
           TAG_CI: circleci
@@ -127,18 +126,15 @@ jobs:
           path: ~/arqui
       - setup_remote_docker:
           version: 17.05.0-ce
-      - run: docker build -t $REPO:$TAG_CI-$CIRCLE_BUILD_NUM .
+      - run: docker build -t $REPO .
+      - run: docker tag $REPO $REPO:$(git describe)
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: docker push $REPO:$TAG_CI-$CIRCLE_BUILD_NUM
-      - run:
-          name: Deploy latest
-          command: |
-            docker tag $REPO:$TAG_CI-$CIRCLE_BUILD_NUM $REPO
-            docker push $REPO
+      - run: docker push $REPO:$(git describe)
+      - run: docker push $REPO
 
   docker-queue:
     docker:
-      - image: docker
+      - image: circleci/node:8.5
         environment:
           REPO: negebauer/iic2173-arqui-queue
           TAG_CI: circleci
@@ -148,18 +144,15 @@ jobs:
           path: ~/arqui
       - setup_remote_docker:
           version: 17.05.0-ce
-      - run: docker build -t $REPO:$TAG_CI-$CIRCLE_BUILD_NUM .
+      - run: docker build -t $REPO .
+      - run: docker tag $REPO $REPO:$(git describe)
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: docker push $REPO:$TAG_CI-$CIRCLE_BUILD_NUM
-      - run:
-          name: Deploy latest
-          command: |
-            docker tag $REPO:$TAG_CI-$CIRCLE_BUILD_NUM $REPO
-            docker push $REPO
+      - run: docker push $REPO:$(git describe)
+      - run: docker push $REPO
 
   docker-queue-visualizer:
     docker:
-      - image: docker
+      - image: circleci/node:8.5
         environment:
           REPO: negebauer/iic2173-arqui-queue-visualizer
           TAG_CI: circleci
@@ -169,18 +162,15 @@ jobs:
           path: ~/arqui
       - setup_remote_docker:
           version: 17.05.0-ce
-      - run: docker build -t $REPO:$TAG_CI-$CIRCLE_BUILD_NUM .
+      - run: docker build -t $REPO .
+      - run: docker tag $REPO $REPO:$(git describe)
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: docker push $REPO:$TAG_CI-$CIRCLE_BUILD_NUM
-      - run:
-          name: Deploy latest
-          command: |
-            docker tag $REPO:$TAG_CI-$CIRCLE_BUILD_NUM $REPO
-            docker push $REPO
+      - run: docker push $REPO:$(git describe)
+      - run: docker push $REPO
 
   docker-web:
     docker:
-      - image: docker
+      - image: circleci/node:8.5
         environment:
           REPO: negebauer/iic2173-arqui-web
           TAG_CI: circleci
@@ -190,14 +180,11 @@ jobs:
           path: ~/arqui
       - setup_remote_docker:
           version: 17.05.0-ce
-      - run: docker build -t $REPO:$TAG_CI-$CIRCLE_BUILD_NUM .
+      - run: docker build -t $REPO .
+      - run: docker tag $REPO $REPO:$(git describe)
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: docker push $REPO:$TAG_CI-$CIRCLE_BUILD_NUM
-      - run:
-          name: Deploy latest
-          command: |
-            docker tag $REPO:$TAG_CI-$CIRCLE_BUILD_NUM $REPO
-            docker push $REPO
+      - run: docker push $REPO:$(git describe)
+      - run: docker push $REPO
 
   deploy:
     docker:
@@ -260,6 +247,8 @@ workflows:
               - docker-queue-visualizer
               - docker-web
             filters:
+              # tags:
+                # only: /v\d+.\d+.\d+\Z/
               branches:
                 only:
                   - master

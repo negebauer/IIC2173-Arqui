@@ -1,6 +1,5 @@
 {
-  "name": "queue-visualizer",
-  "version": "0.0.1",
+  "name": "arquiyalt-queue-visualizer",
   "private": true,
   "main": "index.js",
   "scripts": {
