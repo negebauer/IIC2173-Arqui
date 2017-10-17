@@ -10,6 +10,6 @@
 			{{product.name}}
 		</div>
 	</div>
-	<button class="buy" (click)="makePurchase()">Realizar Pedido</button>
+	<button [class.disabled]="cart.length == 0" class="buy" (click)="makePurchase()">Realizar Pedido</button>
 
 </div>

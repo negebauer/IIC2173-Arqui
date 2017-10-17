@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class SessionService {
     public token: string;
-    private logger = new Subject<boolean>();
+    private logger = new BehaviorSubject<boolean>(false);
     private cart = [];
     private visibleCart = new Subject<boolean>();
 

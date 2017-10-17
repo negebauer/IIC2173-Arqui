@@ -49,7 +49,16 @@ export class HttpServiceProvider {
   }
 
   // Handle Orders
-  public placeOrder() {
-    return;
+  public placeOrder(ids, token) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', 'token ' + token);
+    const options = new RequestOptions({ headers, method: 'post' });
+    const body = {
+      productsIds: ids
+    };
+    return this.http
+      .post(`${this.apiUrl}/orders`, body, options)
+      .map((res) => res.json());
   }
 }

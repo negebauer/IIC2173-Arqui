@@ -10,6 +10,8 @@ import { HttpServiceProvider } from '../../services/HttpServiceProvicer';
 export class CartComponent implements OnInit {
 
   cart = [];
+  isLogged;
+  user;
 
   constructor(private session: SessionService, private api: HttpServiceProvider) {
   	session.getCart()
@@ -19,6 +21,16 @@ export class CartComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.session.isLoggedIn()
+      .subscribe((resp) => {
+        this.isLogged = resp;
+        if (resp) {
+          this.user = JSON.parse(localStorage.getItem('user'));
+        } else {
+          this.user = null;
+        }
+      });
+
   }
 
   public hideCart() {
@@ -31,7 +43,17 @@ export class CartComponent implements OnInit {
 
   makePurchase() {
     //this.api.purchase()
-    alert('Nuestro proveedor aun no permite realizar compras');
+    if (this.user && this.cart.length > 0) {
+      let ids = this.cart.map((product) => {
+        return product.id
+      })
+      this.api.placeOrder(ids, this.user.token)
+        .subscribe((response) => {
+          console.log(response);
+        })
+    } else {
+      alert('Debes iniciar sesión primero!');
+    }
   }
 
 }

@@ -12,11 +12,11 @@
 	    <form>
 	     <div class="form-login">
 	       <label for="email">Email</label>
-	       <input (keypress)="onChange()" [(ngModel)]="mail" type="text" class="form-control" id="email" placeholder="email" name="email" required>
+	       <input (input)="onChange()" [(ngModel)]="mail" type="text" class="form-control" id="email" placeholder="email" name="email" required>
 	     </div>
 	     <div class="form-login">
 	       <label for="password">Contraseña</label>
-	       <input (keypress)="onChange()" [(ngModel)]="password" type="password" class="form-control" id="password" placeholder="password" name="password" required>
+	       <input (input)="onChange()" [(ngModel)]="password" type="password" class="form-control" id="password" placeholder="password" name="password" required>
 	     </div>
 	     <button (click)="submitLogin()" [class.disabled]="!canLogin" type="button" class="form-login btn btn-login">Entrar!</button>
 	    </form>
@@ -35,23 +35,23 @@
 	    <form>
 	     <div class="form-login" style="overflow: scroll;">
 	       <label for="name">Nombre</label>
-	       <input (keypress)="onChange()" [(ngModel)]="name" type="text" class="form-control" id="name" placeholder="Nombre" name="name" required>
+	       <input (input)="onChange()" [(ngModel)]="name" type="text" class="form-control" id="name" placeholder="Nombre" name="name" required>
 	     </div>
 	     <div class="form-login">
 	       <label for="email">Apellido</label>
-	       <input (keypress)="onChange()" [(ngModel)]="last_name" type="text" class="form-control" id="last_name" placeholder="Apellido" name="last_name" required>
+	       <input (input)="onChange()" [(ngModel)]="last_name" type="text" class="form-control" id="last_name" placeholder="Apellido" name="last_name" required>
 	     </div>
 	     <div class="form-login">
 	       <label for="address">Dirección</label>
-	       <input (keypress)="onChange()" [(ngModel)]="address" type="text" class="form-control" id="address" placeholder="Dirección" name="address" required>
+	       <input (input)="onChange()" [(ngModel)]="address" type="text" class="form-control" id="address" placeholder="Dirección" name="address" required>
 	     </div>
 	     <div class="form-login">
 	       <label for="email">Email</label>
-	       <input (keypress)="onChange()" [(ngModel)]="mail" type="text" class="form-control" id="email" placeholder="email" name="email" required>
+	       <input (input)="onChange()" [(ngModel)]="mail" type="text" class="form-control" id="email" placeholder="email" name="email" required>
 	     </div>
 	     <div class="form-login">
 	       <label for="password">Contraseña</label>
-	       <input (keypress)="onChange()" [(ngModel)]="password" type="password" class="form-control" id="password" placeholder="password" name="password" required>
+	       <input (input)="onChange()" [(ngModel)]="password" type="password" class="form-control" id="password" placeholder="password" name="password" required>
 	     </div>
 	     <button (click)="submitSignUp()" [class.disabled]="!canLogin" type="button" class="form-login btn btn-login">Entrar!</button>
 	    </form>
