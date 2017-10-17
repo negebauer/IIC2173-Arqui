@@ -10,6 +10,13 @@ services:
       replicas: 1
       placement:
         constraints: [node.role == manager]
+      restart_policy:
+        condition: unless-stopped
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: rollback
+        monitor: 10s
     depends_on:
       - proxy
     volumes:
@@ -26,6 +33,13 @@ services:
       - MODE=swarm
     deploy:
       mode: global
+      restart_policy:
+        condition: unless-stopped
+      update_config:
+        parallelism: 2
+        delay: 10s
+        failure_action: pause
+        monitor: 10s
     ports:
       - "80:80"
       - "443:443"
@@ -38,15 +52,17 @@ services:
     entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles"]
     deploy:
       mode: global
-      restart_policy:
-        condition: on-failure
-      update_config:
-        parallelism: 1
-        delay: 1m30s
       labels:
         - com.df.notify=true
         - com.df.distribute=true
         - com.df.port=27017
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 1m
+        failure_action: pause
+        monitor: 2s
     ports:
       - "27017:27017"
     volumes:
@@ -68,7 +84,12 @@ services:
       placement:
         constraints: [node.role == manager]
       restart_policy:
-        condition: on-failure
+        condition: unless-stopped
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: pause
+        monitor: 2s
     depends_on:
       - mongo
     volumes:
@@ -84,6 +105,13 @@ services:
         - com.df.notify=true
         - com.df.distribute=true
         - com.df.port=6379
+      restart_policy:
+        condition: unless-stopped
+      update_config:
+        parallelism: 1
+        delay: 1m
+        failure_action: pause
+        monitor: 2s
       placement:
         constraints: [node.role == manager]
     volumes:
@@ -106,9 +134,12 @@ services:
         - com.df.reqPathSearch=/api
         - com.df.reqPathReplace=
       restart_policy:
-        condition: on-failure
-      # placement:
-        # constraints: [node.role != manager]
+        condition: unless-stopped
+      update_config:
+        parallelism: 3
+        delay: 10s
+        failure_action: pause
+        monitor: 2s
     depends_on:
       - mongo
     networks:
@@ -125,8 +156,13 @@ services:
         - com.df.distribute=true
         - com.df.servicePath=/
         - com.df.port=80
-      # placement:
-        # constraints: [node.role != manager]
+      restart_policy:
+        condition: unless-stopped
+      update_config:
+        parallelism: 2
+        delay: 10s
+        failure_action: pause
+        monitor: 2s
     networks:
       - proxy
 
@@ -141,6 +177,13 @@ services:
         - com.df.port=8080
         - com.df.reqPathSearch=/v
         - com.df.reqPathReplace=
+      restart_policy:
+        condition: unless-stopped
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: rollback
+        monitor: 2s
       placement:
         constraints: [node.role == manager]
     volumes:
@@ -165,8 +208,13 @@ services:
         - com.df.port=80
         - com.df.reqPathSearch=/queue
         - com.df.reqPathReplace=
-      placement:
-        constraints: [node.role != manager]
+      restart_policy:
+        condition: unless-stopped
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: rollback
+        monitor: 2s
     depends_on:
       - redis
     networks:
@@ -187,8 +235,13 @@ services:
         - com.df.port=80
         - com.df.reqPathSearch=/qv
         - com.df.reqPathReplace=
-      placement:
-        constraints: [node.role == manager]
+      restart_policy:
+        condition: unless-stopped
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: rollback
+        monitor: 2s
     depends_on:
       - redis
     networks:

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
-    "start": "node index.js",
+    "start": "NODE_ENV=production node index.js",
     "lint": "eslint ./src index.js",
     "lint:fix": "eslint --fix ./src index.js",
     "test": "jest --watch",

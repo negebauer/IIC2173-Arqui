@@ -26,6 +26,7 @@ queue.on('error', err => {
   console.error('There was an error in the main queue!')
   console.error(err)
   console.error(err.stack)
+  process.exit(1)
 })
 
 function createTask(type, options, data, done) {
