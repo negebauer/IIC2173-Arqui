@@ -76,20 +76,51 @@ services:
     networks:
       - proxy
 
-  redis:
-    image: redis:4-alpine
+  redis-master:
+    image: redis:3
+    ports:
+      - "6379:6379"
     deploy:
       replicas: 1
-      labels:
-        - com.df.notify=true
-        - com.df.distribute=true
-        - com.df.port=6379
       placement:
         constraints: [node.role == manager]
+      restart_policy:
+        condition: on-failure
     volumes:
-      - "/home/administrator/data/redis/db:/data"
+      - "~/data/redis/db:/data"
     networks:
       - proxy
+
+  redis-slave:
+    image: redis:3
+    command: redis-server --slaveof redis-master 6379
+    ports:
+      - "6379:6379"
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - "~/data/redis/db:/data"
+    networks:
+      - proxy
+    # links:
+    #   - redis-master:redis-master
+
+  redis-sentinel:
+    image: aoskog/redis-sentinel
+    environment:
+      - SENTINEL_DOWN_AFTER=5000
+      - SENTINEL_FAILOVER=5000
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]  
+    networks:
+      - proxy 
+    # links:
+    #   - redis-master:redis-master
+    #   - redis-slave
 
   api:
     image: negebauer/iic2173-arqui-api:dev
@@ -154,7 +185,7 @@ services:
       - API_URL=http://api
       - API_QUEUE_SECRET=secretapiqueue
       - REDIS_PORT=6379
-      - REDIS_HOST=redis
+      - REDIS_HOST=redis-master
       - REDIS_PASS=
     deploy:
       replicas: 1
@@ -168,7 +199,9 @@ services:
       placement:
         constraints: [node.role != manager]
     depends_on:
-      - redis
+      - redis-master
+      - redis-slave
+      - redis-sentinel
     networks:
       - proxy
 
@@ -176,7 +209,7 @@ services:
     image: negebauer/iic2173-arqui-queue-visualizer:dev
     environment:
       - REDIS_PORT=6379
-      - REDIS_HOST=redis
+      - REDIS_HOST=redis-master
       - REDIS_PASS=
     deploy:
       replicas: 1
@@ -190,7 +223,9 @@ services:
       placement:
         constraints: [node.role == manager]
     depends_on:
-      - redis
+      - redis-master
+      - redis-slave
+      - redis-sentinel
     networks:
       - proxy
 
