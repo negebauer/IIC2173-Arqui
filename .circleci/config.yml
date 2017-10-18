@@ -150,6 +150,24 @@ jobs:
       - run: docker push $REPO:$(git describe)
       - run: docker push $REPO
 
+  docker-email:
+    docker:
+      - image: circleci/node:8.5
+        environment:
+          REPO: negebauer/iic2173-arqui-email
+          TAG_CI: circleci
+    working_directory: ~/arqui/email
+    steps:
+      - checkout:
+          path: ~/arqui
+      - setup_remote_docker:
+          version: 17.05.0-ce
+      - run: docker build -t $REPO .
+      - run: docker tag $REPO $REPO:$(git describe)
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: docker push $REPO:$(git describe)
+      - run: docker push $REPO
+
   docker-queue:
     docker:
       - image: circleci/node:8.5
@@ -235,6 +253,13 @@ workflows:
               branches:
                 only:
                   - master
+        - docker-email:
+            requires:
+              - email
+            filters:
+              branches:
+                only:
+                  - master
         - docker-queue:
             requires:
                 - queue
@@ -260,13 +285,13 @@ workflows:
             requires:
               - gitflow
               - docker-api
-              - email
+              - docker-email
               - docker-queue
               - docker-queue-visualizer
               - docker-web
             filters:
-              # tags:
-                # only: /v\d+.\d+.\d+\Z/
+              tags:
+                only: /v\d+.\d+.\d+\Z/
               branches:
                 only:
                   - master

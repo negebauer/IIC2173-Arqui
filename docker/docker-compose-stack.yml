@@ -147,7 +147,33 @@ services:
     depends_on:
       - mongo
       - queue
-      # - email
+      - email
+    networks:
+      - proxy
+
+  email:
+    image: negebauer/iic2173-arqui-email
+    environment:
+      - API_MAILER_SECRET=secretapimailer
+      - API=http://api
+    deploy:
+      replicas: 3
+      labels:
+        - com.df.notify=true
+        - com.df.distribute=true
+        - com.df.servicePath=/email
+        - com.df.port=80
+        - com.df.reqPathSearch=/email
+        - com.df.reqPathReplace=
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 3
+        delay: 10s
+        failure_action: pause
+        monitor: 2s
+    depends_on:
+      - api
     networks:
       - proxy
 

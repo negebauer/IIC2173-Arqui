@@ -83,7 +83,7 @@ All the following links _should_ work
 <!-- Badges -->
 
 [circleciL]:https://circleci.com/gh/negebauer/IIC2173-Arqui
-[circleciB]:https://circleci.com/gh/negebauer/IIC2173-Arqui.svg?style=svg&circle-token=3634a4c1bb42fd24fb638af8b3d05a1f114789f6
+[circleciB]:https://circleci.com/gh/negebauer/IIC2173-Arqui/tree/master.svg?style=svg&circle-token=13d482e124498647c8fd561b476976d460b175f4
 
 [gitflowL]:https://datasift.github.io/gitflow/IntroducingGitFlow.html
 [gitflowB]:https://img.shields.io/badge/git-flow-brightgreen.svg
