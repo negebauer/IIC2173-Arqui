@@ -89,7 +89,7 @@ export class LoginComponent {
           this.session.login(this.mail, response.token);
           this.close.emit(false);
       }, (err) => {
-          this.error = err._body.message;
+          this.error = JSON.parse((err['_body']))['message']
       });
 
   }
@@ -99,7 +99,7 @@ export class LoginComponent {
       .subscribe((response) => {
         this.close.emit(false);
       }, (err) => {
-        this.error = err._body.message;
+        this.error = JSON.parse((err['_body']))['message']
       });
   }
 
