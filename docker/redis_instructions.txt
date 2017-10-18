@@ -1,0 +1,9 @@
+Ejemplo funcional:
+
+https://github.com/AliyunContainerService/redis-cluster
+
+Lo que aca se hace es que inicialmente corri redis-master, que queda como master inicialmente. De ahi cada redis-slave de declara como —slaveof redis-master, esto no es el que definimos nosotros, sino el redis-master que maneja la network. 
+
+Ahora, el sentinel llega y esta esperando todo el tiempo, controlando que este disponible el redis-master de la red de redis. Cuando se cae lo controla, esperando su recuperacion o esperando hasta definir un nuevo master. Ahi el master nuevo queda sujeto al puerto 6379.
+
+Lo que tenemos que hacer es no definir host de redis especificamente, sino que tenemos que apuntar al puerto nomas.
