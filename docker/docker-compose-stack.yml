@@ -195,8 +195,6 @@ services:
         constraints: [node.role != manager]
     depends_on:
       - redis-master
-      - redis-slave
-      - redis-sentinel
     networks:
       - proxy
 
@@ -204,7 +202,7 @@ services:
     image: negebauer/iic2173-arqui-queue-visualizer:dev
     environment:
       - REDIS_PORT=6379
-      - REDIS_HOST=redis-master
+      - REDIS_HOST=redis-slave
       - REDIS_PASS=
     deploy:
       replicas: 1
@@ -218,9 +216,7 @@ services:
       placement:
         constraints: [node.role == manager]
     depends_on:
-      - redis-master
       - redis-slave
-      - redis-sentinel
     networks:
       - proxy
 
