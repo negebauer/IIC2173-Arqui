@@ -123,7 +123,11 @@ services:
     image: negebauer/iic2173-arqui-api
     environment:
       - MONGO=mongodb://mongo/IIC2173-Arqui?replicaSet=rs
+      - API_MAILER_SECRET=secretapimailer
       - API_QUEUE_SECRET=secretapiqueue
+      - MAILER_URI=http://email
+      - QUEUE_URI=http://queue
+      - ARQUITRAN_URI=http://arqss17.ing.puc.cl:3000
     deploy:
       replicas: 14
       labels:
@@ -142,6 +146,8 @@ services:
         monitor: 2s
     depends_on:
       - mongo
+      - queue
+      # - email
     networks:
       - proxy
 
