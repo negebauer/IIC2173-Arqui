@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/negebauer/IIC2173-Arqui/compare/v0.1.0...v0.2.0) (2017-10-18)
+
+
+### Bug Fixes
+
+* **queue:** order resolution ([#74](https://github.com/negebauer/IIC2173-Arqui/issues/74)) ([4657b30](https://github.com/negebauer/IIC2173-Arqui/commit/4657b30))
+
+
+### Features
+
+* **email:** email dockerfile ([1ddb1a0](https://github.com/negebauer/IIC2173-Arqui/commit/1ddb1a0))
+* **web:** fix ([#71](https://github.com/negebauer/IIC2173-Arqui/issues/71)) ([431ddb0](https://github.com/negebauer/IIC2173-Arqui/commit/431ddb0))
+
+
+
 <a name="0.1.0"></a>
 # [0.1.0](https://github.com/negebauer/IIC2173-Arqui/compare/v0.0.1...v0.1.0) (2017-10-18)
 
