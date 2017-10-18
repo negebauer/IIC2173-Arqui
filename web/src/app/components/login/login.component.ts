@@ -58,9 +58,11 @@ export class LoginComponent {
   public validateMailAndPassword() {
     if (!this.va.isMail(this.mail)) {
       this.error = 'ingresa un mail válido';
-    } else if (!this.va.validPassword(this.password)) {
+    } 
+    else if (!this.va.validPassword(this.password)) {
       this.error = 'ingresa una contraseña de 4-12 caracteres';
-    } else {
+    } 
+    else {
       this.error = '';
       return true;
     }

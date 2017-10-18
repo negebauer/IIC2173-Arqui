@@ -1,7 +1,7 @@
 <div class="modal-wrapper" (click)="closeLogin($event)">
 </div>
 
-<div class="modal" [ngSwitch]="template">
+<div class="login-modal" [ngSwitch]="template">
 	<div class="close-modal" (click)="closeLogin($event)">
 		X
 	</div>
@@ -10,15 +10,15 @@
 	    <h1>Iniciar Sesión</h1>
 	    <hr><br>
 	    <form>
-	     <div class="form-login">
+	     <div class="form-group">
 	       <label for="email">Email</label>
 	       <input (input)="onChange()" [(ngModel)]="mail" type="text" class="form-control" id="email" placeholder="email" name="email" required>
 	     </div>
-	     <div class="form-login">
+	     <div class="form-group">
 	       <label for="password">Contraseña</label>
 	       <input (input)="onChange()" [(ngModel)]="password" type="password" class="form-control" id="password" placeholder="password" name="password" required>
 	     </div>
-	     <button (click)="submitLogin()" [class.disabled]="!canLogin" type="button" class="form-login btn btn-login">Entrar!</button>
+	     <button (click)="submitLogin()" [class.disabled]="!canLogin" type="button" class="btn btn-primary btn-login">Entrar!</button>
 	    </form>
 	    </div>
 	    <div *ngIf="error !== '' " class="error-msg">
@@ -28,6 +28,7 @@
 			No tienes cuenta? crea una aquí
 		</div>
 	</div>
+
 	<div class="login" *ngSwitchCase="'signup'">
 		<div style="padding: 1em;">
 	    <h1>Crear una cuenta</h1>

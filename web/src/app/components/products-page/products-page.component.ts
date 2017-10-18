@@ -5,7 +5,7 @@ import { SessionService } from '../../services/session.service';
 @Component({
   selector: 'products-page',
   templateUrl: './products-page.component.html',
-  styleUrls: ['./products-page.component.css']
+  styleUrls: ['./products-page.component.scss']
 })
 
 export class ProductsPageComponent implements OnInit {

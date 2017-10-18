@@ -1,0 +1,97 @@
+/* Add a black background color to the top navigation */
+
+body {
+  margin: 0px;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+div {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.navbar-fixed-top {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+nav {
+    background-color: #c8403d;
+    display: inline-block;
+    .navbar-brand, .navbar-link, .navbar-text {
+        color: #ddd;
+        font-size: 30px;
+        font: "Helvetica Neue",Helvetica,Arial,sans-serif;
+        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    }
+    .navbar-text {
+        font-size: 20px;
+    }
+    .navbar-link {
+        font-size: 20px;
+        cursor: pointer;
+        z-index: 10000;
+    }
+    ul {
+        display: inline-block;
+        p {
+            padding: 0;
+            vertical-align: center;
+        }
+        li {
+            padding: 0;
+            margin-left: 10px; 
+        }
+    }
+}
+
+.cartToggle {
+    height: 5em;
+    width: 5em;
+    background-color: #2ebd62;
+    border-radius: 50%;
+    position: fixed;
+    right: 3vw;
+    bottom: 3vw;
+    background-image: url("/assets/cart.png");
+    background-size: 3.5em 3.5em;
+    background-repeat: no-repeat;
+    background-position: 0.6em 01em;
+    cursor: pointer;
+
+}
+
+.cartToggle .cart-amount {
+    position: absolute;
+    right: 0;
+    background-color: white;
+    border: solid 1px #2ebd62;
+    border-radius: 50%;
+    width: 1.3em;
+    text-align: center;
+    padding: 0.1em;
+    font-size: 12pt;
+}
+
+.vertical-margin {
+    margin-top: 90px;
+
+}
+.title {
+    width: 90%;
+    margin: 0 auto;
+    padding-bottom: 30px;
+}
+
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    [class*="navbar-text"] {
+        display: none;
+    }
+
+    .subtitle {
+        font-size: 12pt;
+    }
+}
+
+
