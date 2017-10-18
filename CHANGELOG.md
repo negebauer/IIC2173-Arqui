@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.1.0"></a>
+# [0.1.0](https://github.com/negebauer/IIC2173-Arqui/compare/v0.0.1...v0.1.0) (2017-10-18)
+
+
+### Bug Fixes
+
+* **api:** remove require package json ([30f88f7](https://github.com/negebauer/IIC2173-Arqui/commit/30f88f7))
+* **deploy:** yarn release command ([d2afee0](https://github.com/negebauer/IIC2173-Arqui/commit/d2afee0))
+
+
+### Features
+
+* **deploy:** api env vars ([#66](https://github.com/negebauer/IIC2173-Arqui/issues/66)) ([109f1af](https://github.com/negebauer/IIC2173-Arqui/commit/109f1af))
+* **deploy:** email deploy ([#69](https://github.com/negebauer/IIC2173-Arqui/issues/69)) ([d0a5f16](https://github.com/negebauer/IIC2173-Arqui/commit/d0a5f16))
+* **mailer:** mailer init and config ([#65](https://github.com/negebauer/IIC2173-Arqui/issues/65)) ([2c92088](https://github.com/negebauer/IIC2173-Arqui/commit/2c92088)), closes [#55](https://github.com/negebauer/IIC2173-Arqui/issues/55) [#26](https://github.com/negebauer/IIC2173-Arqui/issues/26)
+* **web:** products and error handling ([#64](https://github.com/negebauer/IIC2173-Arqui/issues/64)) ([b506e2a](https://github.com/negebauer/IIC2173-Arqui/commit/b506e2a))
+
+
+
 <a name="0.0.1"></a>
 ## 0.0.1 (2017-10-17)
 
