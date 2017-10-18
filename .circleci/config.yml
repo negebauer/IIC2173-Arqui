@@ -48,7 +48,25 @@ jobs:
     steps:
       - checkout:
           path: ~/arqui
-      - run: pwd; ls
+      - restore_cache:
+          keys:
+          - email-v1-{{ checksum "package.json" }}
+          - email-v1-
+      - run: yarn
+      - save_cache:
+          paths:
+            - node_modules
+          key: email-v1-{{ checksum "package.json" }}
+      - run: yarn lint
+      - run: yarn test:ci
+      - store_test_results:
+          path: ./coverage
+      - store_artifacts:
+          path: ./coverage/junit.xml
+          destination: junit/junit.xml
+      - store_artifacts:
+          path: ./coverage/lcov-report
+          destination: coverage
 
   queue:
     docker:
