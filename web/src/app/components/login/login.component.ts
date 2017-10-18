@@ -87,21 +87,19 @@ export class LoginComponent {
     this.api.logIn(this.mail, this.password)
       .subscribe((response) => {
           this.session.login(this.mail, response.token);
-          console.log(response);
           this.close.emit(false);
       }, (err) => {
-          this.error = 'mail o contraseña erroneas';
+          this.error = err._body.message;
       });
 
   }
 
   public submitSignUp() {
-    console.log('we\'re submitting signUp');
     this.api.signUp(this.name, this.last_name, this.mail, this.address, this.password)
       .subscribe((response) => {
         this.close.emit(false);
       }, (err) => {
-        this.error = 'hubo un error creando su cuenta, intente más tarde';
+        this.error = err._body.message;
       });
   }
 

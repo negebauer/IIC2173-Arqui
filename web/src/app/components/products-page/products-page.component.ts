@@ -19,10 +19,8 @@ export class ProductsPageComponent implements OnInit {
   constructor(public _http: HttpServiceProvider, private session: SessionService) {
     this.session.isLoggedIn()
       .subscribe((resp) => {
-        console.log(resp)
         if (resp) {
           const user = JSON.parse(localStorage.getItem('user'));
-          console.log(user.token)
           this.getProducts(user.token);
         } else {
           this.getProducts(null);

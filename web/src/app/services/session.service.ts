@@ -40,6 +40,10 @@ export class SessionService {
         }
     }
 
+    public emptyCart() {
+        this.cart.splice(0,this.cart.length);
+    }
+
     //User Session (login status)
     public checkStoredSession() {
         // set token if saved in local storage

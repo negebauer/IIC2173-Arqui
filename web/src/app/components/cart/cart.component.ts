@@ -41,16 +41,23 @@ export class CartComponent implements OnInit {
     this.session.removeFromCart(product);
   }
 
+  public emptyCart() {
+    this.session.emptyCart();
+  }
+
   makePurchase() {
-    //this.api.purchase()
     if (this.user && this.cart.length > 0) {
       let ids = this.cart.map((product) => {
         return product.id
       })
       this.api.placeOrder(ids, this.user.token)
         .subscribe((response) => {
-          console.log(response);
-        })
+          alert('Orden completada exitosamente!');
+          this.emptyCart();
+          this.hideCart();
+        }, (err) => {
+          alert("Hubo un error al generar la orden, intente más tarde")
+        });
     } else {
       alert('Debes iniciar sesión primero!');
     }
