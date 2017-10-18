@@ -13,6 +13,7 @@
     "test:ci": "jest --coverage --testResultsProcessor=jest-junit"
   },
   "dependencies": {
+    "axios": "^0.16.2",
     "koa": "^2.2.0",
     "koa-bodyparser": "^4.2.0",
     "koa-convert": "^1.2.0",
