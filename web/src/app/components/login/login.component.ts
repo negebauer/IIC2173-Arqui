@@ -58,9 +58,11 @@ export class LoginComponent {
   public validateMailAndPassword() {
     if (!this.va.isMail(this.mail)) {
       this.error = 'ingresa un mail válido';
-    } else if (!this.va.validPassword(this.password)) {
+    } 
+    else if (!this.va.validPassword(this.password)) {
       this.error = 'ingresa una contraseña de 4-12 caracteres';
-    } else {
+    } 
+    else {
       this.error = '';
       return true;
     }
@@ -85,21 +87,19 @@ export class LoginComponent {
     this.api.logIn(this.mail, this.password)
       .subscribe((response) => {
           this.session.login(this.mail, response.token);
-          console.log(response);
           this.close.emit(false);
       }, (err) => {
-          this.error = 'mail o contraseña erroneas';
+          this.error = JSON.parse((err['_body']))['message']
       });
 
   }
 
   public submitSignUp() {
-    console.log('we\'re submitting signUp');
     this.api.signUp(this.name, this.last_name, this.mail, this.address, this.password)
       .subscribe((response) => {
         this.close.emit(false);
       }, (err) => {
-        this.error = 'hubo un error creando su cuenta, intente más tarde';
+        this.error = JSON.parse((err['_body']))['message']
       });
   }
 

@@ -1,5 +1,6 @@
 version: 2
 jobs:
+
   gitflow:
     docker:
       - image: circleci/node:8.5
@@ -9,7 +10,6 @@ jobs:
           command: |
             invalid=1
             if [[ $CIRCLE_BRANCH == 'master' ]]; then invalid=0; fi
-            if [[ $CIRCLE_BRANCH == 'dev' ]]; then invalid=0; fi
             if [[ $CIRCLE_BRANCH == 'f/'* ]]; then invalid=0; fi
             if [[ $invalid == 1 ]]; then exit 1; fi
 
@@ -48,7 +48,25 @@ jobs:
     steps:
       - checkout:
           path: ~/arqui
-      - run: pwd; ls
+      - restore_cache:
+          keys:
+          - email-v1-{{ checksum "package.json" }}
+          - email-v1-
+      - run: yarn
+      - save_cache:
+          paths:
+            - node_modules
+          key: email-v1-{{ checksum "package.json" }}
+      - run: yarn lint
+      - run: yarn test:ci
+      - store_test_results:
+          path: ./coverage
+      - store_artifacts:
+          path: ./coverage/junit.xml
+          destination: junit/junit.xml
+      - store_artifacts:
+          path: ./coverage/lcov-report
+          destination: coverage
 
   queue:
     docker:
@@ -116,7 +134,7 @@ jobs:
 
   docker-api:
     docker:
-      - image: docker
+      - image: circleci/node:8.5
         environment:
           REPO: negebauer/iic2173-arqui-api
           TAG_CI: circleci
@@ -126,20 +144,33 @@ jobs:
           path: ~/arqui
       - setup_remote_docker:
           version: 17.05.0-ce
-      - run: docker build -t $REPO:$TAG_CI-$CIRCLE_BUILD_NUM .
+      - run: docker build -t $REPO .
+      - run: docker tag $REPO $REPO:$(git describe)
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: docker push $REPO:$TAG_CI-$CIRCLE_BUILD_NUM
-      - run:
-          name: Deploy latest or dev if master or dev
-          command: |
-            TAG=dev
-            if [[ $CIRCLE_BRANCH == 'master' ]]; then TAG=latest; fi
-            docker tag $REPO:$TAG_CI-$CIRCLE_BUILD_NUM $REPO:$TAG
-            docker push $REPO:$TAG
+      - run: docker push $REPO:$(git describe)
+      - run: docker push $REPO
+
+  docker-email:
+    docker:
+      - image: circleci/node:8.5
+        environment:
+          REPO: negebauer/iic2173-arqui-email
+          TAG_CI: circleci
+    working_directory: ~/arqui/email
+    steps:
+      - checkout:
+          path: ~/arqui
+      - setup_remote_docker:
+          version: 17.05.0-ce
+      - run: docker build -t $REPO .
+      - run: docker tag $REPO $REPO:$(git describe)
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: docker push $REPO:$(git describe)
+      - run: docker push $REPO
 
   docker-queue:
     docker:
-      - image: docker
+      - image: circleci/node:8.5
         environment:
           REPO: negebauer/iic2173-arqui-queue
           TAG_CI: circleci
@@ -149,20 +180,15 @@ jobs:
           path: ~/arqui
       - setup_remote_docker:
           version: 17.05.0-ce
-      - run: docker build -t $REPO:$TAG_CI-$CIRCLE_BUILD_NUM .
+      - run: docker build -t $REPO .
+      - run: docker tag $REPO $REPO:$(git describe)
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: docker push $REPO:$TAG_CI-$CIRCLE_BUILD_NUM
-      - run:
-          name: Deploy latest or dev if master or dev
-          command: |
-            TAG=dev
-            if [[ $CIRCLE_BRANCH == 'master' ]]; then TAG=latest; fi
-            docker tag $REPO:$TAG_CI-$CIRCLE_BUILD_NUM $REPO:$TAG
-            docker push $REPO:$TAG
+      - run: docker push $REPO:$(git describe)
+      - run: docker push $REPO
 
   docker-queue-visualizer:
     docker:
-      - image: docker
+      - image: circleci/node:8.5
         environment:
           REPO: negebauer/iic2173-arqui-queue-visualizer
           TAG_CI: circleci
@@ -172,20 +198,15 @@ jobs:
           path: ~/arqui
       - setup_remote_docker:
           version: 17.05.0-ce
-      - run: docker build -t $REPO:$TAG_CI-$CIRCLE_BUILD_NUM .
+      - run: docker build -t $REPO .
+      - run: docker tag $REPO $REPO:$(git describe)
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: docker push $REPO:$TAG_CI-$CIRCLE_BUILD_NUM
-      - run:
-          name: Deploy latest or dev if master or dev
-          command: |
-            TAG=dev
-            if [[ $CIRCLE_BRANCH == 'master' ]]; then TAG=latest; fi
-            docker tag $REPO:$TAG_CI-$CIRCLE_BUILD_NUM $REPO:$TAG
-            docker push $REPO:$TAG
+      - run: docker push $REPO:$(git describe)
+      - run: docker push $REPO
 
   docker-web:
     docker:
-      - image: docker
+      - image: circleci/node:8.5
         environment:
           REPO: negebauer/iic2173-arqui-web
           TAG_CI: circleci
@@ -195,30 +216,25 @@ jobs:
           path: ~/arqui
       - setup_remote_docker:
           version: 17.05.0-ce
-      - run: docker build -t $REPO:$TAG_CI-$CIRCLE_BUILD_NUM .
+      - run: docker build -t $REPO .
+      - run: docker tag $REPO $REPO:$(git describe)
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: docker push $REPO:$TAG_CI-$CIRCLE_BUILD_NUM
-      - run:
-          name: Deploy latest or dev if master or dev
-          command: |
-            TAG=dev
-            if [[ $CIRCLE_BRANCH == 'master' ]]; then TAG=latest; fi
-            docker tag $REPO:$TAG_CI-$CIRCLE_BUILD_NUM $REPO:$TAG
-            docker push $REPO:$TAG
-
-  docker:
-    docker:
-      - image: circleci/node:8.5
-    steps:
-      - checkout
-      - run: pwd ; ls
-      - run: ls docker
+      - run: docker push $REPO:$(git describe)
+      - run: docker push $REPO
 
   deploy:
     docker:
       - image: circleci/node:8.5
+    working_directory: ~/arqui/docker
     steps:
-      - run: echo "NOT IMPLEMENTED"
+      - checkout:
+          path: ~/arqui
+      - add_ssh_keys:
+          fingerprints:
+            - "f7:76:78:2a:7c:64:4c:5c:86:39:c1:be:4d:a5:00:78"
+      - run: ssh -o "StrictHostKeyChecking no" administrator@arqss2.ing.puc.cl 'ls'
+      - run: scp docker-compose-stack.yml administrator@arqss2.ing.puc.cl:.
+      - run: ssh administrator@arqss2.ing.puc.cl 'docker stack deploy -c docker-compose-stack.yml arqui'
 
 workflows:
   version: 2
@@ -237,7 +253,13 @@ workflows:
               branches:
                 only:
                   - master
-                  - dev
+        - docker-email:
+            requires:
+              - email
+            filters:
+              branches:
+                only:
+                  - master
         - docker-queue:
             requires:
                 - queue
@@ -245,7 +267,6 @@ workflows:
               branches:
                 only:
                   - master
-                  - dev
         - docker-queue-visualizer:
             requires:
                 - queue-visualizer
@@ -253,7 +274,6 @@ workflows:
               branches:
                 only:
                   - master
-                  - dev
         - docker-web:
             requires:
               - web
@@ -261,22 +281,17 @@ workflows:
               branches:
                 only:
                   - master
-                  - dev
-        - docker:
-            requires:
-              - docker-api
-              - email
-              - queue
-              - docker-web
-            filters:
-              branches:
-                only:
-                  - master
-                  - dev
         - deploy:
             requires:
-              - docker
+              - gitflow
+              - docker-api
+              - docker-email
+              - docker-queue
+              - docker-queue-visualizer
+              - docker-web
             filters:
+              tags:
+                only: /v\d+.\d+.\d+\Z/
               branches:
                 only:
                   - master

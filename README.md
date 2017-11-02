@@ -42,7 +42,7 @@ All the following links _should_ work
 |http://arqss2.ing.puc.cl/api/ |Our [api](api)|
 |http://arqss2.ing.puc.cl/queue/ |Our [queue](queue)|
 |http://arqss2.ing.puc.cl/v/ |A swarm visualizer|
-|http://arqss2.ing.puc.cl/vq/ |Our [queue-visualizer](queue-visualizer) for the queue|
+|http://arqss2.ing.puc.cl/qv/ |Our [queue-visualizer](queue-visualizer) for the queue|
 |http://arqss2.ing.puc.cl/admin?stats |HAProxy stats (user: u, pass: p)|
 
 ***
@@ -52,6 +52,7 @@ All the following links _should_ work
 - commits
   - https://conventionalcommits.org
   - https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit
+  - https://github.com/conventional-changelog/standard-version
 - docker
   - https://docs.docker.com/get-started
   - https://docs.docker.com/engine/installation/linux
@@ -82,10 +83,10 @@ All the following links _should_ work
 <!-- Badges -->
 
 [circleciL]:https://circleci.com/gh/negebauer/IIC2173-Arqui
-[circleciB]:https://circleci.com/gh/negebauer/IIC2173-Arqui.svg?style=svg&circle-token=3634a4c1bb42fd24fb638af8b3d05a1f114789f6
+[circleciB]:https://circleci.com/gh/negebauer/IIC2173-Arqui/tree/master.svg?style=svg&circle-token=13d482e124498647c8fd561b476976d460b175f4
 
 [gitflowL]:https://datasift.github.io/gitflow/IntroducingGitFlow.html
 [gitflowB]:https://img.shields.io/badge/git-flow-brightgreen.svg
 
 [commitsL]:https://conventionalcommits.org
-[commitsB]:https://img.shields.io/badge/commits-conventional-brightgreen.svg
+[commitsB]:https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg

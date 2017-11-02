@@ -10,6 +10,13 @@ services:
       replicas: 1
       placement:
         constraints: [node.role == manager]
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: rollback
+        monitor: 10s
     depends_on:
       - proxy
     volumes:
@@ -26,6 +33,13 @@ services:
       - MODE=swarm
     deploy:
       mode: global
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 2
+        delay: 10s
+        failure_action: pause
+        monitor: 10s
     ports:
       - "80:80"
       - "443:443"
@@ -38,15 +52,17 @@ services:
     entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles"]
     deploy:
       mode: global
-      restart_policy:
-        condition: on-failure
-      update_config:
-        parallelism: 1
-        delay: 1m30s
       labels:
         - com.df.notify=true
         - com.df.distribute=true
         - com.df.port=27017
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 1m
+        failure_action: pause
+        monitor: 2s
     ports:
       - "27017:27017"
     volumes:
@@ -69,6 +85,11 @@ services:
         constraints: [node.role == manager]
       restart_policy:
         condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: pause
+        monitor: 2s
     depends_on:
       - mongo
     volumes:
@@ -80,6 +101,17 @@ services:
     image: redis:3
     deploy:
       replicas: 1
+      labels:
+        - com.df.notify=true
+        - com.df.distribute=true
+        - com.df.port=6379
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 1m
+        failure_action: pause
+        monitor: 2s
       placement:
         constraints: [node.role == manager]
       restart_policy:
@@ -109,17 +141,21 @@ services:
     deploy:
       replicas: 3
       placement:
-        constraints: [node.role == manager]  
+        constraints: [node.role == manager]
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     networks:
       - proxy
 
   api:
-    image: negebauer/iic2173-arqui-api:dev
+    image: negebauer/iic2173-arqui-api
     environment:
       - MONGO=mongodb://mongo/IIC2173-Arqui?replicaSet=rs
+      - API_MAILER_SECRET=secretapimailer
       - API_QUEUE_SECRET=secretapiqueue
+      - MAILER_URI=http://email
+      - QUEUE_URI=http://queue
+      - ARQUITRAN_URI=http://arqss17.ing.puc.cl:3000
     deploy:
       replicas: 14
       labels:
@@ -131,15 +167,46 @@ services:
         - com.df.reqPathReplace=
       restart_policy:
         condition: on-failure
-      # placement:
-        # constraints: [node.role != manager]
+      update_config:
+        parallelism: 3
+        delay: 10s
+        failure_action: pause
+        monitor: 2s
     depends_on:
       - mongo
+      - queue
+      - email
+    networks:
+      - proxy
+
+  email:
+    image: negebauer/iic2173-arqui-email
+    environment:
+      - API_MAILER_SECRET=secretapimailer
+      - API=http://api
+    deploy:
+      replicas: 3
+      labels:
+        - com.df.notify=true
+        - com.df.distribute=true
+        - com.df.servicePath=/email
+        - com.df.port=80
+        - com.df.reqPathSearch=/email
+        - com.df.reqPathReplace=
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 3
+        delay: 10s
+        failure_action: pause
+        monitor: 2s
+    depends_on:
+      - api
     networks:
       - proxy
 
   web:
-    image: negebauer/iic2173-arqui-web:dev
+    image: negebauer/iic2173-arqui-web
     environment:
       - API=http://arqss2.ing.puc.cl/api
     deploy:
@@ -149,8 +216,13 @@ services:
         - com.df.distribute=true
         - com.df.servicePath=/
         - com.df.port=80
-      # placement:
-        # constraints: [node.role != manager]
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 2
+        delay: 10s
+        failure_action: pause
+        monitor: 2s
     networks:
       - proxy
 
@@ -165,6 +237,13 @@ services:
         - com.df.port=8080
         - com.df.reqPathSearch=/v
         - com.df.reqPathReplace=
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: rollback
+        monitor: 2s
       placement:
         constraints: [node.role == manager]
     volumes:
@@ -173,7 +252,7 @@ services:
       - proxy
 
   queue:
-    image: negebauer/iic2173-arqui-queue:dev
+    image: negebauer/iic2173-arqui-queue
     environment:
       - API_URL=http://api
       - API_QUEUE_SECRET=secretapiqueue
@@ -189,15 +268,20 @@ services:
         - com.df.port=80
         - com.df.reqPathSearch=/queue
         - com.df.reqPathReplace=
-      placement:
-        constraints: [node.role != manager]
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: rollback
+        monitor: 2s
     depends_on:
       - redis-master
     networks:
       - proxy
 
   queue-visualizer:
-    image: negebauer/iic2173-arqui-queue-visualizer:dev
+    image: negebauer/iic2173-arqui-queue-visualizer
     environment:
       - REDIS_PORT=6379
       - REDIS_HOST=redis-slave
@@ -211,8 +295,13 @@ services:
         - com.df.port=80
         - com.df.reqPathSearch=/qv
         - com.df.reqPathReplace=
-      placement:
-        constraints: [node.role == manager]
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: rollback
+        monitor: 2s
     depends_on:
       - redis-slave
     networks:

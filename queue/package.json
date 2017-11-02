@@ -1,12 +1,11 @@
 {
-  "name": "queue",
-  "version": "0.0.1",
+  "name": "arquiyalt-queue",
   "private": true,
   "main": "index.js",
   "description": "A Queue API written in Koa.js.",
   "scripts": {
     "dev": "nodemon index.js",
-    "start": "node index.js",
+    "start": "NODE_ENV=production node index.js",
     "lint": "eslint ./src index.js",
     "lint:fix": "eslint --fix ./src index.js",
     "test": "jest --watch",
@@ -14,6 +13,7 @@
     "test:ci": "jest --coverage --testResultsProcessor=jest-junit"
   },
   "dependencies": {
+    "axios": "^0.16.2",
     "koa": "^2.2.0",
     "koa-bodyparser": "^4.2.0",
     "koa-convert": "^1.2.0",

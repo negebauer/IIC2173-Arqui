@@ -2,7 +2,7 @@ version: "3"
 services:
 
   api:
-    image: negebauer/iic2173-arqui-api:dev
+    image: negebauer/iic2173-arqui-api
     # build: ../api
     environment:
       - MONGO=mongodb://mongo/IIC2173-Arqui-test
@@ -21,7 +21,7 @@ services:
       - proxy
 
   web:
-    image: negebauer/iic2173-arqui-web:dev
+    image: negebauer/iic2173-arqui-web
     # build: ../web
     environment:
       - API=http://localhost:3000
@@ -31,7 +31,7 @@ services:
       - proxy
 
   queue:
-    image: negebauer/iic2173-arqui-queue:dev
+    image: negebauer/iic2173-arqui-queue
     # build: ../queue
     environment:
       - API_URL=http://localhost:3000
@@ -42,7 +42,7 @@ services:
       - proxy
 
   queue-visualizer:
-    image: negebauer/iic2173-arqui-queue-visualizer:dev
+    image: negebauer/iic2173-arqui-queue-visualizer
     # build: ../queue-visualizer
     environment:
       - REDIS_HOST=redis

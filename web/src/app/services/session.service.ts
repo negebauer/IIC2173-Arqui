@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class SessionService {
     public token: string;
-    private logger = new Subject<boolean>();
+    private logger = new BehaviorSubject<boolean>(false);
     private cart = [];
     private visibleCart = new Subject<boolean>();
 
@@ -38,6 +38,10 @@ export class SessionService {
         if (index > -1) {
            this.cart.splice(index, 1);
         }
+    }
+
+    public emptyCart() {
+        this.cart.splice(0,this.cart.length);
     }
 
     //User Session (login status)

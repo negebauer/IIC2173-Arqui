@@ -1,12 +1,21 @@
 <!-- nav bar -->
-<div class="topnav" id="myTopnav">
-  <a class="title">Arquiyalt</a>
-  <a *ngIf="!isLogged" (click)="showLogin()" class="right">Login</a>
-  <a *ngIf="isLogged" (click)="logout()" class="right">Logout</a>
-  <a *ngIf="isLogged" class="right">{{user.mail}}</a>
-</div>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <a class="navbar-brand">Arquiyalt</a>
+    <ul class="nav navbar-nav navbar-right">
+ 	    <li><a *ngIf="!isLogged" (click)="showLogin()" class="navbar-link">Login</a></li>
+  	  <li><p *ngIf="isLogged"  class="navbar-text">Signed in as {{user.mail}} </p></li>
+      <li><a *ngIf="isLogged" (click)="logout()" class="navbar-link">Logout</a></li>
+    </ul>
+</nav>
 
 <login *ngIf="showModalLogin" (close)="closeLogin()"></login>
+
+<div class="vertical-margin"></div>
+<div class="title">
+	<h1 class="display-3"> Arquitrán </h1>
+	<h1 class="subtitle"> Listado de productos disponibles </h1>
+</div>
 
 <products-page></products-page>
 

@@ -71,7 +71,7 @@ router.get('nestedCategory', '/:id/products', async ctx => {
     const categories = parseCategories(rawCategories, products)
     setCategoriesCache(categories)
     const category = categories.find(
-      cat => cat.id === Number(ctx.params.id) || -1
+      cat => cat.id === (Number(ctx.params.id) || -1)
     )
     if (!category) {
       ctx.status = 404
@@ -102,7 +102,7 @@ router.get('nestedCategory', '/:id/products', async ctx => {
     const categories = parseCategories(rawCategories, products)
     setCategoriesCache(categories)
     const category = categories.find(
-      cat => cat.id === Number(ctx.params.id) || -1
+      cat => cat.id === (Number(ctx.params.id) || -1)
     )
     if (!category) {
       ctx.status = 404
@@ -171,7 +171,7 @@ router.get('category', '/:id', async ctx => {
     }
     setCategoriesCache(categories)
     const category = categories.find(
-      cat => cat.id === Number(ctx.params.id) || -1
+      cat => cat.id === (Number(ctx.params.id) || -1)
     )
     if (!category) {
       ctx.status = 404
@@ -198,7 +198,7 @@ router.get('category', '/:id', async ctx => {
     }
     setCategoriesCache(categories)
     const category = categories.find(
-      cat => cat.id === Number(ctx.params.id) || -1
+      cat => cat.id === (Number(ctx.params.id) || -1)
     )
     if (!category) {
       ctx.status = 404

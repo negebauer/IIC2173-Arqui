@@ -5,11 +5,28 @@
 			
 		</div>
 	</div>
-	<div class="cart-products">
-		<div class="cart-product" *ngFor="let product of cart" (click)="removeProduct(product)">
-			{{product.name}}
-		</div>
+
+	<div class="products-container">
+		<div class="list-group" *ngFor="let product of cart" >
+		    <div class="list-group-item cart-item">
+			    <div class="row">
+					<div class="col-7">
+						<h4>{{product.name}}</h4>
+						<h5>{{product.price | currency: 'USD' :true }}</h5>
+					</div>
+				    <div class="col-5">
+					    <div class="remove-btn"> 
+					    	<button class="btn btn-primary btn-sm view-product"> View Product </button>
+					    	<button class="btn btn-secondary btn-sm" (click)="removeProduct(product)"> Remove </button>
+					    </div>
+				    </div>
+			    </div> 
+	    	</div>
+	 	 </div>
+ 	 </div>
+
+ 	<div class="buy-container">
+	<button [class.disabled]="cart.length == 0" class="btn btn-success btn-lg" (click)="makePurchase()">Realizar Pedido</button>
 	</div>
-	<button class="buy" (click)="makePurchase()">Realizar Pedido</button>
 
 </div>

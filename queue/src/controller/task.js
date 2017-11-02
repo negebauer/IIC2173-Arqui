@@ -1,9 +1,10 @@
 /* eslint-disable no-console */
 
-// const request = require('request')
+const axios = require('axios')
 const taskQueue = require('../queue/tasks')
 
 const API_QUEUE_SECRET = process.env.API_QUEUE_SECRET || 'apiqueuesecret'
+const API_URL = process.env.API_URL || 'http://localhost:3000'
 
 exports.purchase = async ctx => {
   if (ctx.request.header['secret'] === API_QUEUE_SECRET) {
@@ -30,32 +31,25 @@ exports.purchase = async ctx => {
         }
       )
 
-      task.on('complete', result => {
-        //Acá se debería mandar el request para avisar que se completo la compra.
-        console.log('  job #' + task.id + ' completed')
-        console.log(result)
-        // TODO: THIS KILLS APP WHEN TESTING POSTING A TASK
-        // const base = process.env.API_URL
-        // const url = base + 'orders/resolved'
-        // result.products_array.forEach(p => {
-        //   console.log(p)
-        //   request.post(
-        //     {
-        //       url,
-        //       form: { user_id, product: p },
-        //       headers: {
-        //         'Content-Type': 'application/json',
-        //         Secret: process.env.API_QUEUE_SECRET,
-        //       },
-        //     },
-        //     (err, response, body) => {
-        //       console.log('err', err)
-        //       console.log('response', response)
-        //       console.log(response.statusCode)
-        //       console.log(body)
-        //     }
-        //   )
-        // })
+      task.on('complete', async result => {
+        const url = API_URL + '/orders/resolved'
+        const response = await axios.post(
+          url,
+          {
+            userId: result.userId,
+            productId: result.productId,
+            sentAt: result.sentAt,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Secret: API_QUEUE_SECRET,
+            },
+          }
+        )
+        if (response.status !== 200) {
+          console.log('Error validating order.')
+        }
       })
 
       task.on('failed attempt', function(errorMessage, doneAttempts) {

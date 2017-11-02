@@ -5,11 +5,13 @@ import { HttpServiceProvider } from '../../services/HttpServiceProvicer';
 @Component({
   selector: 'cart',
   templateUrl: './cart.component.html',
-  styleUrls: ['./cart.component.css']
+  styleUrls: ['./cart.component.scss']
 })
 export class CartComponent implements OnInit {
 
   cart = [];
+  isLogged;
+  user;
 
   constructor(private session: SessionService, private api: HttpServiceProvider) {
   	session.getCart()
@@ -19,6 +21,16 @@ export class CartComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.session.isLoggedIn()
+      .subscribe((resp) => {
+        this.isLogged = resp;
+        if (resp) {
+          this.user = JSON.parse(localStorage.getItem('user'));
+        } else {
+          this.user = null;
+        }
+      });
+
   }
 
   public hideCart() {
@@ -29,9 +41,26 @@ export class CartComponent implements OnInit {
     this.session.removeFromCart(product);
   }
 
+  public emptyCart() {
+    this.session.emptyCart();
+  }
+
   makePurchase() {
-    //this.api.purchase()
-    alert('Nuestro proveedor aun no permite realizar compras');
+    if (this.user && this.cart.length > 0) {
+      let ids = this.cart.map((product) => {
+        return product.id
+      })
+      this.api.placeOrder(ids, this.user.token)
+        .subscribe((response) => {
+          alert('Orden completada exitosamente!');
+          this.emptyCart();
+          this.hideCart();
+        }, (err) => {
+          alert("Hubo un error al generar la orden, intente más tarde")
+        });
+    } else {
+      alert('Debes iniciar sesión primero!');
+    }
   }
 
 }

@@ -1,22 +1,28 @@
 {
-  "name": "arquiyalt-queue-visualizer",
+  "name": "arquiyalt-email",
   "private": true,
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
     "start": "NODE_ENV=production node index.js",
-    "lint": "eslint index.js",
-    "lint:fix": "eslint --fix index.js",
+    "lint": "eslint ./src index.js",
+    "lint:fix": "eslint --fix ./src index.js",
     "test": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:ci": "jest --coverage --testResultsProcessor=jest-junit"
   },
   "dependencies": {
-    "kue": "^0.10.2"
+    "axios": "^0.16.2",
+    "koa": "^2.3.0",
+    "koa-bodyparser": "^4.2.0",
+    "koa-logger": "^3.1.0",
+    "koa-router": "^7.2.1",
+    "mail-notifier": "^0.4.1",
+    "nodemailer": "^4.1.3"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.1",
-    "eslint": "^4.9.0",
+    "eslint": "^4.8.0",
     "eslint-config-prettier": "^2.6.0",
     "eslint-plugin-prettier": "^2.3.1",
     "jest": "^21.2.1",

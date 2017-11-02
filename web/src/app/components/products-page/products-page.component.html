@@ -1,13 +1,22 @@
+
 <div *ngIf="isCache" class="cache-disclaimer">
-	<div class="img-container"></div>
-	<p>Advertencia: Los datos mostrados a continuación fueron obtenidos el {{ date }}, podrían estar desactualizados</p>
+	<div class="alert alert-warning">Advertencia: Los datos mostrados a continuación fueron obtenidos el {{ date }}, podrían estar desactualizados</div>
+	<p></p>
 </div>
 
 
-<div class="products-container">
-	<div class="products">
-		<div *ngFor="let product of products" class="product" (click)="addToCart(product)">
-			{{product.name}}
-		</div>
+<div class="container products-page-container">
+    <div class="row align-items-center">
+		<div *ngFor="let product of products" class="col-md-4 col-xs-12 col-ms-12">
+			<div class="thumbnail" >
+				<img src="" class="img-responsive">
+				<div class="caption">
+					<h2>{{product.name}}</h2>
+					<h3>Price: {{product.price | currency: 'USD' :true  }}</h3>
+					<p class="description">Description ...</p>
+					<button class="btn btn-primary btn-product" (click)="addToCart(product)" ><span class="glyphicon glyphicon-shopping-cart"></span> Add to cart</button>
+				</div>
+			</div>
+        </div> 
 	</div>
 </div>

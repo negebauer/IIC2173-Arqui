@@ -1,0 +1,17 @@
+{
+  "name": "arquiyalt",
+  "version": "0.2.0",
+  "repository": "https://github.com/negebauer/IIC2173-Arqui.git",
+  "author": "negebauer <negebauer@uc.cl> (https://negebauer.com)",
+  "contributors": [
+    "fnmendez <fnmendez@uc.cl"
+  ],
+  "private": true,
+  "scripts": {
+    "release": "git pull && standard-version && git push --follow-tags origin master",
+    "prerelease": "if [[ $(git rev-parse --abbrev-ref HEAD) != master ]]; then echo 'Run from master'; exit 1; fi"
+  },
+  "devDependencies": {
+    "standard-version": "^4.2.0"
+  }
+}
