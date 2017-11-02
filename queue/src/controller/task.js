@@ -4,7 +4,7 @@ const axios = require('axios')
 const taskQueue = require('../queue/tasks')
 
 const API_QUEUE_SECRET = process.env.API_QUEUE_SECRET || 'apiqueuesecret'
-const API_URL = process.env.API_URL || 'http://localhost:3000'
+const API = process.env.API || 'http://localhost:3000'
 
 exports.purchase = async ctx => {
   if (ctx.request.header['secret'] === API_QUEUE_SECRET) {
@@ -32,7 +32,7 @@ exports.purchase = async ctx => {
       )
 
       task.on('complete', async result => {
-        const url = API_URL + '/orders/resolved'
+        const url = API + '/orders/resolved'
         const response = await axios.post(
           url,
           {

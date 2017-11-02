@@ -22,7 +22,7 @@ yarn dev
 |variable|default|use|
 |:-:|:-:|:-:|
 |PORT|3002|port in which queue will listen for requests|
-|API_URL|localhost:3000|api base url, should depend on the machine the queue is deployed|
+|API|localhost:3000|api base url, should depend on the machine the queue is deployed|
 |API_QUEUE_SECRET|apiqueuesecret|secret key shared between api and queue|
 |REDIS_PORT|6379|redis database port|
 |REDIS_HOST|localhost|redis database host|

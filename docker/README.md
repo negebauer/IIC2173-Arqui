@@ -23,7 +23,8 @@
 Use `docker-compose` to deploy the full app in a single machine for testing
 
 ```bash
-docker-compose up -d docker-compose.yml
+docker-compose build    # Build images
+docker-compose up -d    # Run them
 ```
 
 ## Swarm deploy
@@ -58,7 +59,8 @@ If a new version of a service image is available we can update it
 docker service update --image <image> <service>
 ```
 
-This will update one service task at a time, reducing downtime
+This will update one service task at a time, reducing downtime  
+Number of services updated in parallel is defined in the stack file
 
 ## Other commands
 
@@ -70,12 +72,14 @@ docker container ls
 
 ## Scripts
 
+Config and helpers scripts can be found in the [scripts](scripts) folder
+
 |script|use|
 |:--:|:--:|
-|[zcreateDbFolder.sh](zcreateDbFolder.sh)|(**DON'T RUN**) Configure docker-machine with all arqss machines|
-|[zdockerMachine.sh](zdockerMachine.sh)|(**DON'T RUN**) Configure docker-machine with all arqss machines|
-|[zinstallDocker.sh](zinstallDocker.sh)|Install docker, docker-compose and docker-machine on all arqss machines|
-|[zremoveNginx.sh](zremoveNginx.sh)|Remove nginx from all arqss machines|
+|[createDbFolder.sh](scripts/createDbFolder.sh)|(**DON'T RUN**) Create database folders for volume mount|
+|[dockerMachine.sh](scripts/dockerMachine.sh)|(**DON'T RUN**) Configure docker-machine with all arqss machines|
+|[installDocker.sh](scripts/installDocker.sh)|Install docker, docker-compose and docker-machine on all arqss machines|
+|[removeNginx.sh](scripts/removeNginx.sh)|Remove nginx from all arqss machines|
 
 ***
 

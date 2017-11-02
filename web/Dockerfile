@@ -1,4 +1,4 @@
-FROM mhart/alpine-node:latest as builder
+FROM node:8-alpine as builder
 
 WORKDIR /web
 
@@ -13,7 +13,7 @@ ENV API DOCKER_ENV_API
 
 RUN yarn build
 
-FROM mhart/alpine-node:latest
+FROM node:8-alpine
 
 COPY --from=builder /web/dist dist
 COPY --from=builder /web/serveInjected.sh .

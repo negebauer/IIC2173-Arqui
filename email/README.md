@@ -32,6 +32,8 @@ yarn dev
 |:-:|:-:|:-:|
 |PORT|3001|port in which email client will listen for requests|
 |API|localhost:3000|api url|
+|API_MAILER_SECRET|apimailersecret|secret token to auth with api|
+|MAIL_PASSWORD|arquitectura|mail account password|
 
 ## Email address
 

@@ -177,56 +177,10 @@ services:
     networks:
       - proxy
 
-  web:
-    image: negebauer/iic2173-arqui-web
-    environment:
-      - API=http://arqss2.ing.puc.cl/api
-    deploy:
-      replicas: 5
-      labels:
-        - com.df.notify=true
-        - com.df.distribute=true
-        - com.df.servicePath=/
-        - com.df.port=80
-      restart_policy:
-        condition: on-failure
-      update_config:
-        parallelism: 2
-        delay: 10s
-        failure_action: pause
-        monitor: 2s
-    networks:
-      - proxy
-
-  visualizer:
-    image: dockersamples/visualizer:stable
-    deploy:
-      replicas: 1
-      labels:
-        - com.df.notify=true
-        - com.df.distribute=true
-        - com.df.servicePath=/v
-        - com.df.port=8080
-        - com.df.reqPathSearch=/v
-        - com.df.reqPathReplace=
-      restart_policy:
-        condition: on-failure
-      update_config:
-        parallelism: 1
-        delay: 10s
-        failure_action: rollback
-        monitor: 2s
-      placement:
-        constraints: [node.role == manager]
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-    networks:
-      - proxy
-
   queue:
     image: negebauer/iic2173-arqui-queue
     environment:
-      - API_URL=http://api
+      - API=http://api
       - API_QUEUE_SECRET=secretapiqueue
       - REDIS_PORT=6379
       - REDIS_HOST=redis
@@ -276,6 +230,52 @@ services:
         monitor: 2s
     depends_on:
       - redis
+    networks:
+      - proxy
+
+  web:
+    image: negebauer/iic2173-arqui-web
+    environment:
+      - API=http://arqss2.ing.puc.cl/api
+    deploy:
+      replicas: 5
+      labels:
+        - com.df.notify=true
+        - com.df.distribute=true
+        - com.df.servicePath=/
+        - com.df.port=80
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 2
+        delay: 10s
+        failure_action: pause
+        monitor: 2s
+    networks:
+      - proxy
+
+  visualizer:
+    image: dockersamples/visualizer:stable
+    deploy:
+      replicas: 1
+      labels:
+        - com.df.notify=true
+        - com.df.distribute=true
+        - com.df.servicePath=/v
+        - com.df.port=8080
+        - com.df.reqPathSearch=/v
+        - com.df.reqPathReplace=
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: rollback
+        monitor: 2s
+      placement:
+        constraints: [node.role == manager]
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
     networks:
       - proxy
 
