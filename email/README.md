@@ -14,12 +14,12 @@
   - [View one or more products](#view-one-or-more-products)
   - [Buy products](#buy-products)
   - [Help](#help)
-- [Api usage](#api-usage))
-  - [orderStatus](#orderStatus)
+- [Api usage](#api-usage)
+  - [Order status](#order-status)
 
 ## Development
 
-Clone the repo and cd to `api` directory
+Clone the repo and cd to `email` directory
 
 ```bash
 yarn
@@ -37,7 +37,7 @@ yarn dev
 
 ## Email address
 
-The email address to which clientes must contact is IIC2173grupo1@gmail.com
+The email address clients must contact is IIC2173grupo1@gmail.com
 
 ## Email formats
 
@@ -81,7 +81,7 @@ This will result in retrieving the information of all categories, with the infor
 ### View one or more products
 
 - Header: "Consulta"
-- Body: "Producto: productId1;productId1;productId1;productId1."
+- Body: "Producto: productId1;productId2;productId3;productId4."
 
 This will result in retrieving the information of the products with id productId1, productId2, productId3 and productId4.
 <!---
@@ -93,7 +93,7 @@ This will result in retrieving the information of the products with id productId
 ### Buy products
 
 - Header: "Compra"
-- Body: "Producto: productId1;productId1;productId1;productId1."
+- Body: "Producto: productId1;productId2;productId3;productId4."
 
 This will result in buying the products with id productId1, productId2, productId3 and productId4
 <!---
@@ -106,11 +106,11 @@ This will result in buying the products with id productId1, productId2, productI
 - Header: "Ayuda" (or any invalid header)
 - Body: ""
 
-This will send and email with all the posible Email formats you can send.
+This will send and email with all the possible Email formats you can send.
 
 ## Api usage
 
-### orderStatus
+### Order status
 
 This api receive the status of a pre-made purchase to inform the client of the status of that request.
 
@@ -127,26 +127,24 @@ This api receive the status of a pre-made purchase to inform the client of the s
   ```javascript
   {
     "user": "persona@uc.cl",
-    "errors":
+    "feedback":
     {
-      "notMedicine":
-        [
-          {
-            "id": 20,
-            "name": "Dimetilamina"
-          },
-          {
-            "id": 30,
-            "name": "Ibuprofeno"
-          }
-        ],
-      "notBeenBoughtToday":
-        [
-          {
-            "id": 1072,
-            "name": "Desodorante Nieve"
-          }
-        ]
+      notMedicine:
+      [
+        { id: 10, name: 'Paracetamol', price: 700, passed: false },
+        { id: 1042, name: 'OldSpice', price: 1700, passed: true },
+        { id: 105, name: 'Factor 30', price: 1700, passed: true },
+        { id: 104, name: 'Factor 50', price: 2300, passed: true },
+        { id: 1045, name: 'AXE', price: 1700, passed: true }
+      ],
+      notBeenBoughtToday:
+      [
+        { id: 10, name: 'Paracetamol', price: 700, passed: true },
+        { id: 1042, name: 'OldSpice', price: 1700, passed: false },
+        { id: 105, name: 'Factor 30', price: 1700, passed: false },
+        { id: 104, name: 'Factor 50', price: 2300, passed: true },
+        { id: 1045, name: 'AXE', price: 1700, passed: true }
+      ]
     }
   }
   ```
