@@ -1,9 +1,11 @@
 const Router = require('koa-router')
-
-const orderStatus = require('./routes/orderStatus')
+const { orderResponse } = require('./mail/actions')
 
 const router = new Router()
 
-router.use('/orderStatus', orderStatus.routes())
+router.post('/orderStatus', async ctx => {
+  orderResponse(ctx.request.body)
+  ctx.body = { message: 'Order status received' }
+})
 
 module.exports = router

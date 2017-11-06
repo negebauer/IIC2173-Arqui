@@ -155,7 +155,10 @@ services:
     image: negebauer/iic2173-arqui-email
     environment:
       - API_MAILER_SECRET=secretapimailer
-      - API=http://api
+      - API_URI=http://api
+      - MAIL_NAME=Grupo1
+      - MAIL_USER=iic2173grupo1@gmail.com
+      - MAIL_PASSWORD=arquitectura
     deploy:
       replicas: 3
       labels:

@@ -1,171 +1,185 @@
-const apiRequests = require('./apiRequests')
-const mailResponse = require('./mailResponse')
-const constants = require('./constants')
+const apiRequests = require('../helpers/apiRequests')
+const sendMail = require('./sender')
+const {
+  GET_CATEGORIES,
+  GET_CATEGORY,
+  GET_CATEGORY_WITH_PRODUCTS,
+  GET_ORDER_SENT,
+  GET_PRODUCT,
+  GET_PRODUCTS,
+  GET_PRODUCTS_BY_CATEGORY,
+  GET_HELP,
+  ORDER_RESPONSE_STATUS,
+  ORDER_RESPONSE_SUCCESS,
+  STATUS_CODE_404,
+  STATUS_CODE_503,
+} = require('./templates')
 
-const mailParser = mail =>
-  mail.substring(mail.indexOf('<') + 1, mail.indexOf('>'))
+const parseMail = userInfo => userInfo.match(/<(.*?)>/)[1]
 
-const getCategories = async mailReceiver => {
+const getCategories = async userInfo => {
   let categoriesData, mailSubject, mailMessage
-  const categories = await apiRequests.getCategories(mailParser(mailReceiver))
-  if (categories.status == 200) {
+  const categories = await apiRequests.getCategories(parseMail(userInfo))
+  if (categories.status === 200) {
     categoriesData = categories.data.categories
-    mailSubject = constants.GET_CATEGORIES.subject
-    mailMessage = constants.GET_CATEGORIES.message(categoriesData)
+    mailSubject = GET_CATEGORIES.subject
+    mailMessage = GET_CATEGORIES.message(categoriesData)
   } else {
-    mailSubject = constants.STATUS_CODE_503.subject
-    mailMessage = constants.STATUS_CODE_503.message
+    mailSubject = STATUS_CODE_503.subject
+    mailMessage = STATUS_CODE_503.message
   }
-  mailResponse.processMail(mailReceiver, mailMessage, mailSubject)
+  sendMail(userInfo, mailMessage, mailSubject)
 }
 
-const getCategory = async (mailReceiver, categoryId) => {
+const getCategory = async (userInfo, categoryId) => {
   let categoryData, mailSubject, mailMessage
   try {
-    const category = await apiRequests.getCategory(
-      mailParser(mailReceiver),
+    const category = await apiRequests.getCategories(
+      parseMail(userInfo),
       categoryId
     )
-    if (category.status == 200) {
+    if (category.status === 200) {
       categoryData = category.data.category
-      mailSubject = constants.GET_CATEGORY.subject(categoryData)
-      mailMessage = constants.GET_CATEGORY.message(categoryData)
-    } else {
-      mailSubject = constants.STATUS_CODE_503.subject
-      mailMessage = constants.STATUS_CODE_503.message
-    }
-  } catch (e) {
-    mailSubject = constants.STATUS_CODE_503.subject
-    mailMessage = constants.STATUS_CODE_503.message
+      mailSubject = GET_CATEGORY.subject(categoryData)
+      mailMessage = GET_CATEGORY.message(categoryData)
+    } else if (category.status === 503) {
+      mailSubject = STATUS_CODE_503.subject
+      mailMessage = STATUS_CODE_503.message
+    } else throw new Error()
+  } catch (error) {
+    mailSubject = STATUS_CODE_404.subject
+    mailMessage = STATUS_CODE_404.message('categoría', categoryId)
   }
-  mailResponse.processMail(mailReceiver, mailMessage, mailSubject)
+  sendMail(userInfo, mailMessage, mailSubject)
 }
 
-const getOneCategoryWithNestedProducts = async (
-  mailReceiver,
-  categoriesIds
-) => {
-  let mailSubject, mailMessage
+const getHelp = async userInfo => {
+  const mailMessage = GET_HELP.message
+  const mailSubject = GET_HELP.subject
+  sendMail(userInfo, mailMessage, mailSubject)
+}
+
+const getNestedCategory = async (userInfo, categoriesIds) => {
   const categoriesData = []
-  const failIDs = []
+  const failIds = []
   for (const categoryId of categoriesIds) {
-    const category = await apiRequests.getOneCategoryWithNestedProducts(
-      mailParser(mailReceiver),
-      categoryId
-    )
-    if (category.status == 200) {
+    try {
+      const category = await apiRequests.getNestedCategory(
+        parseMail(userInfo),
+        categoryId
+      )
+      if (category.status !== 200) throw new Error()
       categoriesData.push(category.data.category)
-    } else {
-      failIDs.push(categoryId)
+    } catch (error) {
+      failIds.push(categoryId)
     }
-    mailSubject = constants.GET_CATEGORY_WITH_PRODUCTS.subject
-    mailMessage = constants.GET_CATEGORY_WITH_PRODUCTS.message(
-      categoriesData,
-      failIDs
-    )
-    mailResponse.processMail(mailReceiver, mailMessage, mailSubject)
   }
+  const mailSubject = GET_CATEGORY_WITH_PRODUCTS.subject
+  const mailMessage = GET_CATEGORY_WITH_PRODUCTS.message(
+    categoriesData,
+    failIds
+  )
+  sendMail(userInfo, mailMessage, mailSubject)
 }
 
-const getProducts = async mailReceiver => {
-  let productsData, mailSubject, mailMessage
-  const products = await apiRequests.getProducts(mailParser(mailReceiver))
-
-  if (products.status == 200) {
-    productsData = products.data.products
-    mailSubject = constants.GET_PRODUCTS.subject
-    mailMessage = constants.GET_PRODUCTS.message(productsData)
-  } else {
-    mailSubject = constants.STATUS_CODE_503.subject
-    mailMessage = constants.STATUS_CODE_503.message
-  }
-  mailResponse.processMail(mailReceiver, mailMessage, mailSubject)
-}
-
-const getProduct = async (mailReceiver, itemsIDs) => {
+const getProduct = async (userInfo, productsIds) => {
   const productsData = []
-  const failIDs = []
-  for (const itemID of itemsIDs) {
-    const product = await apiRequests.getProduct(
-      itemID,
-      mailParser(mailReceiver)
-    )
-    if (product.status == 200) {
+  const failIds = []
+  for (const productId of productsIds) {
+    try {
+      const product = await apiRequests.getProducts(
+        parseMail(userInfo),
+        productId
+      )
+      if (product.status !== 200) throw new Error()
       productsData.push(product.data.product)
-    } else {
-      failIDs.push(itemID)
+    } catch (error) {
+      failIds.push(productId)
     }
-    const mailSubject = constants.GET_PRODUCT.subject
-    const mailMessage = constants.GET_PRODUCT.message(productsData, failIDs)
-    mailResponse.processMail(mailReceiver, mailMessage, mailSubject)
   }
+  const mailSubject = GET_PRODUCT.subject
+  const mailMessage = GET_PRODUCT.message(productsData, failIds)
+  sendMail(userInfo, mailMessage, mailSubject)
 }
 
-const sendOrder = async (mailReceiver, items) => {
-  let mailSubject, mailMessage
-  const order = await apiRequests.sendOrder(mailParser(mailReceiver), items)
-  if (order.status == 200) {
-    mailSubject = constants.GET_ORDER_SENT.subject
-    mailMessage = constants.GET_ORDER_SENT.message
+const getProducts = async userInfo => {
+  let productsData, mailSubject, mailMessage
+  const products = await apiRequests.getProducts(parseMail(userInfo))
+  if (products.status === 200) {
+    productsData = products.data.products
+    mailSubject = GET_PRODUCTS.subject
+    mailMessage = GET_PRODUCTS.message(productsData)
   } else {
-    mailSubject = constants.STATUS_CODE_503.subject
-    mailMessage = constants.STATUS_CODE_503.message
+    mailSubject = STATUS_CODE_503.subject
+    mailMessage = STATUS_CODE_503.message
   }
-  mailResponse.processMail(mailReceiver, mailMessage, mailSubject)
+  sendMail(userInfo, mailMessage, mailSubject)
 }
 
-const getProductsBycategory = async mailReceiver => {
-  let productsBycategoryData, mailSubject, mailMessage
-  const productsBycategory = await apiRequests.getProductsBycategory(
-    mailParser(mailReceiver)
+const getProductsByCategory = async userInfo => {
+  let productsByCategoryData, mailSubject, mailMessage
+  const productsByCategory = await apiRequests.getProductsByCategory(
+    parseMail(userInfo)
   )
 
-  if (productsBycategory.status == 200) {
-    productsBycategoryData = productsBycategory.data.categories
-    mailSubject = constants.GET_PRODUCTS_BY_CATEGORY.subject
-    mailMessage = constants.GET_PRODUCTS_BY_CATEGORY.message(
-      productsBycategoryData
+  if (productsByCategory.status === 200) {
+    productsByCategoryData = productsByCategory.data.categories
+    mailSubject = GET_PRODUCTS_BY_CATEGORY.subject
+    mailMessage = GET_PRODUCTS_BY_CATEGORY.message(productsByCategoryData)
+  } else {
+    mailSubject = STATUS_CODE_503.subject
+    mailMessage = STATUS_CODE_503.message
+  }
+  sendMail(userInfo, mailMessage, mailSubject)
+}
+
+const orderResponse = async ({
+  user,
+  resolved,
+  products,
+  errors,
+  confirmationUrl,
+}) => {
+  let mailSubject, mailMessage
+  if (resolved) {
+    mailSubject = ORDER_RESPONSE_SUCCESS.subject
+    mailMessage = ORDER_RESPONSE_SUCCESS.message(resolved)
+  } else if (errors) {
+    mailSubject = ORDER_RESPONSE_STATUS.subject
+    mailMessage = ORDER_RESPONSE_STATUS.message(
+      products,
+      errors,
+      confirmationUrl
     )
   } else {
-    mailSubject = constants.STATUS_CODE_503.subject
-    mailMessage = constants.STATUS_CODE_503.message
+    const error = new Error()
+    error.message = "Coulnd't recognize input to order status endpoint"
+    throw error
   }
-  mailResponse.processMail(mailReceiver, mailMessage, mailSubject)
+  sendMail(user, mailMessage, mailSubject)
 }
 
-const orderResponse = async ctx => {
-  const request = ctx.request
+const sendOrder = async (userInfo, productsIds) => {
   let mailSubject, mailMessage
-  const mailReceiver = request.body.user || 'IIC2173grupo1@gmail.com'
-  if (request.body.resolved) {
-    const resolved = request.body.resolved
-    mailSubject = constants.ORDER_RESPONSE_SUCCESS.subject
-    mailMessage = constants.ORDER_RESPONSE_SUCCESS.message(resolved)
-  } else if (request.body.errors) {
-    const errors = request.body.errors
-    mailSubject = constants.ORDER_RESPONSE_FAILURE.subject
-    mailMessage = constants.ORDER_RESPONSE_FAILURE.message(errors)
+  const order = await apiRequests.sendOrder(parseMail(userInfo), productsIds)
+  if (order.status === 200) {
+    mailSubject = GET_ORDER_SENT.subject
+    mailMessage = GET_ORDER_SENT.message
   } else {
-    mailSubject = ''
-    mailMessage = ''
+    mailSubject = STATUS_CODE_503.subject
+    mailMessage = STATUS_CODE_503.message
   }
-
-  mailResponse.processMail(mailReceiver, mailMessage, mailSubject)
-}
-const help = async mailReceiver => {
-  const mailMessage = constants.NO_SUBJECT.message
-  const mailSubject = constants.NO_SUBJECT.subject
-  mailResponse.processMail(mailReceiver, mailMessage, mailSubject)
+  sendMail(userInfo, mailMessage, mailSubject)
 }
 
 module.exports = {
-  getOneCategoryWithNestedProducts,
   getCategories,
+  getCategory,
+  getHelp,
+  getNestedCategory,
   getProducts,
   getProduct,
-  getCategory,
-  sendOrder,
-  getProductsBycategory,
+  getProductsByCategory,
   orderResponse,
-  help,
+  sendOrder,
 }

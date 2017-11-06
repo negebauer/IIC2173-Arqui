@@ -1,20 +1,20 @@
 const nodemailer = require('nodemailer')
-const constants = require('./constants')
+const { MAIL_NAME, MAIL_USER, MAIL_PASSWORD } = require('../constants')
 
-function processMail(mail_reciver, mail_message, mail_subject) {
+function processMail(mailReceiver, mailMessage, mailSubject) {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'IIC2173grupo1@gmail.com',
-      pass: constants.SECRET.MAIL_PASSWORD,
+      user: MAIL_USER,
+      pass: MAIL_PASSWORD,
     },
   })
 
   const mailOptions = {
-    from: 'Grupo1 <IIC2173grupo1@gmail.com>',
-    to: mail_reciver,
-    subject: mail_subject,
-    text: mail_message,
+    from: `${MAIL_NAME} <${MAIL_USER}>`,
+    to: mailReceiver,
+    subject: mailSubject,
+    html: mailMessage,
   }
 
   transporter.sendMail(mailOptions, function(err, res) {
@@ -26,6 +26,4 @@ function processMail(mail_reciver, mail_message, mail_subject) {
   })
 }
 
-module.exports = {
-  processMail,
-}
+module.exports = processMail
