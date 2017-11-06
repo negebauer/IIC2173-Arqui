@@ -183,11 +183,14 @@ services:
   queue:
     image: negebauer/iic2173-arqui-queue
     environment:
-      - API=http://api
+      - API_URI=http://api
       - API_QUEUE_SECRET=secretapiqueue
       - REDIS_PORT=6379
       - REDIS_HOST=redis
       - REDIS_PASS=
+      - ARQUITRAN_URI=http://arqss16.ing.puc.cl
+      - ARQUITRAN_TOKEN=d51f6a66-e670-41c4-8187-2149bc46654e
+      - ARQUITRAN_ID=G1
     deploy:
       replicas: 1
       labels:

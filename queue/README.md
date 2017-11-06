@@ -22,11 +22,14 @@ yarn dev
 |variable|default|use|
 |:-:|:-:|:-:|
 |PORT|3002|port in which queue will listen for requests|
-|API|localhost:3000|api base url, should depend on the machine the queue is deployed|
+|API_URI|localhost:3000|api base url, should depend on the machine the queue is deployed|
 |API_QUEUE_SECRET|apiqueuesecret|secret key shared between api and queue|
 |REDIS_PORT|6379|redis database port|
 |REDIS_HOST|localhost|redis database host|
 |REDIS_PASS||redis database pass|
+|ARQUITRAN_URI|http://arqss16.ing.puc.cl|arquitran api url|
+|ARQUITRAN_TOKEN|d51f6a66-e670-41c4-8187-2149bc46654e|arquitran api token|
+|ARQUITRAN_ID|G1|arquitan api group id|
 
 ## API usage
 
@@ -79,3 +82,4 @@ yarn dev
 - [@ironcadiz](https://github.com/ironcadiz)
 - [@menavarrete](https://github.com/menavarrete)
 - [@negebauer](https://github.com/negebauer)
+- [@fnmendez](https://github.com/fnmendez)

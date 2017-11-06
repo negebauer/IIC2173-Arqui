@@ -22,7 +22,7 @@ services:
     # image: negebauer/iic2173-arqui-email
     build: ../email
     environment:
-      - API=http://api
+      - API_URI=http://api
     ports:
       - "3001:80"
 
@@ -30,8 +30,11 @@ services:
     # image: negebauer/iic2173-arqui-queue
     build: ../queue
     environment:
-      - API=http://api
+      - API_URI=http://api
       - REDIS_HOST=redis
+      - ARQUITRAN_URI=http://arqss16.ing.puc.cl
+      - ARQUITRAN_TOKEN=d51f6a66-e670-41c4-8187-2149bc46654e
+      - ARQUITRAN_ID=G1
     ports:
       - "3002:80"
 
@@ -54,6 +57,6 @@ services:
     # image: negebauer/iic2173-arqui-web
     build: ../web
     environment:
-      - API=http://api
+      - API=http://localhost:3000
     ports:
       - "8080:80"

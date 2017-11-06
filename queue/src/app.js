@@ -1,49 +1,14 @@
-const koa = require('koa')
-// const convert = require('koa-convert')
-const bodyParser = require('koa-bodyparser')
-const router = require('koa-simple-router')
-// const error = require('koa-json-error')
+const Koa = require('koa')
 const logger = require('koa-logger')
-// const koaRes = require('koa-res')
-// const handleError = require('koa-handle-error')
-const task = require('./controller/task')
-const json = require('koa-json')
-const app = new koa()
+const bodyParser = require('koa-bodyparser')
+const router = require('./routes')
+const queue = require('./queue')
 
-// error handling
-app.use(async (ctx, next) => {
-  try {
-    await next()
-  } catch (err) {
-    ctx.status = err.status || 500
-    ctx.body = err.message
-    ctx.app.emit('error', err, ctx)
-  }
-})
-
-app.use(logger())
+const app = new Koa()
+app.context.queue = queue
+app.use(logger('dev'))
 app.use(bodyParser())
-// format response as JSON
-// app.use(convert(koaRes()))
-app.use(json())
 
-app.use(
-  router(_ => {
-    _.get('/saysomething', async ctx => {
-      ctx.body = 'hello world'
-    })
-    _.post('/purchase', task.purchase)
-    // _.get('/throwerror', async (ctx) => {
-    // 	throw new Error('Aghh! An error!')
-    // }),
-    // _.get('/tasks', task.getTasks),
-    // _.post('/task', task.createTask),
-    // _.post('/multiply', task.multiply),
-    // _.put('/task', task.updateTask),
-    // _.delete('/task', task.deleteTask),
-    // _.post('/task/multi', task.createConcurrentTasks),
-    // _.delete('/task/multi', task.deleteConcurrentTasks)
-  })
-)
+app.use(router.routes())
 
 module.exports = app
