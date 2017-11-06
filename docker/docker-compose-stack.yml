@@ -171,7 +171,7 @@ services:
       restart_policy:
         condition: on-failure
       update_config:
-        parallelism: 3
+        parallelism: 1
         delay: 10s
         failure_action: pause
         monitor: 2s
