@@ -21,6 +21,16 @@ const getNestedCategory = (mail, categoryId) => {
   })
 }
 
+const getOrders = (mail, sort) => {
+  return axios.get(`${API_URI}/orders?sort=${sort ? `${sort}` : 'desc'}`, {
+    headers: {
+      Authorization: `mail ${mail}`,
+      'Content-Type': 'application/json',
+      Secret: API_MAILER_SECRET,
+    },
+  })
+}
+
 const getProducts = (mail, item) => {
   return axios.get(`${API_URI}/products${item ? `/${item}` : ''}`, {
     headers: {
@@ -58,6 +68,7 @@ const sendOrder = async (mail, items) => {
 module.exports = {
   getCategories,
   getNestedCategory,
+  getOrders,
   getProducts,
   getProductsByCategory,
   sendOrder,

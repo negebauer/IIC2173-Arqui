@@ -1,10 +1,12 @@
 const apiRequests = require('../helpers/apiRequests')
+const parseDate = require('../helpers/parseDate')
 const sendMail = require('./sender')
 const {
   GET_CATEGORIES,
   GET_CATEGORY,
   GET_CATEGORY_WITH_PRODUCTS,
   GET_ORDER_SENT,
+  GET_ORDER_HISTORY,
   GET_PRODUCT,
   GET_PRODUCTS,
   GET_PRODUCTS_BY_CATEGORY,
@@ -79,6 +81,21 @@ const getNestedCategory = async (userInfo, categoriesIds) => {
     categoriesData,
     failIds
   )
+  sendMail(userInfo, mailMessage, mailSubject)
+}
+
+const getOrders = async (userInfo, disposal = 0) => {
+  const orderBy = disposal === 0 ? 'desc' : 'asc'
+  const history = await apiRequests.getOrders(parseMail(userInfo), orderBy)
+  let ordersData, mailSubject, mailMessage
+  if (history.status === 200) {
+    ordersData = parseDate(history.data.orders, 'sentAt')
+    mailSubject = GET_ORDER_HISTORY.subject
+    mailMessage = GET_ORDER_HISTORY.message(ordersData)
+  } else {
+    mailSubject = STATUS_CODE_503.subject
+    mailMessage = STATUS_CODE_503.message
+  }
   sendMail(userInfo, mailMessage, mailSubject)
 }
 
@@ -177,6 +194,7 @@ module.exports = {
   getCategory,
   getHelp,
   getNestedCategory,
+  getOrders,
   getProducts,
   getProduct,
   getProductsByCategory,

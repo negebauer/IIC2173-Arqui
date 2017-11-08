@@ -6,7 +6,7 @@ module.exports = {
 
       <p style="font-size:16px;">A continuación encontrará la información sobre las categorías</p>
 
-        <table style="width: 60%;">
+        <table style="width:60%;font-size:15px">
           <tr style="padding-bottom: 16px">
             <th align="left">Id</th>
             <th align="left">Contexto</th>
@@ -63,8 +63,9 @@ module.exports = {
                 <li>Area: ${category.area}</li>
                 <li>Grupo: ${category.group}</li>
                 <li>
-                  ${category.products && category.products.length
-                    ? `Productos:
+                  ${
+                    category.products && category.products.length
+                      ? `Productos:
                   <table>
                     <tr>
                       <th>Id</th>
@@ -82,20 +83,23 @@ module.exports = {
                     )
                     .join('')}
                   </table>`
-                    : 'No tiene productos'}
+                      : 'No tiene productos'
+                  }
                 </li>
               </ul>`
         )
         .join('<br />')}
       </ul><br />
 
-      ${failIds && failIds.length
-        ? `
+      ${
+        failIds && failIds.length
+          ? `
           <p style="font-size:14px;">No se han podido encontrar categorías con ids: ${failIds.join(
             ', '
           )}</p>
       `
-        : ''}
+          : ''
+      }
 
       <h3>Saludos cordiales</h3>
     `,
@@ -108,7 +112,51 @@ module.exports = {
       <p style="font-size:16px;">Su orden de compra ha sido recibida.<br /><br />
       Por favor espere por su confirmación.</p>
 
-        <h3>Saludos cordiales.</h3>
+      <h3>Saludos cordiales.</h3>
+    `,
+  },
+  GET_ORDER_HISTORY: {
+    subject: 'Historial de compras',
+    message: orders => `
+      <h2>Estimado usuario,</h2>
+
+      ${
+        orders && orders.length
+          ? `
+      <p style="font-size:16px;">A continuación encontrará el listado de
+        productos para los que ha confirmado su compra</p>
+
+      <table style="width:40%;font-size:15px">
+        <tr style="padding-bottom: 12px">
+          <th align="left">Id</th>
+          <th align="left">Nombre</th>
+          <th align="left">Fecha</th>
+          <th align="left">Exitosa</th>
+        </tr>
+      ${orders
+        .map(
+          order => `
+            <tr style="padding-bottom: 12px">
+              <td>${order.productId}</td>
+              <td>${order.productName}</td>
+              <td>${order.sentAt}</td>
+              <td>${
+                order.completed
+                  ? '&#10003;'
+                  : '<b style="font-size:12px;">X</b>'
+              }</td>
+            </tr>`
+        )
+        .join('')}
+      </table><br />`
+          : `
+        <p style="font-size:16px;">Aún no tiene órdenes de
+      compra confirmadas<br />Para realizar una debe enviar un mail con las
+      siguientes características:
+      <ul style="font-size:16px;"><li>Asunto: Comprar</li><li>Cuerpo: idProducto1;idProducto2</li></p>`
+      }
+
+      <h3>Saludos cordiales.</h3>
     `,
   },
   GET_PRODUCT: {
@@ -118,7 +166,7 @@ module.exports = {
 
       <p style="font-size:16px;">A continuación encontrará la información sobre los productos solicitados</p>
 
-        <table style="width: 40%;">
+        <table style="width:40%;">
           <tr style="padding-bottom: 12px">
             <th align="left">Id</th>
             <th align="left">Nombre</th>
@@ -138,13 +186,15 @@ module.exports = {
           .join('')}
         </table><br />
 
-        ${failIds && failIds.length
-          ? `
+        ${
+          failIds && failIds.length
+            ? `
             <p style="font-size:14px;">No se han podido encontrar productos con ids: ${failIds.join(
               ', '
             )}</p>
         `
-          : ''}<br />
+            : ''
+        }<br />
 
       <h3>Saludos cordiales</h3>
     `,
@@ -156,7 +206,7 @@ module.exports = {
 
       <p style="font-size:16px;">A continuación encontrará la información sobre los productos</p>
 
-        <table style="width: 40%;">
+        <table style="width:40%;">
           <tr style="padding-bottom: 12px">
             <th align="left">Id</th>
             <th align="left">Nombre</th>
@@ -196,8 +246,9 @@ module.exports = {
                 <li>Area: ${category.area}</li>
                 <li>Grupo: ${category.group}</li>
                 <li>
-                  ${category.products && category.products.length
-                    ? `Productos:
+                  ${
+                    category.products && category.products.length
+                      ? `Productos:
                   <table>
                     <tr>
                       <th>Id</th>
@@ -215,20 +266,23 @@ module.exports = {
                     )
                     .join('')}
                   </table>`
-                    : 'No tiene productos'}
+                      : 'No tiene productos'
+                  }
                 </li>
               </ul>`
         )
         .join('<br />')}
       </ul>
 
-      ${failIds && failIds.length
-        ? `
+      ${
+        failIds && failIds.length
+          ? `
           <p style="font-size:14px;">No se han podido encontrar categorías con ids: ${failIds.join(
             ', '
           )}</p>
       `
-        : ''}<br />
+          : ''
+      }<br />
 
       <h3>Saludos cordiales</h3>
     `,
@@ -277,10 +331,17 @@ module.exports = {
           </ul>
         </li><br />
         <li>
-          Consultar <b>todos los productos separados por categoría</b>:
+          Consultar todos los <b>productos separados por categoría</b>:
           <ul><br />
             <li>Asunto: Catalogo por categoria</li>
             <li>Cuerpo: No necesario</li>
+          </ul>
+        </li><br />
+        <li>
+          Consultar su <b>historial de compras</b>:
+          <ul><br />
+            <li>Asunto: Historial</li>
+            <li>Cuerpo: 1 [<i>si desea la más antigua al inicio</i>]</li>
           </ul>
         </li><br />
         <li>
@@ -300,18 +361,19 @@ module.exports = {
     message: (products, errors, confirmationUrl) => `
       <h2>Estimado usuario,</h2>
 
-      ${(errors.notMedicine && errors.notMedicine.length) ||
-      (errors.notBeenBoughtToday && errors.notBeenBoughtToday.length)
-        ? `<p style="font-size:15px;">Lamentamos informarle que su solicitud de compra ha sido ${products &&
-          products.length
-            ? '<b>parcialmente</b>'
-            : ''} rechazada por los siguientes motivos:</p>
+      ${
+        (errors.notMedicine && errors.notMedicine.length) ||
+        (errors.notBeenBoughtToday && errors.notBeenBoughtToday.length)
+          ? `<p style="font-size:15px;">Lamentamos informarle que su solicitud de compra ha sido ${
+              products && products.length ? '<b>parcialmente</b>' : ''
+            } rechazada por los siguientes motivos:</p>
 
          <ul>
-           ${errors.notMedicine && errors.notMedicine.length
-             ? `
+           ${
+             errors.notMedicine && errors.notMedicine.length
+               ? `
                <li><p style="font-size:16px;">No se admite la compra de <b>medicamentos</b> por esta vía</p>
-                 <table style="width: 30%;">
+                 <table style="width:30%;">
                    <tr style="padding-bottom: 12px">
                      <th align="left">Id</th>
                      <th align="left">Nombre</th>
@@ -329,11 +391,13 @@ module.exports = {
                      .join('')}
                  </table>
              </li>`
-             : ''}<br />
-           ${errors.notBeenBoughtToday && errors.notBeenBoughtToday.length
-             ? `
+               : ''
+           }<br />
+           ${
+             errors.notBeenBoughtToday && errors.notBeenBoughtToday.length
+               ? `
                <li><p style="font-size:16px;">No se admite la compra de un <b>mismo producto</b> más de dos veces al día</p>
-                 <table style="width: 30%;">
+                 <table style="width:30%;">
                    <tr style="padding-bottom: 12px">
                      <th align="left">Id</th>
                      <th align="left">Nombre</th>
@@ -351,15 +415,18 @@ module.exports = {
                      .join('')}
                  </table>
              </li>`
-             : ''}
+               : ''
+           }
          </ul>
          `
-        : ''}
-      ${products && products.length && confirmationUrl
-        ? `
+          : ''
+      }
+      ${
+        products && products.length && confirmationUrl
+          ? `
           <h3>Los siguientes productos le pueden ser entregados:</h3>
 
-          <table style="width: 30%;">
+          <table style="width:30%;">
             <tr style="padding-bottom: 12px">
               <th align="left">Id</th>
               <th align="left">Nombre</th>
@@ -385,7 +452,8 @@ module.exports = {
           <p style="font-size:16px;">Para confirmar la entrega de estos productos
             haga click <a href="${confirmationUrl}">aquí</a></p>
           `
-        : ''}
+          : ''
+      }
 
         <h3>Saludos cordiales</h3>
     `,
@@ -411,7 +479,9 @@ module.exports = {
     message: (type, id) => `
       <h2>Estimado usuario,</h2>
 
-      <p style="font-size:16px;">No se ha podido encontrar ${type} con id "${id}"
+      <p style="font-size:16px;">No se ha podido encontrar ${type} con id "${
+      id
+    }"
         <br /><br />¿Está seguro de que se encuentra en el catálogo?</p>
 
       <h3>Saludos cordiales</h3>

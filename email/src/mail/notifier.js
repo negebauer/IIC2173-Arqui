@@ -5,6 +5,7 @@ const {
   getCategory,
   getHelp,
   getNestedCategory,
+  getOrders,
   getProduct,
   getProducts,
   getProductsByCategory,
@@ -27,7 +28,7 @@ module.exports = notifier(imap).on('mail', mail => {
         .match(/([0-9;]+)/)[1]
         .split(';')
         .map(id => Number(id))
-    : -1
+    : [0]
 
   switch (mail.subject) {
     case 'Catalogo':
@@ -44,6 +45,9 @@ module.exports = notifier(imap).on('mail', mail => {
       break
     case 'Compra':
       sendOrder(user, ids)
+      break
+    case 'Historial':
+      getOrders(user, ids[0])
       break
     case 'Productos':
       getProduct(user, ids)
