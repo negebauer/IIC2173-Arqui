@@ -41,6 +41,7 @@ yarn dev
 |API_QUEUE_SECRET|apiqueuesecret|certify that the order queue is the source of the request for security reasons|
 |MAILER_URI|http://localhost:3001|specifies Mailer's connection's host and port|
 |QUEUE_URI|http://localhost:3002|specifies Queue's connection's host and port|
+|API_URI|http://localhost:3000|specifies Api's connection's host and port|
 |ARQUITRAN_URI|http://arqss17.ing.puc.cl:3000|specifies Arquitran API's connection's host and port|
 |MAX_REQUEST_ATTEMPTS|2|defines how many times the API tries to receive an OK status from Arquitran API|
 |MAX_REQUEST_TIMEOUT|200|defines how long the API waits to receive an OK status from Arquitran API since each request was made|
@@ -533,6 +534,40 @@ yarn dev
 
     ```javascript
     { "message": "Couldn't resolve the request." }
+    ```
+
+***
+
+#### Confirm an order
+
+- Route: `GET` `/orders/:token`
+
+- Headers:
+  - Content-Type: `application/json`
+  - Authorization: `type <value>`
+  - Secret: `<secret>` _(only through email)_
+    - Example through web
+      - Authorization: `token 19ab28cd37ef46`
+    - Example through email
+      - Authorization: `mail fnmendez@uc.cl`
+      - Secret: `apimailersecret`
+
+- Success Response:
+
+  - Status: 200
+  - Content:
+
+    ```javascript
+    { "message": "The order confirmation was successful." }
+    ```
+
+- Error Response:
+
+  - Code: 503
+  - Content:
+
+    ```javascript
+    { "message": "Couldn't process the order confirmation." }
     ```
 
 ***

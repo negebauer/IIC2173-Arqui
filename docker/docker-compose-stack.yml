@@ -125,6 +125,7 @@ services:
       - MONGO=mongodb://mongo/IIC2173-Arqui?replicaSet=rs
       - API_MAILER_SECRET=secretapimailer
       - API_QUEUE_SECRET=secretapiqueue
+      - API_URI=http://arqss2.ing.puc.cl/api
       - MAILER_URI=http://email
       - QUEUE_URI=http://queue
       - ARQUITRAN_URI=http://arqss17.ing.puc.cl:3000

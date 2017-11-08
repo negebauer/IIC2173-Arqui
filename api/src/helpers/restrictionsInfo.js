@@ -14,11 +14,23 @@ const getRestrictionsInfo = async productsIds => {
     setProductsCache(apiProducts)
     products = apiProducts
       .filter(prod => productsIds.includes(prod.id))
-      .reduce((cp, prod) => [...cp, { id: prod.id, name: prod.name }], [])
+      .reduce(
+        (cp, prod) => [
+          ...cp,
+          { id: prod.id, name: prod.name, price: prod.price },
+        ],
+        []
+      )
   } else {
     products = cacheProducts
       .filter(prod => productsIds.includes(prod.id))
-      .reduce((cp, prod) => [...cp, { id: prod.id, name: prod.name }], [])
+      .reduce(
+        (cp, prod) => [
+          ...cp,
+          { id: prod.id, name: prod.name, price: prod.price },
+        ],
+        []
+      )
   }
   const { cacheCategories } = await getNestedCategories()
   if (!cacheCategories || !cacheCategories.length) {

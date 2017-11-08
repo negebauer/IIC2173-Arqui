@@ -47,4 +47,18 @@ const parseFeedback = feedback => {
   return parsedFeedback
 }
 
-module.exports = { parseCategories, parseOrders, parseContext, parseFeedback }
+const parseProducts = products => {
+  const parsedProducts = products.reduce(
+    (cp, prod) => [...cp, { productId: prod.id, productName: prod.name }],
+    []
+  )
+  return parsedProducts
+}
+
+module.exports = {
+  parseCategories,
+  parseOrders,
+  parseContext,
+  parseFeedback,
+  parseProducts,
+}

@@ -2,6 +2,7 @@ const Router = require('koa-router')
 
 const home = require('./routes/home')
 const dummy = require('./routes/dummies')
+const confirmOrder = require('./routes/confirmOrder')
 const userAuthentication = require('./routes/userAuth')
 const products = require('./routes/products')
 const categories = require('./routes/categories')
@@ -13,6 +14,7 @@ const router = new Router()
 // public routes
 router.use('/', home.routes())
 router.use('/dummies', dummy.routes())
+router.use('/confirmOrder', confirmOrder.routes())
 
 // user authentication
 router.use(userAuthentication)

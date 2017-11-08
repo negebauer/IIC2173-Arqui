@@ -15,6 +15,15 @@ const OrderSchema = new Schema({
     type: String,
     required: true,
   },
+  token: {
+    type: String,
+    required: true,
+  },
+  confirmed: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
   completed: {
     type: Boolean,
     required: true,

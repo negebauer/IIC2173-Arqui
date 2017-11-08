@@ -1,6 +1,7 @@
 module.exports = {
   API_MAILER_SECRET: process.env.API_MAILER_SECRET || 'apimailersecret',
   API_QUEUE_SECRET: process.env.API_QUEUE_SECRET || 'apiqueuesecret',
+  API_URI: process.env.API_URI || 'http://localhost:3000',
   MAILER_URI: process.env.MAILER_URI || 'http://localhost:3001',
   QUEUE_URI: process.env.QUEUE_URI || 'http://localhost:3002',
   ARQUITRAN_URI: process.env.ARQUITRAN_URI || 'http://arqss17.ing.puc.cl:3000',

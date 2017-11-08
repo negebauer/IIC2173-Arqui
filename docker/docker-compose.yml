@@ -8,6 +8,7 @@ services:
       - MONGO=mongodb://mongo/IIC2173-Arqui-test
       - MAILER_URI=http://email
       - QUEUE_URI=http://queue
+      - API_URI=http://arqss2.ing.puc.cl/api
     ports:
       - "3000:80"
 
