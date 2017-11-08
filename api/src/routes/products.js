@@ -12,10 +12,26 @@ const { parseCategories } = require('../helpers/parseData')
 const router = new Router()
 
 router.get('products', '/', async ctx => {
+  const page = ctx.query.page || null
   if (ctx.state.user) {
-    const products = await getArquitran('/products')
+    let products
+    if (!page) {
+      products = await getArquitran(`/products`)
+    } else {
+      products = await getArquitran(`/products?page=${page}`)
+    }
+    let cacheProducts, updatedAt
     if (!products) {
-      const { cacheProducts, updatedAt } = await getProducts()
+      if (!page) {
+        const aux = await getProducts()
+        cacheProducts = aux.cacheProducts
+        updatedAt = aux.updatedAt
+      } else {
+        const aux = await getProducts(null, page)
+        cacheProducts = aux.cacheProducts
+        updatedAt = aux.updatedAt
+      }
+
       if (!cacheProducts || !cacheProducts.length) {
         ctx.status = 503
         ctx.body = { message: "Couldn't resolve request to Arquitran API." }

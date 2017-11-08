@@ -46,6 +46,7 @@ yarn dev
 |MAX_REQUEST_ATTEMPTS|2|defines how many times the API tries to receive an OK status from Arquitran API|
 |MAX_REQUEST_TIMEOUT|200|defines how long the API waits to receive an OK status from Arquitran API since each request was made|
 |SETTING_CACHE_TIMEOUT|30000|defines how long the API waits to set cache (products or categories) since its last update|
+|PAGE_SIZE|20|defines how many products are sent per page on cache obtained queries.
 
 ## Api usage
 
@@ -181,7 +182,7 @@ yarn dev
 
 #### All Products
 
-- Route: `GET` `/products`
+- Route: `GET` `/products?page=<page_number>`
 
 - Headers:
   - Content-Type: `application/json`
@@ -190,6 +191,8 @@ yarn dev
     &rarr; Examples
     - Authorization: `mail fnmendez@uc.cl`
     - Authorization: `token 19ab28cd37ef46`
+- Query Strings:
+  - page: `int`, page number. If ommited sends all products.
 
 - Success Response:
 

@@ -1,6 +1,6 @@
 const Category = require('../models/category')
 const Product = require('../models/product')
-const { SETTING_CACHE_TIMEOUT } = require('../constants')
+const { SETTING_CACHE_TIMEOUT, PAGE_SIZE } = require('../constants')
 
 const setCategoriesCache = async categories => {
   const timeWall = await Category.findOne()
@@ -46,17 +46,28 @@ const setProductsCache = async products => {
   }
 }
 
-const getProducts = async (id = null) => {
+const getProducts = async (id = null, page = null) => {
+  let products
   if (!id) {
-    const products = await Product.find(
-      {},
-      { _id: false, updatedAt: false, createdAt: false, __v: false }
-    )
+    if (!page) {
+      products = await Product.find(
+        {},
+        { _id: false, updatedAt: false, createdAt: false, __v: false }
+      )
+    } else {
+      products = await Product.find(
+        {},
+        { _id: false, updatedAt: false, createdAt: false, __v: false }
+      )
+        .skip(PAGE_SIZE * (page - 1))
+        .limit(PAGE_SIZE)
+    }
     const query = await Product.findOne()
     let updatedAt
     if (query) {
       updatedAt = query.updatedAt
     }
+
     return { cacheProducts: products, updatedAt }
   } else {
     const product = await Product.findOne(

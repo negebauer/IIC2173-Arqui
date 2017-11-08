@@ -8,4 +8,5 @@ module.exports = {
   MAX_REQUEST_ATTEMPTS: process.env.MAX_REQUEST_ATTEMPTS || 2,
   MAX_REQUEST_TIMEOUT: process.env.MAX_REQUEST_TIMEOUT || 250,
   SETTING_CACHE_TIMEOUT: process.env.SETTING_CACHE_TIMEOUT || 30 * 1000,
+  PAGE_SIZE: process.env.PAGE_SIZE || 20,
 }
