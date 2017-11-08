@@ -19,6 +19,7 @@
   - [Orders](#orders)
     - [Make an order](#make-an-order)
     - [Validate an order](#validate-an-order)
+    - [Orders History](#order-history)
   - [Contributors](#contributors)
 
 ## Development
@@ -614,6 +615,46 @@ yarn dev
     ```
 
 ***
+
+#### Order history
+
+- Route: `GET` `/orders?sort=<sorting_order>`
+
+- Headers:
+  - Content-Type: `application/json`
+  - Secret: `<secret>` _(only through email)_
+  - Authorization: `type <value>` _(optional)_
+
+    &rarr; Examples
+    - Authorization: `mail fnmendez@uc.cl`
+    - Authorization: `token 19ab28cd37ef46`
+
+- Query Strings:
+  - sort: `asc` or `desc`
+
+- Success Response:
+
+  - Status: 200
+  - Example Content:
+
+    ```json
+    {
+    "orders": [
+        {
+            "completed":true,
+            "productId": 20,
+            "productName": "Dimetilamina",
+            "sentAt": "2017-11-05T21:57:18.271Z",
+        },
+        {
+            "completed":true,
+            "productId": 10,
+            "productName": "Paracetamol",
+            "sentAt": "2017-11-05T21:22:34.680Z",
+        }]
+      }
+    ```
+
 
 ## Contributors:
 

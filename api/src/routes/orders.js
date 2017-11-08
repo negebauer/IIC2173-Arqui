@@ -31,4 +31,26 @@ router.post('orders', '/resolved', async ctx => {
   }
 })
 
+router.get('orders', '/', async ctx => {
+  if (
+    !ctx.query.sort ||
+    (ctx.query.sort !== 'asc' && ctx.query.sort !== 'desc')
+  )
+    ctx.query.sort = 'desc'
+  const orders = await Order.find(
+    { userId: ctx.state.user._id },
+    {
+      _id: false,
+      productId: true,
+      productName: true,
+      completed: true,
+      sentAt: true,
+    },
+    {
+      sort: { sentAt: ctx.query.sort },
+    }
+  )
+  ctx.body = { orders }
+})
+
 module.exports = router

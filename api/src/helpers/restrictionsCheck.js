@@ -5,6 +5,7 @@ const tests = require('../restrictions')
 
 const isValidProduct = (product, info) => {
   const notPassedTests = tests.filter(test => !test(info, product.id))
+
   return notPassedTests.length === 0
 }
 
@@ -24,6 +25,7 @@ const check = async (userId, productsIds) => {
   const errors = tests.reduce(
     (cf, test) => ({
       ...cf,
+
       [test.name]: products.filter(prod => !test(info, prod.id)),
     }),
     {}

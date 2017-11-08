@@ -20,6 +20,7 @@ module.exports = async ctx => {
     })
     await postMailer('/orderStatus', {
       user: ctx.state.user.mail,
+
       confirmationUrl: `${API_URI}/confirmOrder/${token}`,
       ...feedback,
     })
