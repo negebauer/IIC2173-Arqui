@@ -120,7 +120,7 @@ services:
       - proxy
 
   api:
-    image: negebauer/iic2173-arqui-api
+    image: negebauer/iic2173-arqui-api:latest
     environment:
       - MONGO=mongodb://mongo/IIC2173-Arqui?replicaSet=rs
       - API_MAILER_SECRET=secretapimailer
@@ -153,7 +153,7 @@ services:
       - proxy
 
   email:
-    image: negebauer/iic2173-arqui-email
+    image: negebauer/iic2173-arqui-email:latest
     environment:
       - API_MAILER_SECRET=secretapimailer
       - API_URI=http://api
@@ -182,7 +182,7 @@ services:
       - proxy
 
   queue:
-    image: negebauer/iic2173-arqui-queue
+    image: negebauer/iic2173-arqui-queue:latest
     environment:
       - API_URI=http://api
       - API_QUEUE_SECRET=secretapiqueue
@@ -214,7 +214,7 @@ services:
       - proxy
 
   queue-visualizer:
-    image: negebauer/iic2173-arqui-queue-visualizer
+    image: negebauer/iic2173-arqui-queue-visualizer:latest
     environment:
       - REDIS_PORT=6379
       - REDIS_HOST=redis
@@ -241,7 +241,7 @@ services:
       - proxy
 
   web:
-    image: negebauer/iic2173-arqui-web
+    image: negebauer/iic2173-arqui-web:latest
     environment:
       - API=http://arqss2.ing.puc.cl/api
     deploy:

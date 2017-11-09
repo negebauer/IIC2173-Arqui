@@ -234,6 +234,19 @@ jobs:
             - "f7:76:78:2a:7c:64:4c:5c:86:39:c1:be:4d:a5:00:78"
             - "8d:64:9e:30:9b:c2:e2:f1:a1:7f:5b:57:e5:d7:a7:66"
       - run:
+          name: 'Make docker images version explicit'
+          command: |
+            file=docker-compose-stack.yml
+            version=$(git describe)
+            image_regex=negebauer/iic2173-arqui-
+            images=$(cat $file | grep $image_regex)
+            for image in $images; do
+              [[ $image == "$image_regex"* ]] || continue
+              version_regex=(.+):latest
+              [[ $image =~ $version_regex ]] && image_versioned="${BASH_REMATCH[1]}:${version}"
+              sed -i.backup "s~$image~$image_versioned~g" $file
+            done
+      - run:
           name: 'Copy stack config'
           command: |
             scp -o "StrictHostKeyChecking no" docker-compose-stack.yml administrator@arqss2.ing.puc.cl:.
