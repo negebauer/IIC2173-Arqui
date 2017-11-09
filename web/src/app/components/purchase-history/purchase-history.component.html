@@ -1,7 +1,7 @@
 <div class="modal-wrapper" (click)="hideHistory()">
 </div>
 
-<div class="history-modal" [ngSwitch]="template">
+<div class="history-modal">
 	<div class="close-modal" (click)="hideHistory()">
 		X
 	</div>
@@ -9,14 +9,19 @@
 		<h1>Historial de compras</h1>
 		<div class="scroll-bar">
 			<div *ngFor="let order of orders">
-				<ul  class="purchase">
-					<li class="purchase-date">{{order.sentAt | date:'yyyy-MM-dd HH:mm:ss'}}<li>
-					<li class="purchase-product-name">Nombre: {{order.productName}}<li>
-					<li class="purchase-element">id: {{order.productId }}<li>
-					<li class="purchase-element">Completada: {{order.completed ? 'si' : 'no'}}<li>
+				<ul class="purchase">
+					<li class="purchase-date">{{order.sentAt | date:'yyyy-MM-dd HH:mm:ss'}}
+					</li>
+					<li class="purchase-product-name">Nombre: {{order.productName}}
+					</li>
+					<li class="purchase-element">id: {{order.productId }}
+					</li>
+					<li class="purchase-element">Completada: {{order.completed ? 'si' : 'no'}}
+					</li>
 				</ul>
 			</div>
-			<div class="purchase-last">No hay mas compras<div>
+			<div class="purchase-last">No hay mas compras
+				<div>
+				</div>
+			</div>
 		</div>
-	</div>
-</div>

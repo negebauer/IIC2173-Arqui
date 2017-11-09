@@ -53,7 +53,7 @@ export class PurchaseHistoryComponent {
   }
 
 
-  hideHistory(event) {
+  hideHistory() {
     this.session.hideHistory();
   }
 
