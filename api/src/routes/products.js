@@ -9,6 +9,8 @@ const {
 } = require('../helpers/cache')
 const { parseCategories } = require('../helpers/parseData')
 
+const Product = require('../models/product')
+
 const router = new Router()
 
 router.get('products', '/', async ctx => {
@@ -64,6 +66,46 @@ router.get('products', '/', async ctx => {
       .filter(cat => cat.context !== 'MEDICAMENTOS')
       .reduce((cc, cat) => [...cc, ...cat.products], [])
     ctx.body = { source: 'api', products: filteredProducts }
+  }
+})
+
+router.get('products', '/search', async ctx => {
+  if (ctx.state.user) {
+    const numResults = parseInt(ctx.query.n, 10)
+    const page = parseInt(ctx.query.page, 10)
+    try {
+      const query = ctx.query.query.slice(1, -1)
+      const totalProducts = await Product.count({
+        name: {
+          $regex: query,
+          $options: 'gi',
+        },
+      })
+      const products = await Product.find({
+        name: {
+          $regex: query,
+          $options: 'gi',
+        },
+      })
+        .select({ id: 1, name: 1, _id: 0, category: 1, price: 1 })
+        .skip(numResults * (page - 1))
+        .limit(numResults)
+      if (products.length === 0) {
+        ctx.status = 402
+        ctx.body = { message: 'Query has no results.' }
+      } else {
+        ctx.body = {
+          products: products,
+          totalPages: Math.ceil(totalProducts / numResults),
+        }
+      }
+    } catch (err) {
+      ctx.status = 503
+      ctx.body = { message: 'Query failed to execute.' }
+    }
+  } else {
+    ctx.status = 403
+    ctx.body = { message: 'User must be logged in to search.' }
   }
 })
 

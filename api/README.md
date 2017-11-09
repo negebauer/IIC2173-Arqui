@@ -181,6 +181,63 @@ yarn dev
 
 ***
 
+- Route: `GET` `/products/search`
+
+- Headers:
+  - Content-Type: `application/json`
+  - Authorization: `always required to search`
+
+    &rarr; Examples
+      - Authorization: `token 19ab28cd37ef46`
+
+- Success Response:
+
+  - Status: 200
+  - Example Content:
+
+    ```javascript
+    {
+        "products": [{
+            "id": 10,
+            "category": 10,
+            "name": "Paracetamol",
+            "price": 100}
+        ]
+        "totalPages": 1
+    }
+    ```
+
+- Error Response:
+
+  &rarr; If the user isn't authenticated
+
+  - Code: 403
+  - Content:
+
+    ```javascript
+    { message: 'The information of this product is private.' }
+    ```
+
+  &rarr; Database error
+
+  - Code: 503
+  - Content:
+
+    ```javascript
+    { "message": "Query failed to execute." }
+    ```
+
+  &rarr; No results error error
+
+  - Code: 402
+  - Content:
+
+    ```javascript
+    { "message": "Query has no results." }
+    ```
+
+***
+
 #### All Products
 
 - Route: `GET` `/products?page=<page_number>`
