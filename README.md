@@ -129,7 +129,9 @@ bash scripts/cleanimages.sh       # Remove all docker containers and images
   - https://github.com/nodejitsu/node-http-proxy
   - https://github.com/docker/dockercloud-haproxy
   - https://github.com/jwilder/nginx-proxy
-
+- ssl certificate:
+  - http://proxy.dockerflow.com/certs/
+  - https://finnian.io/blog/ssl-with-docker-swarm-lets-encrypt-and-nginx/
 <!-- Badges -->
 
 [circleciL]:https://circleci.com/gh/negebauer/IIC2173-Arqui
