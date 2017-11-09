@@ -35,44 +35,44 @@ yarn dev
 
 ### Purchase
 - Route: `POST` `/purchase`
-
 - Headers:
   - Content-Type: `application/json`
   - Secret: `env_variable_API_QUEUE_SECRET`
-
 - Example Body:
 
   ```json
   {
-    "userId": "some_user_id",
-    "productsIds": [ "some", "product", "ids" ],
-    "orderId": "and_order_id"
+    "orders": [
+      {
+        "userId": "aUserId",
+        "productId": "aProductId",
+        "sentAt": "dateOfPurchase"
+      },
+    ]
   }
   ```
 
 - Success Response:
-
   - Status: 200
   - Content:
 
     ```json
-    { "created": true }
+    { "message": "Created N tasks" }
     ```
 
 - Error Response (untested):
-
   - Code: 500
   - Content:
 
     ```json
-    { "created": false, "error": "some error" }
+    { "message": "Error description" }
     ```
 
   - Code: 401
   - Content:
 
     ```json
-    { "created": false, "error": "unauthorized" }
+    { "message": "Unauthorized" }
     ```
 
 ***

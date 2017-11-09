@@ -1,9 +1,8 @@
 const { API_QUEUE_SECRET } = require('../constants')
 
 function unauthorized(ctx) {
+  const error = new Error('Unauthorized')
   ctx.status = 401
-  const error = new Error()
-  error.message = 'Unauthorized.'
   return (ctx.body = error)
 }
 
