@@ -81,4 +81,17 @@ export class HttpServiceProvider {
       .post(`${this.apiUrl}/orders`, body, options)
       .map((res) => res.json());
   }
+
+  // Handle Purchase history
+  public getHistory(token) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    if (token) {
+      headers.append('Authorization', 'token ' + token);
+    }
+    const options = new RequestOptions({ headers, method: 'get' });
+    return this.http
+      .get(`${this.apiUrl}/orders?sort=asc`, options)
+      .map((response) => response.json());
+  }
 }

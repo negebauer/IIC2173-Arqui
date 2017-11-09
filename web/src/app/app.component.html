@@ -4,12 +4,15 @@
     <a class="navbar-brand">Arquiyalt</a>
     <ul class="nav navbar-nav navbar-right">
  	    <li><a *ngIf="!isLogged" (click)="showLogin()" class="navbar-link">Login</a></li>
+  	  <li><a *ngIf="isLogged" (click)="showHistory()" class="navbar-link">Order history</a></li>
   	  <li><p *ngIf="isLogged"  class="navbar-text">Signed in as {{user.mail}} </p></li>
       <li><a *ngIf="isLogged" (click)="logout()" class="navbar-link">Logout</a></li>
     </ul>
 </nav>
 
 <login *ngIf="showModalLogin" (close)="closeLogin()"></login>
+
+<purchase-history *ngIf="visibleHistory"></purchase-history>
 
 <div class="vertical-margin"></div>
 <div class="title">
@@ -26,4 +29,3 @@
 </div>
 
 <cart *ngIf="visibleCart"></cart>
-

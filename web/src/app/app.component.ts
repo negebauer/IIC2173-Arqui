@@ -13,6 +13,7 @@ export class AppComponent {
   isLogged = false;
   user = null;
   visibleCart = false;
+  visibleHistory = false;
   cart;
 
   constructor(private session: SessionService) {
@@ -40,6 +41,11 @@ export class AppComponent {
     //check if session stored in LocalStorage
     session.checkStoredSession();
 
+    session.isHistoryVisible()
+      .subscribe((visibleHistory) => {
+        this.visibleHistory = visibleHistory;
+    });
+
   }
 
   showLogin() {
@@ -54,5 +60,12 @@ export class AppComponent {
 
   showCart() {
     this.session.showCart();
+  }
+
+  showHistory() {
+    this.session.showHistory();
+  }
+  closeHistory() {
+    this.showModalLogin = false;
   }
 }

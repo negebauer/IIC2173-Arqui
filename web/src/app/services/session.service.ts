@@ -7,6 +7,7 @@ export class SessionService {
     private logger = new BehaviorSubject<boolean>(false);
     private cart = [];
     private visibleCart = new Subject<boolean>();
+    private visibleHistory = new Subject<boolean>();
 
     constructor() {}
 
@@ -68,4 +69,16 @@ export class SessionService {
         localStorage.removeItem('user');
         this.logger.next(false);
     }
+
+    // purchase-history status (visible or hide)
+    public isHistoryVisible() {
+        return this.visibleHistory.asObservable();
+    }
+    public hideHistory() {
+        this.visibleHistory.next(false);
+    }
+    public showHistory() {
+        this.visibleHistory.next(true);
+    }
+
 }
