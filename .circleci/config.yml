@@ -232,9 +232,54 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "f7:76:78:2a:7c:64:4c:5c:86:39:c1:be:4d:a5:00:78"
-      - run: ssh -o "StrictHostKeyChecking no" administrator@arqss2.ing.puc.cl 'ls'
-      - run: scp docker-compose-stack.yml administrator@arqss2.ing.puc.cl:.
-      - run: ssh administrator@arqss2.ing.puc.cl 'docker stack deploy -c docker-compose-stack.yml arqui'
+            - "8d:64:9e:30:9b:c2:e2:f1:a1:7f:5b:57:e5:d7:a7:66"
+      - run:
+          name: 'Copy stack.yml to arqss2'
+          command: scp -o "StrictHostKeyChecking no" docker-compose-stack.yml administrator@arqss2.ing.puc.cl:.
+      - run:
+          name: 'Copy stack.yml to arqss7'
+          command: scp -o "StrictHostKeyChecking no" docker-compose-stack.yml administrator@arqss7.ing.puc.cl:.
+      - run:
+          name: 'Deploy in arqss2'
+          command: ssh administrator@arqss2.ing.puc.cl 'docker stack deploy -c docker-compose-stack.yml arqui'
+      - run:
+          name: 'Deploy in arqss7'
+          command: ssh administrator@arqss7.ing.puc.cl 'docker stack deploy -c docker-compose-stack.yml arqui'
+
+  docker_maintenance:
+    docker:
+      - image: circleci/node:8.5
+    working_directory: ~/arqui/docker
+    steps:
+      - checkout:
+          path: ~/arqui
+      - add_ssh_keys:
+          fingerprints:
+            - "f7:76:78:2a:7c:64:4c:5c:86:39:c1:be:4d:a5:00:78"
+            - "8d:64:9e:30:9b:c2:e2:f1:a1:7f:5b:57:e5:d7:a7:66"
+            - "19:c3:b8:00:3c:90:04:b4:b8:3e:d7:99:8b:9c:44:03"
+            - "8b:7f:8a:2c:6d:0a:7a:40:0e:ad:ea:99:1c:31:13:8b"
+            - "15:56:6d:15:da:2a:a9:f3:3a:fb:99:52:40:c0:3a:63"
+      - run:
+          name: Clean docker containers
+          command: |
+            for machine in 2 7 11 12 13; do
+              ssh -o "StrictHostKeyChecking no" administrator@arqss${machine}.ing.puc.cl '
+                for container in $(docker container ls -aq); do
+                  docker container rm $container || true
+                done
+              '
+            done
+      - run:
+          name: Clean docker images
+          command: |
+            for machine in 2 7 11 12 13; do
+              ssh -o "StrictHostKeyChecking no" administrator@arqss${machine}.ing.puc.cl '
+                for image in $(docker images -q); do
+                  docker image rm $image || true
+                done
+              '
+            done
 
 workflows:
   version: 2
@@ -246,6 +291,7 @@ workflows:
         - queue
         - queue-visualizer
         - web
+        - docker_maintenance
         - docker-api:
             requires:
               - api
