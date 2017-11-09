@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/negebauer/IIC2173-Arqui/compare/v0.2.0...v0.3.0) (2017-11-09)
+
+
+### Bug Fixes
+
+* **api:** products page size ([#96](https://github.com/negebauer/IIC2173-Arqui/issues/96)) ([f1f11c9](https://github.com/negebauer/IIC2173-Arqui/commit/f1f11c9))
+* **deploy:** email update parallelism ([a465d50](https://github.com/negebauer/IIC2173-Arqui/commit/a465d50))
+* **email:** add git to dockerfile ([93d0c58](https://github.com/negebauer/IIC2173-Arqui/commit/93d0c58))
+* **email:** mail-notifier dependencies bug ([#84](https://github.com/negebauer/IIC2173-Arqui/issues/84)) ([7e93d55](https://github.com/negebauer/IIC2173-Arqui/commit/7e93d55))
+* **web:** production build bug ([f52c0bc](https://github.com/negebauer/IIC2173-Arqui/commit/f52c0bc))
+
+
+### Features
+
+* **api:** add order confirmation ([#82](https://github.com/negebauer/IIC2173-Arqui/issues/82)) ([68403d7](https://github.com/negebauer/IIC2173-Arqui/commit/68403d7))
+* **api:** add product search endpoint ([#94](https://github.com/negebauer/IIC2173-Arqui/issues/94)) ([699b048](https://github.com/negebauer/IIC2173-Arqui/commit/699b048))
+* **api:** api orders history ([#89](https://github.com/negebauer/IIC2173-Arqui/issues/89)) ([605683e](https://github.com/negebauer/IIC2173-Arqui/commit/605683e))
+* **api:** api pagination ([#91](https://github.com/negebauer/IIC2173-Arqui/issues/91)) ([7f1e4fb](https://github.com/negebauer/IIC2173-Arqui/commit/7f1e4fb))
+* **ci:** cleanup docker images and containers ([#104](https://github.com/negebauer/IIC2173-Arqui/issues/104)) ([dfb20ac](https://github.com/negebauer/IIC2173-Arqui/commit/dfb20ac)), closes [#72](https://github.com/negebauer/IIC2173-Arqui/issues/72)
+* **email:** add signature to emails ([#100](https://github.com/negebauer/IIC2173-Arqui/issues/100)) ([22138e2](https://github.com/negebauer/IIC2173-Arqui/commit/22138e2))
+* **email:** order history ([#95](https://github.com/negebauer/IIC2173-Arqui/issues/95)) ([2275a91](https://github.com/negebauer/IIC2173-Arqui/commit/2275a91)), closes [#88](https://github.com/negebauer/IIC2173-Arqui/issues/88)
+* **queue:** connection with arquitran and refactor ([#86](https://github.com/negebauer/IIC2173-Arqui/issues/86)) ([f00f53e](https://github.com/negebauer/IIC2173-Arqui/commit/f00f53e))
+* **web:** add product search ([#101](https://github.com/negebauer/IIC2173-Arqui/issues/101)) ([cb24c43](https://github.com/negebauer/IIC2173-Arqui/commit/cb24c43))
+* **web:** web orders history ([#92](https://github.com/negebauer/IIC2173-Arqui/issues/92)) ([2bd96ef](https://github.com/negebauer/IIC2173-Arqui/commit/2bd96ef))
+
+
+
 <a name="0.2.0"></a>
 # [0.2.0](https://github.com/negebauer/IIC2173-Arqui/compare/v0.1.0...v0.2.0) (2017-10-18)
 
