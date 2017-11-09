@@ -54,6 +54,20 @@ export class HttpServiceProvider {
       .map((response) => response.json());
   }
 
+  public search(token, query) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    if (token) {
+      headers.append('Authorization', 'token ' + token);
+    }
+    const params = `?n=12&page=1&query=${query}`
+    const options = new RequestOptions({ headers, method: 'get' });
+    return this.http
+      .get(`${this.apiUrl}/products/search` + params, options)
+      .map((response) => response.json());
+    
+  }
+
   // Handle Orders
   public placeOrder(ids, token) {
     const headers = new Headers();

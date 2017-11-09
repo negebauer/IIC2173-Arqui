@@ -24,3 +24,46 @@
 .row {
 	
 }
+
+.search {
+	width: 100%;
+	background-color: #d8d8d8;
+	padding: 0em 0em 0.5em 0em;
+	display: inline-flex;
+}
+
+.search input {
+	width: 100%;
+	font-size: 4em;
+	border: none;
+	background-color: #fff;
+	color: #000;
+	flex: 15;
+}
+
+.search button {
+	flex: 1;
+	background: url("/assets/search.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-color: white;
+	border: none;
+}
+
+.search form {
+	border: none;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	display: inherit;
+}
+
+.search-error {
+	font-size: 2em;
+	padding: 1em 0em 1em 0em;
+}
+
+.search-error p {
+	font-size: 16px;
+}

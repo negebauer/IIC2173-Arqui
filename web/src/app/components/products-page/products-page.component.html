@@ -4,8 +4,19 @@
 	<p></p>
 </div>
 
-
+	
 <div class="container products-page-container">
+	<div *ngIf="user" class="search">
+		<form (submit)="search()">
+		<input [(ngModel)]="searchstr" type="text" name="search" placeholder="Busca un producto">
+		<button type="submit"></button>
+		</form>
+	</div>
+
+	<div *ngIf="searcherr" class="search-error">
+		{{searcherr}}
+		<p>Mostrando todos los productos</p>
+	</div>
     <div class="row align-items-center">
 		<div *ngFor="let product of products" class="col-md-4 col-xs-12 col-ms-12">
 			<div class="thumbnail" >
