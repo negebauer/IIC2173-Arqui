@@ -234,17 +234,15 @@ jobs:
             - "f7:76:78:2a:7c:64:4c:5c:86:39:c1:be:4d:a5:00:78"
             - "8d:64:9e:30:9b:c2:e2:f1:a1:7f:5b:57:e5:d7:a7:66"
       - run:
-          name: 'Copy stack.yml to arqss2'
-          command: scp -o "StrictHostKeyChecking no" docker-compose-stack.yml administrator@arqss2.ing.puc.cl:.
+          name: 'Copy stack config'
+          command: |
+            scp -o "StrictHostKeyChecking no" docker-compose-stack.yml administrator@arqss2.ing.puc.cl:.
+            scp -o "StrictHostKeyChecking no" docker-compose-stack.yml administrator@arqss7.ing.puc.cl:.
       - run:
-          name: 'Copy stack.yml to arqss7'
-          command: scp -o "StrictHostKeyChecking no" docker-compose-stack.yml administrator@arqss7.ing.puc.cl:.
-      - run:
-          name: 'Deploy in arqss2'
-          command: ssh administrator@arqss2.ing.puc.cl 'docker stack deploy -c docker-compose-stack.yml arqui'
-      - run:
-          name: 'Deploy in arqss7'
-          command: ssh administrator@arqss7.ing.puc.cl 'docker stack deploy -c docker-compose-stack.yml arqui'
+          name: 'Deploy arqui stack'
+          command: |
+            ssh administrator@arqss2.ing.puc.cl 'docker stack deploy -c docker-compose-stack.yml arqui' ||
+            ssh administrator@arqss7.ing.puc.cl 'docker stack deploy -c docker-compose-stack.yml arqui'
 
   docker_maintenance:
     docker:
