@@ -289,7 +289,11 @@ workflows:
         - queue
         - queue-visualizer
         - web
-        - docker_maintenance
+        - docker_maintenance:
+            filters:
+              branches:
+                only:
+                  - master
         - docker-api:
             requires:
               - api
