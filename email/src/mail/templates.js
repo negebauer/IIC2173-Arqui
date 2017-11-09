@@ -27,6 +27,7 @@ module.exports = {
         </table><br />
 
       <h3>Saludos cordiales</h3>
+      <img src="https://goo.gl/7kFKvT" width="30%">
     `,
   },
   GET_CATEGORY: {
@@ -44,6 +45,7 @@ module.exports = {
       </ul>
 
       <h3>Saludos cordiales</h3>
+      <img src="https://goo.gl/7kFKvT" width="30%">
     `,
   },
   GET_CATEGORY_WITH_PRODUCTS: {
@@ -102,6 +104,7 @@ module.exports = {
       }
 
       <h3>Saludos cordiales</h3>
+      <img src="https://goo.gl/7kFKvT" width="30%">
     `,
   },
   GET_ORDER_SENT: {
@@ -113,6 +116,7 @@ module.exports = {
       Por favor espere por su confirmación.</p>
 
       <h3>Saludos cordiales.</h3>
+      <img src="https://goo.gl/7kFKvT" width="30%">
     `,
   },
   GET_ORDER_HISTORY: {
@@ -157,6 +161,7 @@ module.exports = {
       }
 
       <h3>Saludos cordiales.</h3>
+      <img src="https://goo.gl/7kFKvT" width="30%">
     `,
   },
   GET_PRODUCT: {
@@ -197,6 +202,7 @@ module.exports = {
         }<br />
 
       <h3>Saludos cordiales</h3>
+      <img src="https://goo.gl/7kFKvT" width="30%">
     `,
   },
   GET_PRODUCTS: {
@@ -227,6 +233,7 @@ module.exports = {
         </table><br />
 
       <h3>Saludos cordiales</h3>
+      <img src="https://goo.gl/7kFKvT" width="30%">
     `,
   },
   GET_PRODUCTS_BY_CATEGORY: {
@@ -285,6 +292,7 @@ module.exports = {
       }<br />
 
       <h3>Saludos cordiales</h3>
+      <img src="https://goo.gl/7kFKvT" width="30%">
     `,
   },
   GET_HELP: {
@@ -354,6 +362,7 @@ module.exports = {
       </ol>
 
       <h3>Saludos cordiales</h3>
+      <img src="https://goo.gl/7kFKvT" width="30%">
     `,
   },
   ORDER_RESPONSE_STATUS: {
@@ -456,6 +465,7 @@ module.exports = {
       }
 
         <h3>Saludos cordiales</h3>
+        <img src="https://goo.gl/7kFKvT" width="30%">
     `,
   },
   ORDER_RESPONSE_SUCCESS: {
@@ -472,6 +482,7 @@ module.exports = {
       </ul>
 
       <h3>Saludos cordiales</h3>
+      <img src="https://goo.gl/7kFKvT" width="30%">
     `,
   },
   STATUS_CODE_404: {
@@ -485,6 +496,7 @@ module.exports = {
         <br /><br />¿Está seguro de que se encuentra en el catálogo?</p>
 
       <h3>Saludos cordiales</h3>
+      <img src="https://goo.gl/7kFKvT" width="30%">
     `,
   },
   STATUS_CODE_503: {
@@ -496,6 +508,7 @@ module.exports = {
         <br /><br />Por favor, intente más tarde</p>
 
       <h3>Saludos cordiales</h3>
+      <img src="https://goo.gl/7kFKvT" width="30%">
     `,
   },
 }
