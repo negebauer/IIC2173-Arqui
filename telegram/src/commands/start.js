@@ -1,5 +1,7 @@
-const invoke = async ctx => ctx.sendMessage(`Hello ${ctx.meta.user.username}`)
+const hello = ctx => ctx.sendMarkdown(`Hello ${ctx.meta.user.username}`)
 
-const answer = async () => {}
+const invoke = hello
+
+const answer = hello
 
 module.exports = async bot => bot.invoke(invoke).answer(answer)

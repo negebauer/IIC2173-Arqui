@@ -1,37 +1,29 @@
-const { STAGES, COMMAND } = require('./constants')
-const bye = require('./commands/bye')
-const hello = require('./commands/hello')
-const help = require('./commands/help')
-const products = require('./commands/products')
-const start = require('./commands/start')
+const { before } = require('./constants').STAGES
+const { help, leave, products, start } = require('./constants').COMMAND
 
-const NOT_FOUND = `Comando no encontrado. Prueba con /${COMMAND.help}`
+const NOT_FOUND = ctx =>
+  `Comando ${ctx.command.name} *no encontrado*.
+  Prueba con /${help}`
 
-const commandHandler = {
-  [COMMAND.start]: start,
-  [COMMAND.hello]: hello,
-  [COMMAND.help]: help,
-  [COMMAND.products]: products,
-  [COMMAND.bye]: bye,
+const configCommand = {
+  [help]: require('./commands/help'),
+  [leave]: require('./commands/leave'),
+  [products]: require('./commands/products'),
+  [start]: require('./commands/start'),
 }
 
-const mapCommandToHandler = bot =>
-  Object.keys(commandHandler).forEach(command =>
-    commandHandler[command](
-      bot
-        .command(command)
-        .use(STAGES.before, async ctx => (ctx.foundCommand = true))
-    )
+const markAnswered = async ctx => (ctx.done = true)
+
+const mapCommandToConfig = bot =>
+  Object.keys(configCommand).forEach(command =>
+    configCommand[command](bot.command(command).use(before, markAnswered))
   )
 
-const configNotFound = bot =>
-  bot
-    .command(/.+/)
-    .invoke(async ctx => !ctx.foundCommand && ctx.sendMessage(NOT_FOUND))
+const notFoundHandler = async c => !c.done && c.sendMarkdown(NOT_FOUND(c))
 
 const configCommands = bot => {
-  mapCommandToHandler(bot)
-  configNotFound(bot)
+  mapCommandToConfig(bot)
+  bot.command(/.+/).invoke(notFoundHandler)
   return bot
 }
 

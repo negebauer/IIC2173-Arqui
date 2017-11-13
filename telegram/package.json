@@ -9,7 +9,8 @@
     "lint:fix": "eslint --fix ./src index.js",
     "test": "jest --watch",
     "test:coverage": "jest --coverage",
-    "test:ci": "jest --coverage --testResultsProcessor=jest-junit"
+    "test:ci": "jest --coverage --testResultsProcessor=jest-junit",
+    "botfather": "node ./src/botfather.js"
   },
   "dependencies": {
     "axios": "^0.17.1",

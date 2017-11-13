@@ -3,10 +3,11 @@
 module.exports = async ctx => {
   const { username } = ctx.meta.user
   const { name, args, type } = ctx.command
+  const { title, id } = ctx.meta.chat
   const answer = ctx.answer
   return console.log(
     `${type} from @${username} /${name}, args: ${
       args.length > 0 ? args : '[]'
-    }, answer: ${answer}`
+    }, answer: ${answer}, chat: ${title} id: ${id}`
   )
 }
