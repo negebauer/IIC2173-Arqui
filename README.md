@@ -25,6 +25,7 @@
 |[queue]|Order queue client ([koa] and [kue])|
 |[queue-visualizer]|Order queue visualizer ([kue])|
 |[scripts]|Scripts for running locally and performing tasks|
+|[telegram]|Our telegram bot using [bot-brother](https://github.com/SerjoPepper/bot-brother)|
 |[web]|[Angular 2](https://angular.io) web client|
 
 [api]:api
@@ -34,6 +35,7 @@
 [queue]:queue
 [queue-visualizer]:queue-visualizer
 [scripts]:scripts
+[telegram]:telegram
 [web]:web
 
 [koa]:http://koajs.com
