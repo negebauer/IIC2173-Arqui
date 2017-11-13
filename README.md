@@ -1,6 +1,7 @@
 # Arquiyalt
 
 [![circleciB]][circleciL]
+[![telegramBotB]][telegramBotL]
 [![gitflowB]][gitflowL]
 [![commitsB]][commitsL]
 [![standard-versionB]][standard-versionL]
@@ -20,6 +21,7 @@
 |[api]|Our own [koa] api. Comunicates with the central api|
 |[docker]|Docker deploy configuration|
 |[email]|Email client ([koa], [nodemailer] and [mail-notifier])|
+|[pdf]|The course project's pdfs|
 |[queue]|Order queue client ([koa] and [kue])|
 |[queue-visualizer]|Order queue visualizer ([kue])|
 |[scripts]|Scripts for running locally and performing tasks|
@@ -28,6 +30,7 @@
 [api]:api
 [docker]:docker
 [email]:email
+[pdf]:pdf
 [queue]:queue
 [queue-visualizer]:queue-visualizer
 [scripts]:scripts
@@ -132,6 +135,7 @@ bash scripts/cleanimages.sh       # Remove all docker containers and images
 - ssl certificate:
   - http://proxy.dockerflow.com/certs/
   - https://finnian.io/blog/ssl-with-docker-swarm-lets-encrypt-and-nginx/
+
 <!-- Badges -->
 
 [circleciL]:https://circleci.com/gh/negebauer/IIC2173-Arqui
@@ -144,4 +148,7 @@ bash scripts/cleanimages.sh       # Remove all docker containers and images
 [commitsB]:https://img.shields.io/badge/commits-conventional%20commits-blue.svg
 
 [standard-versionL]:https://github.com/conventional-changelog/standard-version
-[standard-versionB]:https://img.shields.io/badge/versioning-standar%20version-blue.svg
+[standard-versionB]:https://img.shields.io/badge/version-standar%20version-blue.svg
+
+[telegramBotL]:t.me/iic2173_arqui_g1_bot
+[telegramBotB]:https://img.shields.io/badge/%20-bot-blue.svg?logo=telegram&style=social

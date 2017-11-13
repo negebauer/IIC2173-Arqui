@@ -114,6 +114,33 @@ jobs:
           key: queue-visualizer-v1-{{ checksum "package.json" }}
       - run: yarn lint
 
+  telegram:
+    docker:
+      - image: circleci/node:8.5
+    working_directory: ~/arqui/telegram
+    steps:
+      - checkout:
+          path: ~/arqui
+      - restore_cache:
+          keys:
+          - telegram-v1-{{ checksum "package.json" }}
+          - telegram-v1-
+      - run: yarn
+      - save_cache:
+          paths:
+            - node_modules
+          key: telegram-v1-{{ checksum "package.json" }}
+      - run: yarn lint
+      - run: yarn test:ci
+      - store_test_results:
+          path: ./coverage
+      - store_artifacts:
+          path: ./coverage/junit.xml
+          destination: junit/junit.xml
+      - store_artifacts:
+          path: ./coverage/lcov-report
+          destination: coverage
+
   web:
     docker:
       - image: circleci/node:8.5
@@ -137,7 +164,6 @@ jobs:
       - image: circleci/node:8.5
         environment:
           REPO: negebauer/iic2173-arqui-api
-          TAG_CI: circleci
     working_directory: ~/arqui/api
     steps:
       - checkout:
@@ -155,7 +181,6 @@ jobs:
       - image: circleci/node:8.5
         environment:
           REPO: negebauer/iic2173-arqui-email
-          TAG_CI: circleci
     working_directory: ~/arqui/email
     steps:
       - checkout:
@@ -173,7 +198,6 @@ jobs:
       - image: circleci/node:8.5
         environment:
           REPO: negebauer/iic2173-arqui-queue
-          TAG_CI: circleci
     working_directory: ~/arqui/queue
     steps:
       - checkout:
@@ -191,8 +215,24 @@ jobs:
       - image: circleci/node:8.5
         environment:
           REPO: negebauer/iic2173-arqui-queue-visualizer
-          TAG_CI: circleci
     working_directory: ~/arqui/queue-visualizer
+    steps:
+      - checkout:
+          path: ~/arqui
+      - setup_remote_docker:
+          version: 17.05.0-ce
+      - run: docker build -t $REPO .
+      - run: docker tag $REPO $REPO:$(git describe)
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: docker push $REPO:$(git describe)
+      - run: docker push $REPO
+
+  docker-telegram:
+    docker:
+      - image: circleci/node:8.5
+        environment:
+          REPO: negebauer/iic2173-arqui-telegram
+    working_directory: ~/arqui/telegram
     steps:
       - checkout:
           path: ~/arqui
@@ -209,7 +249,6 @@ jobs:
       - image: circleci/node:8.5
         environment:
           REPO: negebauer/iic2173-arqui-web
-          TAG_CI: circleci
     working_directory: ~/arqui/web
     steps:
       - checkout:
@@ -289,6 +328,7 @@ workflows:
         - email
         - queue
         - queue-visualizer
+        - telegram
         - web
         - docker-api:
             requires:
@@ -318,6 +358,13 @@ workflows:
               branches:
                 only:
                   - master
+        - docker-telegram:
+            requires:
+              - telegram
+            filters:
+              branches:
+                only:
+                  - master
         - docker-web:
             requires:
               - web
@@ -332,6 +379,7 @@ workflows:
               - docker-email
               - docker-queue
               - docker-queue-visualizer
+              - docker-telegram
               - docker-web
             filters:
               branches:

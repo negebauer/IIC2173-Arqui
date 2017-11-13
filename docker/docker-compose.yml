@@ -54,6 +54,13 @@ services:
     volumes:
       - "~/data/redis/db:/data"
 
+  telegram:
+    # image: negebauer/iic2173-arqui-telegram
+    build: ../telegram
+    environment:
+      - API_URI=http://api
+      - TOKEN=485892696:AAHOHg3Sk2CNUt_ArGuv09qxGv9eqJuiY78
+
   web:
     # image: negebauer/iic2173-arqui-web
     build: ../web

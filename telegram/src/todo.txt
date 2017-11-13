@@ -1,0 +1,31 @@
+DONE
+Consultar todos los productos:
+  Cuerpo: No necesario
+
+TODO
+Consultar todas las categorías de productos:
+  Cuerpo: No necesario
+
+TODO
+Consultar una categoría:
+  Cuerpo: idCategoria
+
+TODO
+Consultar los productos por categoría(s):
+  Cuerpo: idCategoria1;idCategoria2
+
+DONE
+Consultar por producto(s):
+  Cuerpo: idProducto1;idProducto2
+
+TODO
+Consultar todos los productos separados por categoría:
+  Cuerpo: No necesario
+
+TODO
+Consultar su historial de compras:
+  Cuerpo: 1 [si desea la más antigua al inicio]
+
+TODO
+Comprar producto(s):
+  Cuerpo: idProducto1;idProducto2

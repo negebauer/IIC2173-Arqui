@@ -40,6 +40,7 @@ yarn dev
 |MONGO_TEST|mongodb://127.0.0.1:27017/IIC2173-Arqui-test|mongodb uri for running tests|
 |API_MAILER_SECRET|apimailersecret|certify that the mailer bot is the source of the request for security reasons|
 |API_QUEUE_SECRET|apiqueuesecret|certify that the order queue is the source of the request for security reasons|
+|API_TELEGRAM_SECRET|apitelegramsecret|secret key shared between api and telegram|
 |MAILER_URI|http://localhost:3001|specifies Mailer's connection's host and port|
 |QUEUE_URI|http://localhost:3002|specifies Queue's connection's host and port|
 |API_URI|http://localhost:3000|specifies Api's connection's host and port|

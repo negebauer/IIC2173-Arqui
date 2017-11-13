@@ -1,4 +1,8 @@
-const { API_MAILER_SECRET, API_QUEUE_SECRET } = require('../constants')
+const {
+  API_MAILER_SECRET,
+  API_QUEUE_SECRET,
+  API_TELEGRAM_SECRET,
+} = require('../constants')
 const User = require('../models/user')
 
 function unauthorized(ctx) {
@@ -24,6 +28,8 @@ module.exports = async (ctx, next) => {
     const user = await User.findOne({ mail: value }, { _id: true, mail: true })
     ctx.state.user = user
   } else if (!(!type && secret === API_QUEUE_SECRET)) {
+    return unauthorized(ctx)
+  } else if (!(!type && secret === API_TELEGRAM_SECRET)) {
     return unauthorized(ctx)
   }
   return next()
