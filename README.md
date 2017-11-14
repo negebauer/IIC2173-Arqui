@@ -152,5 +152,5 @@ bash scripts/cleanimages.sh       # Remove all docker containers and images
 [standard-versionL]:https://github.com/conventional-changelog/standard-version
 [standard-versionB]:https://img.shields.io/badge/version-standar%20version-blue.svg
 
-[telegramBotL]:t.me/iic2173_arqui_g1_bot
+[telegramBotL]:https://t.me/iic2173_arqui_g1_bot
 [telegramBotB]:https://img.shields.io/badge/%20-bot-blue.svg?logo=telegram&style=social
