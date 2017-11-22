@@ -25,6 +25,21 @@
 	
 }
 
+.pagination-div-container {
+    display: flex;
+    justify-content: center;
+    margin: 5%;
+}
+
+.pagination-button-container {
+    width: 150px;
+    height: 60px;
+    border-radius: 5px;
+	border: 2 solid black;
+	background: #c8403d;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; 
+}
+
 .search {
 	width: 100%;
 	background-color: #d8d8d8;

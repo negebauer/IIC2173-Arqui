@@ -11,6 +11,7 @@ import { SessionService } from './services/session.service';
 import { LoginComponent } from './components/login/login.component';
 import { PurchaseHistoryComponent } from './components/purchase-history/purchase-history.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,

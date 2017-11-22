@@ -15,33 +15,61 @@ export class ProductsPageComponent implements OnInit {
   public isCache = false;
   public date = '09-10-2017';
   public subs = null;
+  public buttonState = 'More products!'
+  private available = false
+  public page = 0
+  public buttonSubs = null
   public searchstr = null;
   public user;
   searcherr;
+
 
   constructor(public _http: HttpServiceProvider, private session: SessionService) {
     this.session.isLoggedIn()
       .subscribe((resp) => {
         if (resp) {
+          this.available = true
+          this.refreshPage()
+          const user = JSON.parse(localStorage.getItem('user'));
+          this.products = []
+          this.nextPage()
+          this.getProducts(user.token, this.page);
+          
+        } else {
+          this.refreshPage()
+          this.getProducts(null, this.page);
           this.user = JSON.parse(localStorage.getItem('user'));
           this.getProducts(this.user.token);
-        } else {
-          this.getProducts(null);
           this.user = null;
         }
       });
   }
 
-  getProducts(token) {
+  refreshPage() {
+    this.page = 0
+  }
+
+  nextPage() {
+    this.page = this.page + 1
+  }
+
+  getProducts(token, page) {
     if (this.subs) {
       this.subs.unsubscribe();
     }
-    this.subs = this._http.getProducts(token).subscribe((response) => {
+    this.subs = this._http.getProducts(token, page).subscribe((response) => {
       if (response.source == 'cache') {
         this.isCache = true;
         this.date = response['updatedAt'];
       }
-      this.products = response['products'];
+      const newProducts = response['products']
+
+      if (newProducts.length == 0) {
+        this.buttonState = 'No more products available'
+      } else {
+        this.products = this.products.concat(newProducts);
+      }
+      
     }, (err) => {
       console.log(err);
     });
@@ -53,6 +81,26 @@ export class ProductsPageComponent implements OnInit {
   addToCart(product) {
     this.session.addToCart(product);
   }
+
+  next(){
+
+    if (this.buttonSubs) {
+      this.buttonSubs.unsubscribe()
+    }
+
+    this.buttonSubs = this.session.isLoggedIn()
+      .subscribe((resp) => {
+        if (resp) {
+          this.nextPage()
+          const user = JSON.parse(localStorage.getItem('user'));
+          this.getProducts(user.token, this.page);
+        } else {
+          this.available = false
+          this.refreshPage()
+          this.products = []
+          this.getProducts(null, true);
+        }
+      })
 
   public search() {
     if (this.searchstr && this.searchstr.length > 0) {

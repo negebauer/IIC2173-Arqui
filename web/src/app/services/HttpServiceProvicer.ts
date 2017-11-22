@@ -42,7 +42,7 @@ export class HttpServiceProvider {
   }
 
   // Handle Products
-  public getProducts(token) {
+  public getProducts(token, page) {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     if (token) {
@@ -50,7 +50,7 @@ export class HttpServiceProvider {
     }
     const options = new RequestOptions({ headers, method: 'get' });
     return this.http
-      .get(`${this.apiUrl}/products`, options)
+      .get(`${this.apiUrl}/products?page=${page}`, options)
       .map((response) => response.json());
   }
 

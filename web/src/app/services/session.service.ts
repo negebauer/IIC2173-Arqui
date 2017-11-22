@@ -28,8 +28,18 @@ export class SessionService {
     }
 
     public addToCart(element: object) {
-        const index = this.cart.indexOf(element, 0);
-        if (index == -1) {
+        let count = 0
+        if (this.cart.length > 0) {
+            count = this.cart.reduce( (counting, newProduct) => {
+                if (newProduct == element) {
+                    counting = counting + 1
+                    
+                }
+                return counting
+            }, 0)
+        }
+        
+        if(count < 2) {
             this.cart.push(element);
         }
     }
