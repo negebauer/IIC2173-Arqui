@@ -37,12 +37,13 @@ const setProductsCache = async products => {
         upsert: true,
       })
     })
-    const oldProducts = await Product.find({}, { id: true })
-    oldProducts.forEach(prod => {
-      if (!newIds.includes(prod.id)) {
-        prod.remove()
-      }
-    })
+    //we cant delete old products now that requests are paginated-
+    // const oldProducts = await Product.find({}, { id: true })
+    // oldProducts.forEach(prod => {
+    //   if (!newIds.includes(prod.id)) {
+    //     prod.remove()
+    //   }
+    // })
   }
 }
 

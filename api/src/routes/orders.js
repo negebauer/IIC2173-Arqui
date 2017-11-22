@@ -8,7 +8,6 @@ const { postMailer } = require('../helpers/localRequests')
 const router = new Router()
 
 router.post('orders', '/', async ctx => {
-  ctx.body = { message: 'Your order has been received.' }
   return orderManager(ctx)
 })
 

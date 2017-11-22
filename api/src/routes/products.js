@@ -18,9 +18,9 @@ router.get('products', '/', async ctx => {
   if (ctx.state.user) {
     let products
     if (!page) {
-      products = await getArquitran(`/products`)
+      products = await getArquitran(`/productos`)
     } else {
-      products = await getArquitran(`/products?page=${page}`)
+      products = await getArquitran(`/productos?page=${page}`)
     }
     let cacheProducts, updatedAt
     if (!products) {
@@ -42,6 +42,7 @@ router.get('products', '/', async ctx => {
       ctx.body = { source: 'cache', updatedAt, products: cacheProducts }
       return
     }
+
     setProductsCache(products)
     ctx.body = { source: 'api', products }
   } else {

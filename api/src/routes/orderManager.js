@@ -9,20 +9,23 @@ module.exports = async ctx => {
   const userId = ctx.state.user._id
   const productsIds = ctx.request.body.productsIds
   const feedback = await check(userId, productsIds)
-  if (feedback.constructor.name === 'Error') {
+  const token = uuid()
+  if (feedback.errors) {
     console.log(feedback) // eslint-disable-line no-console
+    ctx.body = { message: 'Your order failed' }
+    ctx.status = 422
   } else {
-    const token = uuid()
     const parsedProducts = parseProducts(feedback.products)
     parsedProducts.forEach(async ({ productId, productName }) => {
       const order = new Order({ userId, productId, productName, token })
       order.save()
-    })
-    await postMailer('/orderStatus', {
-      user: ctx.state.user.mail,
-
-      confirmationUrl: `${API_URI}/confirmOrder/${token}`,
-      ...feedback,
+      ctx.body = { message: 'Your order has been received.' }
     })
   }
+  await postMailer('/orderStatus', {
+    user: ctx.state.user.mail,
+
+    confirmationUrl: `${API_URI}/confirmOrder/${token}`,
+    ...feedback,
+  })
 }
