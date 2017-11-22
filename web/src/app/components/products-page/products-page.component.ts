@@ -30,16 +30,14 @@ export class ProductsPageComponent implements OnInit {
         if (resp) {
           this.available = true
           this.refreshPage()
-          const user = JSON.parse(localStorage.getItem('user'));
+          this.user = JSON.parse(localStorage.getItem('user'));
           this.products = []
           this.nextPage()
-          this.getProducts(user.token, this.page);
+          this.getProducts(this.user.token, this.page);
           
         } else {
           this.refreshPage()
           this.getProducts(null, this.page);
-          this.user = JSON.parse(localStorage.getItem('user'));
-          this.getProducts(this.user.token);
           this.user = null;
         }
       });
@@ -101,6 +99,7 @@ export class ProductsPageComponent implements OnInit {
           this.getProducts(null, true);
         }
       })
+  }
 
   public search() {
     if (this.searchstr && this.searchstr.length > 0) {
@@ -115,10 +114,10 @@ export class ProductsPageComponent implements OnInit {
       })      
     } else if (this.searcherr){
       this.searcherr = null;
-      this.getProducts(this.user.token);
+      this.getProducts(this.user.token,this.page);
       //this last else if is to prevent several unnecesary requests.
     } else if (this.searchstr === '') {
-      this.getProducts(this.user.token);
+      this.getProducts(this.user.token, this.page);
       this.searchstr = null;
     }
   }

@@ -6,7 +6,9 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class HttpServiceProvider {
 
-  public apiUrl = environment.api || 'http://localhost:3000';
+  //public apiUrl = environment.api || 'http://localhost:3000';
+
+  public apiUrl = 'http://arqss2.ing.puc.cl/api'
 
   public constructor(private http: Http) {
   }

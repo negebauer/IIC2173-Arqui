@@ -50,6 +50,7 @@ export class CartComponent implements OnInit {
       let ids = this.cart.map((product) => {
         return product.id
       })
+      console.log(ids)
       this.api.placeOrder(ids, this.user.token)
         .subscribe((response) => {
           alert('Orden completada exitosamente!');
