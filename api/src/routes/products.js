@@ -8,6 +8,7 @@ const {
   getNestedCategories,
 } = require('../helpers/cache')
 const { parseCategories } = require('../helpers/parseData')
+const stringCombinations = require('../helpers/stringHandler')
 
 const Product = require('../models/product')
 
@@ -76,15 +77,17 @@ router.get('products', '/search', async ctx => {
     const page = parseInt(ctx.query.page, 10)
     try {
       const query = ctx.query.query.slice(1, -1)
+      const combinations = stringCombinations(query)
+      const processedQuery = combinations.join('|')
       const totalProducts = await Product.count({
         name: {
-          $regex: query,
+          $regex: processedQuery,
           $options: 'gi',
         },
       })
       const products = await Product.find({
         name: {
-          $regex: query,
+          $regex: processedQuery,
           $options: 'gi',
         },
       })
