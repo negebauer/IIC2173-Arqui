@@ -1,9 +1,7 @@
 const axios = require('axios')
 
-const standardMessage = `Para consultar el catálogo completo, usa la palabra *todo* o *all*
-Si quieres algunas categorías, indica los ids.
-Puedes indicar varios con espacios
-Ej: 10 16 para obtener información de los categorías 10 y 16`
+const standardMessage = `Compre productos indicando su id.
+Ej: 10 16, para comprar los productos 10 y 16`
 
 const credential = ctx => `telegram ${ctx.meta.user.username}`
 
