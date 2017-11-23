@@ -18,10 +18,13 @@ router.post('orders', '/resolved', async ctx => {
   const order = await Order.findOne({ userId, productId, sentAt })
   await order.update({ completed: true })
   const user = await User.findOne({ _id: userId }, { mail: true })
-  const status = await postMailer('/orderStatus', {
-    user: user.mail,
-    resolved: { productId: order.productId, productName: order.productName },
-  })
+  let status = 200
+  if (order.source === 'mail') {
+    status = await postMailer('/orderStatus', {
+      user: user.mail,
+      resolved: { productId: order.productId, productName: order.productName },
+    })
+  }
   if (status === 200) {
     ctx.body = { message: 'The validation has been processed.' }
   } else {
@@ -34,21 +37,25 @@ router.get('orders', '/', async ctx => {
   if (
     !ctx.query.sort ||
     (ctx.query.sort !== 'asc' && ctx.query.sort !== 'desc')
-  )
+  ) {
     ctx.query.sort = 'desc'
+  }
+
   const orders = await Order.find(
-    { userId: ctx.state.user._id },
+    { userId: ctx.state.user._id, source: ctx.state.source },
     {
       _id: false,
       productId: true,
       productName: true,
       completed: true,
       sentAt: true,
+      source: true,
     },
     {
       sort: { sentAt: ctx.query.sort },
     }
   )
+
   ctx.body = { orders }
 })
 

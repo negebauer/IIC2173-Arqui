@@ -13,8 +13,9 @@ const check = async (userId, productsIds) => {
   const { products, productsContext } = await getRestrictionsInfo(productsIds)
   if (!products || !productsContext || !products.length) {
     const feedback = new Error()
+    const error = true
     feedback.message = "Couldn't resolve the request."
-    return { feedback }
+    return { feedback, error }
   }
   const userOrders = await Order.find({ userId })
   const parsedOrders = parseOrders(userOrders)
@@ -34,7 +35,8 @@ const check = async (userId, productsIds) => {
     products: validProducts,
     errors: errors,
   }
-  return feedback
+  const error = false
+  return { feedback, error }
 }
 
 module.exports = check

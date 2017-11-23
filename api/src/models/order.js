@@ -34,6 +34,11 @@ const OrderSchema = new Schema({
     required: true,
     default: new Date(),
   },
+  source: {
+    type: String,
+    required: true,
+    default: 'token',
+  },
 })
 
 OrderSchema.methods = {}

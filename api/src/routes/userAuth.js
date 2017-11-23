@@ -10,9 +10,11 @@ module.exports = async (ctx, next) => {
   if (type === 'token') {
     const user = await User.findOne({ token: value }, { _id: true, mail: true })
     ctx.state.user = user
+    ctx.state.source = 'token'
   } else if (type === 'mail' && secret === API_MAILER_SECRET) {
     const user = await User.findOne({ mail: value }, { _id: true, mail: true })
     ctx.state.user = user
+    ctx.state.source = 'mail'
   } else if (type === 'telegram' && secret === API_TELEGRAM_SECRET) {
     if (value) {
       const user = await User.findOne(
@@ -20,6 +22,7 @@ module.exports = async (ctx, next) => {
         { _id: true, mail: true, telegram: true }
       )
       ctx.state.user = user
+      ctx.state.source = 'telegram'
     }
   }
   return next()
