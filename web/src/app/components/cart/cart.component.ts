@@ -57,6 +57,7 @@ export class CartComponent implements OnInit {
           this.emptyCart();
           this.hideCart();
         }, (err) => {
+          console.log(err)
           alert("Hubo un error al generar la orden, intente más tarde")
         });
     } else {

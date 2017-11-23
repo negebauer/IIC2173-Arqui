@@ -16,12 +16,12 @@ export class ProductsPageComponent implements OnInit {
   public date = '09-10-2017';
   public subs = null;
   public buttonState = 'More products!'
-  private available = false
+  public available = false
   public page = 0
   public buttonSubs = null
   public searchstr = null;
   public user;
-  searcherr;
+  public searcherr;
 
 
   constructor(public _http: HttpServiceProvider, private session: SessionService) {
@@ -114,7 +114,7 @@ export class ProductsPageComponent implements OnInit {
       })      
     } else if (this.searcherr){
       this.searcherr = null;
-      this.getProducts(this.user.token,this.page);
+      this.getProducts(this.user.token, this.page);
       //this last else if is to prevent several unnecesary requests.
     } else if (this.searchstr === '') {
       this.getProducts(this.user.token, this.page);
