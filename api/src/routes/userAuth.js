@@ -1,4 +1,4 @@
-const { API_MAILER_SECRET } = require('../constants')
+const { API_MAILER_SECRET, API_TELEGRAM_SECRET } = require('../constants')
 const User = require('../models/user')
 
 module.exports = async (ctx, next) => {
@@ -13,6 +13,14 @@ module.exports = async (ctx, next) => {
   } else if (type === 'mail' && secret === API_MAILER_SECRET) {
     const user = await User.findOne({ mail: value }, { _id: true, mail: true })
     ctx.state.user = user
+  } else if (type === 'telegram' && secret === API_TELEGRAM_SECRET) {
+    if (value) {
+      const user = await User.findOne(
+        { telegram: value },
+        { _id: true, mail: true, telegram: true }
+      )
+      ctx.state.user = user
+    }
   }
   return next()
 }

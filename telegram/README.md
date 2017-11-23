@@ -86,6 +86,7 @@ In order for the bot to show all available commands when writing `/` on a telegr
 ## Contributors:
 
 - [@negebauer]
+- [@fnmendez]
 
 <!-- Links -->
 
@@ -95,5 +96,6 @@ In order for the bot to show all available commands when writing `/` on a telegr
 [commands]:src/commands
 
 [@negebauer]:https://github.com/negebauer
+[@fnmendez]:https://github.com/fnmendez
 
 [botfather]:https://core.telegram.org/bots#3-how-do-i-create-a-bot

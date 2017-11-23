@@ -52,6 +52,11 @@ const UserSchema = new Schema({
   token: {
     type: String,
   },
+  telegram: {
+    type: String,
+    unique: true,
+    sparse: true,
+  },
 })
 
 async function validateMailUnicity(user) {
@@ -63,6 +68,23 @@ async function validateMailUnicity(user) {
       path: 'mail',
       message: 'Email already in use.',
       value: user.mail,
+    })
+    throw error
+  }
+}
+
+async function validateTelegramUnicity(user) {
+  if (!user.telegram) return
+  const otherUser = await mongoose.models['user'].findOne({
+    telegram: user.telegram,
+  })
+  if (otherUser && otherUser._id !== user._id) {
+    const error = new ValidationError(this)
+    error.errors.mail = new ValidatorError({
+      type: 'unique',
+      path: 'telegram',
+      message: 'Telegram already in use.',
+      value: user.telegram,
     })
     throw error
   }
@@ -80,6 +102,7 @@ async function buildPasswordHash(user) {
 UserSchema.pre('save', async function(next) {
   try {
     await validateMailUnicity(this)
+    await validateTelegramUnicity(this)
   } catch (error) {
     return next(error)
   }

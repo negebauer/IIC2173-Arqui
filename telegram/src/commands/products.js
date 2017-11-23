@@ -6,10 +6,11 @@ Ej: 1 3 para obtener información de los productos 1 y 3
 Puedes consultar *todos los productos* con
 las palabra *todos* o *all*`
 
+const credential = ctx => `telegram ${ctx.meta.user.username}`
+
 const parseProducts = products =>
   products
-    .map(product => {
-      const { category, id, name, price } = product
+    .map(({ category, id, name, price }) => {
       return `*${name}*\t$${price}\n\tid: ${id} categoría: ${category}`
     })
     .join('\n')
@@ -25,11 +26,15 @@ const getProductsInfo = async ctx => {
   let products
   try {
     if (ids[0] === 'all' || ids[0] === 'todos') {
-      const response = await axios.get('/products')
+      const response = await axios.get('/products', {
+        headers: { Authorization: credential(ctx) },
+      })
       products = response.data.products
     } else {
       const responses = await Promise.all(
-        ids.map(id => axios.get(`/products/${id}`))
+        ids.map(id => axios.get(`/products/${id}`), {
+          headers: { Authorization: credential(ctx) },
+        })
       )
       products = responses.reduce(
         (total, response) => [...total, response.data.product],

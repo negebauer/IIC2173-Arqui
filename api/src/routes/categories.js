@@ -48,7 +48,7 @@ router.get('nestedCategories', '/products', async ctx => {
     const filteredCategories = categories.filter(
       cat => cat.context !== 'MEDICAMENTOS'
     )
-    ctx.body = { source: 'api', filteredCategories }
+    ctx.body = { source: 'api', categories: filteredCategories }
   }
 })
 
@@ -152,7 +152,7 @@ router.get('categories', '/', async ctx => {
     const filteredCategories = categories.filter(
       cat => cat.context !== 'MEDICAMENTOS'
     )
-    ctx.body = { source: 'api', filteredCategories }
+    ctx.body = { source: 'api', categories: filteredCategories }
   }
 })
 

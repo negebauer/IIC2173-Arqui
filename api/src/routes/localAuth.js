@@ -27,9 +27,16 @@ module.exports = async (ctx, next) => {
   } else if (type === 'mail' && secret === API_MAILER_SECRET) {
     const user = await User.findOne({ mail: value }, { _id: true, mail: true })
     ctx.state.user = user
+  } else if (type === 'telegram' && secret === API_TELEGRAM_SECRET) {
+    const user = await User.findOne(
+      { telegram: value },
+      { _id: true, mail: true, telegram: true }
+    )
+    ctx.state.user = user
+    if (!user) {
+      return unauthorized(ctx)
+    }
   } else if (!(!type && secret === API_QUEUE_SECRET)) {
-    return unauthorized(ctx)
-  } else if (!(!type && secret === API_TELEGRAM_SECRET)) {
     return unauthorized(ctx)
   }
   return next()

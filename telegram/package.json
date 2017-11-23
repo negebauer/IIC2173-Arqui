@@ -14,7 +14,8 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
-    "bot-brother": "^2.1.5"
+    "bot-brother": "^2.1.5",
+    "moment": "^2.19.2"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.1",

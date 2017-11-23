@@ -23,6 +23,7 @@ router.post('signUp', 'signup', async ctx => {
     'mail',
     'address',
     'password',
+    'telegram',
   ])
   const user = new User(attrs)
   try {
@@ -53,6 +54,30 @@ router.post('signIn', 'login', async ctx => {
   user.token = uuid()
   await user.save()
   ctx.body = { token: user.token }
+})
+
+router.post('signTelegram', 'telegram', async ctx => {
+  const { mail, password, telegram } = ctx.request.body
+  const user = await User.findOne({ mail })
+  if (!user) {
+    return loginError(ctx)
+  }
+  const isMatch = await user.comparePassword(password)
+  if (!isMatch) {
+    return loginError(ctx)
+  }
+  try {
+    const test = await User.findOne({ telegram })
+    if (test) {
+      throw new Error()
+    }
+    await user.update({ telegram })
+  } catch (err) {
+    ctx.status = 406
+    ctx.body = validationError(err)
+    return
+  }
+  ctx.body = { message: "Success on adding user's telegram." }
 })
 
 module.exports = router
