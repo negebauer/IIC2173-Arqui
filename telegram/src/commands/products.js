@@ -32,9 +32,11 @@ const getProductsInfo = async ctx => {
       products = response.data.products
     } else {
       const responses = await Promise.all(
-        ids.map(id => axios.get(`/products/${id}`), {
-          headers: { Authorization: credential(ctx) },
-        })
+        ids.map(id =>
+          axios.get(`/products/${id}`, {
+            headers: { Authorization: credential(ctx) },
+          })
+        )
       )
       products = responses.reduce(
         (total, response) => [...total, response.data.product],

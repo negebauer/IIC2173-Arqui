@@ -6,9 +6,7 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class HttpServiceProvider {
 
-  //public apiUrl = environment.api || 'http://localhost:3000';
-
-  public apiUrl = 'http://arqss2.ing.puc.cl/api'
+  public apiUrl = environment.api || 'http://localhost:3000';
 
   public constructor(private http: Http) {
   }
@@ -62,12 +60,12 @@ export class HttpServiceProvider {
     if (token) {
       headers.append('Authorization', 'token ' + token);
     }
-    const params = `?n=12&page=1&query=${query}`
+    const params = `?n=12&page=1&query=${query}`;
     const options = new RequestOptions({ headers, method: 'get' });
     return this.http
       .get(`${this.apiUrl}/products/search` + params, options)
       .map((response) => response.json());
-    
+
   }
 
   // Handle Orders
