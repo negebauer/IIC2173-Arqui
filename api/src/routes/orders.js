@@ -19,12 +19,12 @@ router.post('orders', '/resolved', async ctx => {
   await order.update({ completed: true })
   const user = await User.findOne({ _id: userId }, { mail: true })
   let status = 200
-  if (order.source === 'mail') {
-    status = await postMailer('/orderStatus', {
-      user: user.mail,
-      resolved: { productId: order.productId, productName: order.productName },
-    })
-  }
+  // if (order.source === 'mail') {
+  status = await postMailer('/orderStatus', {
+    user: user.mail,
+    resolved: { productId: order.productId, productName: order.productName },
+  })
+  // }
   if (status === 200) {
     ctx.body = { message: 'The validation has been processed.' }
   } else {

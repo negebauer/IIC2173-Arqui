@@ -21,13 +21,13 @@ module.exports = async ctx => {
       const order = new Order({ userId, productId, productName, token, source })
       await order.save()
     })
-    if (ctx.state.source === 'mail') {
-      await postMailer('/orderStatus', {
-        user: ctx.state.user.mail,
-        confirmationUrl: `${API_URI}/confirmOrder/${token}`,
-        ...feedback,
-      })
-    }
+    // if (ctx.state.source === 'mail') {
+    await postMailer('/orderStatus', {
+      user: ctx.state.user.mail,
+      confirmationUrl: `${API_URI}/confirmOrder/${token}`,
+      ...feedback,
+    })
+    // }
     ctx.body = { message: 'Your order has been received.' }
   }
 }
