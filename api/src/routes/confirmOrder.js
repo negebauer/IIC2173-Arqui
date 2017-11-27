@@ -6,10 +6,13 @@ const { postQueue } = require('../helpers/localRequests')
 const router = new Router()
 
 router.get('confirmOrder', '/:token', async ctx => {
-  const orders = await Order.find({ token: ctx.params.token })
-  if (orders.length === 0) {
+  const ordersAll = await Order.find({ token: ctx.params.token })
+  const orders = ordersAll.filter(order => !order.confirmed)
+  if (ordersAll.length === 0) {
     ctx.status = 404
-    return (ctx.body = { message: 'Orders not found' })
+    return (ctx.body = { message: 'Orden no encontrada' })
+  } else if (orders.length === 0) {
+    return (ctx.body = { message: 'Orden ya confirmada' })
   }
   const status = await postQueue('/purchase', {
     orders: orders.map(order => ({
@@ -20,12 +23,10 @@ router.get('confirmOrder', '/:token', async ctx => {
   })
   if (status !== 200) {
     ctx.status = 503
-    ctx.body = { message: "Couldn't process the order confirmation." }
+    ctx.body = { message: 'No se pudo procesar la ordern' }
   } else {
-    await Promise.all(
-      orders.map(order => order.update({ confirmed: true, token: '' }))
-    )
-    ctx.body = { message: 'The order confirmation was successful.' }
+    await Promise.all(orders.map(order => order.update({ confirmed: true })))
+    ctx.body = { message: 'La orden fue confirmada exitosamente' }
   }
 })
 
