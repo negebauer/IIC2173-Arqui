@@ -10,7 +10,7 @@ const getRestrictionsInfo = async productsIds => {
   let products, productsContext, apiProducts
   const { cacheProducts } = await getProducts()
   if (!cacheProducts || !cacheProducts.length) {
-    apiProducts = await getArquitran('/productos')
+    apiProducts = await getArquitran('/products')
     setProductsCache(apiProducts)
     products = apiProducts
       .filter(prod => productsIds.includes(prod.id))

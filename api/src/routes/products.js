@@ -19,7 +19,7 @@ router.get('products', '/', async ctx => {
   if (ctx.state.user) {
     let products
     if (!page) {
-      products = await getArquitran(`/productos`)
+      products = await getArquitran(`/products`)
     } else {
       products = await getArquitran(`/productos?page=${page}`)
     }
